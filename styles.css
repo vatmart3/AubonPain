@@ -221,11 +221,9 @@ a{ color:inherit; }
 .trust dd b{ font-weight:400; }
 
 /* Scène 3D */
-.stage{ position:relative; aspect-ratio:1/1; max-height:min(60vh,560px); display:grid; place-items:center; }
-.stage::before{
-  content:""; position:absolute; inset:6%; border-radius:50%;
-  background:radial-gradient(circle at 60% 35%, rgba(232,163,61,.22), rgba(232,163,61,0) 62%);
-  filter:blur(24px);
+.stage{
+  position:relative; z-index:10;            /* au-dessus du voile de grain */
+  aspect-ratio:1/1; max-height:min(62vh,580px); display:grid; place-items:center;
 }
 #scene{ position:relative; width:100%; height:100%; display:block; }
 .stage-fallback{ position:absolute; inset:0; display:none; place-items:center; color:var(--or); opacity:.55; }

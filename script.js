@@ -180,7 +180,7 @@
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.18;
+    renderer.toneMappingExposure = 1.24;
 
     var scene = new THREE.Scene();
     var camera = new THREE.PerspectiveCamera(36, 1, 0.1, 60);
@@ -190,49 +190,77 @@
     /* Croûte : texture générée au canvas (grain + éclats dorés) */
     function crust() {
       var c = doc.createElement('canvas');
-      c.width = c.height = 256;
+      c.width = c.height = 512;
       var g = c.getContext('2d');
-      g.fillStyle = '#c98a45';
-      g.fillRect(0, 0, 256, 256);
-      for (var i = 0; i < 7000; i++) {
-        var a = (Math.random() * 0.14).toFixed(3);
-        g.fillStyle = Math.random() < 0.5 ? 'rgba(255,226,178,' + a + ')' : 'rgba(88,46,18,' + a + ')';
+      g.fillStyle = '#d89a54';
+      g.fillRect(0, 0, 512, 512);
+      /* marbrures : zones claires beurrées et zones caramélisées */
+      for (var b = 0; b < 420; b++) {
+        var x = Math.random() * 512, y = Math.random() * 512, rad = 12 + Math.random() * 52;
+        var clair = Math.random() < 0.5;
+        var grd = g.createRadialGradient(x, y, 0, x, y, rad);
+        grd.addColorStop(0, clair ? 'rgba(255,225,170,.16)' : 'rgba(139,72,26,.14)');
+        grd.addColorStop(1, 'rgba(0,0,0,0)');
+        g.fillStyle = grd;
+        g.beginPath(); g.arc(x, y, rad, 0, 6.2832); g.fill();
+      }
+      /* stries de feuilletage */
+      g.lineWidth = 1.4;
+      for (var l = 0; l < 90; l++) {
+        g.strokeStyle = Math.random() < 0.5 ? 'rgba(255,232,190,.10)' : 'rgba(120,60,20,.10)';
+        var yy = Math.random() * 512;
         g.beginPath();
-        g.arc(Math.random() * 256, Math.random() * 256, Math.random() * 2.4, 0, 6.2832);
+        g.moveTo(0, yy);
+        g.bezierCurveTo(170, yy + (Math.random() - .5) * 40, 340, yy + (Math.random() - .5) * 40, 512, yy);
+        g.stroke();
+      }
+      /* grain fin */
+      for (var i = 0; i < 9000; i++) {
+        var a = (Math.random() * 0.1).toFixed(3);
+        g.fillStyle = Math.random() < 0.5 ? 'rgba(255,230,190,' + a + ')' : 'rgba(92,48,16,' + a + ')';
+        g.beginPath();
+        g.arc(Math.random() * 512, Math.random() * 512, Math.random() * 2.2, 0, 6.2832);
         g.fill();
       }
       var t = new THREE.CanvasTexture(c);
       t.wrapS = t.wrapT = THREE.RepeatWrapping;
-      t.repeat.set(2, 2);
+      t.repeat.set(3, 2);
       return t;
     }
 
     var tex = crust();
     var mat = new THREE.MeshStandardMaterial({
-      color: 0xd79a55, map: tex, bumpMap: tex, bumpScale: 0.05,
-      roughness: 0.58, metalness: 0.05
+      color: 0xe2a75f, map: tex, bumpMap: tex, bumpScale: 0.032,
+      roughness: 0.44, metalness: 0.03
     });
 
-    /* Le croissant : lobes sphériques posés le long d'un arc, effilés aux pointes */
+    /* Le croissant : tube continu le long d'un arc, dont le rayon est modulé
+       pour former six rouleaux, avec des pointes effilées et rentrées. */
     var croissant = new THREE.Group();
-    var N = 15, arc = Math.PI * 0.92, R = 1.55;
-    var lobe = new THREE.SphereGeometry(1, 30, 22);
+    var N = 66, arc = Math.PI * 1.04, R = 1.48, ROULEAUX = 6;
+    var lobe = new THREE.SphereGeometry(1, 22, 16);
     for (var i = 0; i < N; i++) {
       var t = i / (N - 1);
       var ang = -arc / 2 + arc * t;
-      var taper = Math.pow(Math.sin(Math.PI * t), 0.6);
-      var r = 0.5 * taper + 0.055;
+      var effile = Math.pow(Math.sin(Math.PI * t), 0.46);          /* ventre plein, pointes fines */
+      var roule = 1 + 0.115 * Math.cos(2 * Math.PI * ROULEAUX * t + 0.6);
+      var r = (0.505 * effile + 0.035) * roule;
+      var Rl = R * (1 - 0.13 * (1 - Math.sin(Math.PI * t)));       /* les pointes rentrent vers l'intérieur */
       var m = new THREE.Mesh(lobe, mat);
-      m.position.set(Math.sin(ang) * R, Math.sin(t * Math.PI) * 0.12, -Math.cos(ang) * R + R * 0.72);
-      m.scale.set(r * 0.82, r * 0.9, r * 1.06);
+      m.position.set(
+        Math.sin(ang) * Rl,
+        Math.sin(Math.PI * t) * 0.1 - 0.06,
+        -Math.cos(ang) * Rl + R * 0.7
+      );
+      m.scale.set(r * 1.02, r * 0.9, r * 1.06);
       m.rotation.y = -ang;
-      m.rotation.z = (t - 0.5) * 0.25;
+      m.rotation.z = (t - 0.5) * 0.3;
       m.castShadow = true;
       m.receiveShadow = true;
       croissant.add(m);
     }
-    croissant.rotation.set(-0.32, 0, 0.1);
-    croissant.scale.setScalar(1.02);
+    croissant.rotation.set(-0.42, 0, 0.07);
+    croissant.scale.setScalar(1.04);
     scene.add(croissant);
 
     /* Plan qui reçoit l'ombre portée */
@@ -274,6 +302,9 @@
     var appoint = new THREE.PointLight(0xffe2b8, 0.9, 14);
     appoint.position.set(-2.2, 0.9, 3.2);
     scene.add(appoint);
+    var eclat = new THREE.DirectionalLight(0xfff1d4, 1.1);        /* éclat rasant sur la dorure */
+    eclat.position.set(-1.4, 4.2, -1.2);
+    scene.add(eclat);
 
     /* Redimensionnement */
     function resize() {
@@ -315,7 +346,7 @@
       rotY += (cibleY + libre - rotY) * 0.06;
       rotX += (cibleX - rotX) * 0.06;
       croissant.rotation.y = rotY;
-      croissant.rotation.x = -0.32 + rotX;
+      croissant.rotation.x = -0.42 + rotX;
       croissant.position.y = reduce ? 0 : Math.sin(s * 0.85) * 0.07;
       poussiere.rotation.y = s * 0.03;
       poussiere.position.y = Math.sin(s * 0.35) * 0.15;
