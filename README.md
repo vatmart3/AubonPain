@@ -2,7 +2,9 @@
 
 Site vitrine pour la boulangerie **Au Bon Pain**, 36 Rue Paul Bousquet, 34200 Sète.
 
-Site statique : aucune dépendance, aucun build. Ouvrir `index.html` dans un
+Site statique : aucun build. Seule dépendance externe, chargée par CDN :
+three.js r128 pour la scène 3D du hero (repli automatique en illustration
+vectorielle si WebGL ou le CDN sont indisponibles). Ouvrir `index.html` dans un
 navigateur, ou servir le dossier :
 
 ```bash
@@ -13,9 +15,9 @@ python3 -m http.server 8000
 
 | Fichier | Rôle |
 | --- | --- |
-| `index.html` | Page unique (hero, carte, rayons, la maison, top produits, avis, contact, footer) |
-| `styles.css` | Palette chaude, mise en page responsive, animations |
-| `script.js` | Menu mobile, carrousel de la carte, lien de navigation actif |
+| `index.html` | Page unique (hero 3D, vitrine filtrable, la maison, avis, nous trouver, pied) |
+| `styles.css` | Palette nuit/ambre, mise en page responsive, animations |
+| `script.js` | Scène 3D WebGL, apparitions au défilement, filtres, cartes 3D, menu mobile |
 
 ## Informations reprises de la fiche Google
 
@@ -37,12 +39,12 @@ placeholders à valider :
    détail jour par jour dans `index.html` (section `#contact`, bloc `.hours`).
 2. **Prix des produits** — les tarifs du carrousel (`#carte`) sont indicatifs et
    cohérents avec la fourchette 1–10 €, mais doivent être corrigés.
-3. **Photos** — les visuels sont pour l'instant des emojis sur fonds dégradés.
-   Remplacez-les par de vraies photos de la vitrine (`.pcard-photo`,
-   `.hero-disc`, `.tile`, `.disc-yellow`).
-4. **Coordonnées de la carte** — l'iframe OpenStreetMap utilise un point
-   approximatif du quartier. Ajustez `marker=` et `bbox=` avec les coordonnées
-   exactes.
+3. **Photos** — le site fonctionne aujourd'hui sans photographie : scène 3D,
+   icônes au trait et typographie. De vraies photos de la vitrine renforceraient
+   la vitrine (`.plaque`) et la section « La maison ».
+4. **Plan d'accès** — le bloc `.plan` est une carte stylisée qui ouvre Google
+   Maps. Pour une carte réelle intégrée, remplacer par une iframe
+   OpenStreetMap ou Google Maps avec les coordonnées exactes.
 5. **Mentions légales / RGPD** — à ajouter si le site est publié.
 
 Les avis affichés sont des extraits publics de la fiche Google (Jérémy Vatuone,

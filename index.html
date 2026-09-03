@@ -1,430 +1,369 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="no-js">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Au Bon Pain — Boulangerie artisanale à Sète</title>
-<meta name="description" content="Au Bon Pain, boulangerie et salon de café à Sète : pains, viennoiseries, sandwichs, salades et soupes. 36 Rue Paul Bousquet, 34200 Sète. Ouvert dès 06h30.">
-<meta name="theme-color" content="#FDF6EE">
-<meta property="og:title" content="Au Bon Pain — Boulangerie artisanale à Sète">
-<meta property="og:description" content="Pains, viennoiseries, sandwichs et salades. 36 Rue Paul Bousquet, 34200 Sète.">
+<title>Au Bon Pain — Sète</title>
+<meta name="description" content="Au Bon Pain, boulangerie et café à Sète. Pains, viennoiseries, sandwichs, salades et soupes. Première fournée à 06h30. 36 Rue Paul Bousquet, 34200 Sète.">
+<meta name="theme-color" content="#0E0B09">
+<meta property="og:title" content="Au Bon Pain — Boulangerie à Sète">
+<meta property="og:description" content="Première fournée à 06h30. Pains, viennoiseries, sandwichs et salades, 36 Rue Paul Bousquet à Sète.">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🥐</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,400&family=Archivo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230E0B09'/><path d='M6 22C6 11 14 5 26 8' stroke='%23E8A33D' stroke-width='2.4' fill='none' stroke-linecap='round'/><path d='M6 22c6 2 12-1 16-7' stroke='%23E8A33D' stroke-width='2.4' fill='none' stroke-linecap='round'/></svg>">
 <link rel="stylesheet" href="styles.css">
+<script>document.documentElement.className = 'js';</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "Bakery",
-  "name": "Au Bon Pain",
-  "description": "Chaîne de cafés avec service au comptoir proposant des soupes, salades, sandwichs, pains et viennoiseries.",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "36 Rue Paul Bousquet",
-    "postalCode": "34200",
-    "addressLocality": "Sète",
-    "addressCountry": "FR"
-  },
-  "telephone": "+33467535931",
-  "priceRange": "1–10 €",
-  "servesCuisine": "Boulangerie, viennoiserie, sandwichs",
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "4.3",
-    "reviewCount": "79",
-    "bestRating": "5"
-  }
+  "@context":"https://schema.org","@type":"Bakery","name":"Au Bon Pain",
+  "description":"Café avec service au comptoir proposant des soupes, salades, sandwichs, pains et viennoiseries.",
+  "address":{"@type":"PostalAddress","streetAddress":"36 Rue Paul Bousquet","postalCode":"34200","addressLocality":"Sète","addressCountry":"FR"},
+  "telephone":"+33467535931","priceRange":"1–10 €",
+  "aggregateRating":{"@type":"AggregateRating","ratingValue":"4.3","reviewCount":"79","bestRating":"5"}
 }
 </script>
 </head>
 <body>
 
 <a class="skip-link" href="#contenu">Aller au contenu</a>
+<div class="progress" id="progress" aria-hidden="true"></div>
 
-<!-- ============ HEADER ============ -->
-<header class="site-header" id="haut">
-  <div class="wrap header-inner">
-    <a class="brand" href="#haut">
-      <span class="brand-mark" aria-hidden="true">🥖</span>
-      <span class="brand-name">Au&nbsp;Bon&nbsp;Pain</span>
+<!-- Jeu d'icônes -->
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="i-croissant" viewBox="0 0 32 32">
+    <path d="M3.6 22.4C3.6 9.6 9.2 4.4 16 4.4s12.4 5.2 12.4 18c-3.4-6.4-7.4-9-12.4-9s-9 2.6-12.4 9Z"/>
+    <path d="M10.4 11.3 12 15.6M16 8.9v4.5M21.6 11.3 20 15.6"/>
+  </symbol>
+  <symbol id="i-pain" viewBox="0 0 32 32">
+    <path d="M5 21c0-6.5 4.9-11 11-11s11 4.5 11 11z"/>
+    <path d="M11 19.5 14 12M16 19.5 19 12M21 19.5 23.5 13.5"/>
+  </symbol>
+  <symbol id="i-baguette" viewBox="0 0 32 32">
+    <rect x="2.5" y="12.5" width="27" height="7" rx="3.5" transform="rotate(-16 16 16)"/>
+    <path d="m10.5 15.4 1.6 2.2M15.3 14 17 16.2M20.2 12.6l1.7 2.2"/>
+  </symbol>
+  <symbol id="i-sandwich" viewBox="0 0 32 32">
+    <path d="M5 12.5 16 7l11 5.5-11 5.5z"/>
+    <path d="M5 17.5 16 23l11-5.5M6.5 20.5 16 25.2l9.5-4.7"/>
+  </symbol>
+  <symbol id="i-salade" viewBox="0 0 32 32">
+    <path d="M4.5 16h23a11.5 11.5 0 0 1-23 0Z"/>
+    <path d="M11 12.5c-1-3 .8-5.8 4-6 .6 3-.9 5.4-4 6ZM19.5 13c1.7-2.4 4.8-2.6 6.7-.4-1.9 2.3-4.6 2.6-6.7.4Z"/>
+  </symbol>
+  <symbol id="i-soupe" viewBox="0 0 32 32">
+    <path d="M5 16h22a11 11 0 0 1-22 0ZM3 27h26"/>
+    <path d="M12 11c-1.6-1.6-1.6-3.4 0-5M19.5 11c-1.6-1.6-1.6-3.4 0-5"/>
+  </symbol>
+  <symbol id="i-cafe" viewBox="0 0 32 32">
+    <path d="M6 13h15v6a7.5 7.5 0 0 1-15 0zM21 14.5h2.5a3.5 3.5 0 0 1 0 7H21M4 28h19"/>
+    <path d="M11 9c-1.4-1.4-1.4-3 0-4.4M16.5 9c-1.4-1.4-1.4-3 0-4.4"/>
+  </symbol>
+  <symbol id="i-patisserie" viewBox="0 0 32 32">
+    <circle cx="16" cy="17" r="9.5"/>
+    <path d="M16 26.5c-2-3.2-2-6.4 0-9.5 2 3.1 2 6.3 0 9.5ZM7.2 15.4c3.6-1 6.6 0 9 3M25 15.4c-3.7-1-6.7 0-9 3"/>
+    <path d="M16 7.5V4"/>
+  </symbol>
+  <symbol id="i-etoile" viewBox="0 0 24 24"><path d="m12 2.6 2.9 5.9 6.5.95-4.7 4.6 1.1 6.5L12 17.5l-5.8 3.05 1.1-6.5L2.6 9.45l6.5-.95z" fill="currentColor" stroke="none"/></symbol>
+</svg>
+
+<!-- ================= HEADER ================= -->
+<header class="masthead" id="haut">
+  <div class="shell masthead-in">
+    <a class="logo" href="#haut" aria-label="Au Bon Pain, retour en haut">
+      <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <path d="M6 22C6 11 14 5 26 8" /><path d="M6 22c6 2 12-1 16-7" />
+      </svg>
+      <span class="logo-type">Au Bon Pain<small>Sète</small></span>
     </a>
 
-    <nav class="nav" id="nav" aria-label="Navigation principale">
-      <a href="#haut" class="is-active">Accueil</a>
-      <a href="#carte">La carte</a>
-      <a href="#categories">Nos rayons</a>
+    <nav class="menu" id="menu" aria-label="Navigation principale">
+      <a href="#vitrine">La vitrine</a>
       <a href="#maison">La maison</a>
       <a href="#avis">Avis</a>
-      <a href="#contact">Contact</a>
+      <a href="#venir">Nous trouver</a>
     </nav>
 
-    <div class="header-actions">
-      <a class="chip-tel" href="tel:+33467535931" aria-label="Appeler le 04 67 53 59 31">
-        <span aria-hidden="true">☎</span> 04 67 53 59 31
-      </a>
-      <button class="burger" id="burger" aria-expanded="false" aria-controls="nav" aria-label="Ouvrir le menu">
-        <span></span><span></span><span></span>
-      </button>
+    <div class="masthead-cta">
+      <span class="status" title="Première fournée à 06h30"><i></i> Dès 06h30</span>
+      <a class="btn btn-gold magnetic" href="tel:+33467535931"><span>04 67 53 59 31</span></a>
+      <button class="hamb" id="hamb" aria-expanded="false" aria-controls="menu" aria-label="Ouvrir le menu"><span></span><span></span></button>
     </div>
   </div>
 </header>
 
 <main id="contenu">
 
-<!-- ============ HERO ============ -->
+<!-- ================= HERO ================= -->
 <section class="hero">
-  <div class="wrap hero-grid">
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="shell hero-grid">
     <div class="hero-copy">
-      <p class="eyebrow">Boulangerie · Sète</p>
-      <h1>
-        Le <em>bon pain</em>,<br>
-        cuit chaque matin<br>
-        <span class="muted-serif">dès 06h30</span>
-      </h1>
-      <p class="lead">
-        Pains, viennoiseries, sandwichs, salades et soupes.<br>
-        Service au comptoir, à emporter ou sur place.
+      <p class="eyebrow reveal"><span class="ping"></span> Boulangerie &amp; café · 36 rue Paul Bousquet, Sète</p>
+      <h1 class="reveal">Le premier pain<br>sort du four à <em>06h30</em>.</h1>
+      <p class="lead reveal">
+        Viennoiseries pur beurre, pains du jour, sandwichs, salades et soupes.
+        Service au comptoir, sur place ou à emporter.
       </p>
-      <div class="hero-cta">
-        <a class="btn btn-primary" href="#carte">Découvrir la carte</a>
-        <a class="btn btn-ghost" href="https://www.google.com/maps/dir/?api=1&destination=36+Rue+Paul+Bousquet+34200+S%C3%A8te" target="_blank" rel="noopener">
-          <span aria-hidden="true">➤</span> Itinéraire
-        </a>
+      <div class="cta-row reveal">
+        <a class="btn btn-gold btn-lg magnetic" href="#vitrine"><span>Voir la vitrine</span></a>
+        <a class="btn btn-line btn-lg magnetic" href="https://www.google.com/maps/dir/?api=1&amp;destination=36+Rue+Paul+Bousquet+34200+S%C3%A8te" target="_blank" rel="noopener"><span>Itinéraire</span></a>
       </div>
-
-      <ul class="hero-facts">
-        <li><strong>4,3/5</strong><span>79 avis Google</span></li>
-        <li><strong>1–10 €</strong><span>par personne</span></li>
-        <li><strong>06h30</strong><span>ouverture</span></li>
-      </ul>
+      <dl class="trust reveal">
+        <div><dt>Note Google</dt><dd><b class="count" data-to="4.3" data-dec="1">4,3</b><span>/ 5</span></dd></div>
+        <div><dt>Avis</dt><dd><b class="count" data-to="79">79</b></dd></div>
+        <div><dt>Par personne</dt><dd>1–10 <span>€</span></dd></div>
+      </dl>
     </div>
 
-    <div class="hero-visual">
-      <div class="hero-disc">
-        <span class="hero-emoji" aria-hidden="true">🥐</span>
-      </div>
-      <div class="badge-round">
-        <span>Tout&nbsp;chaud</span>
-        <strong>06:30</strong>
-      </div>
-      <div class="float-card float-card-1">
-        <span class="fc-icon" aria-hidden="true">🍞</span>
-        <div>
-          <strong>Cuisson du matin</strong>
-          <small>Pains et viennoiseries du jour</small>
-        </div>
-      </div>
-      <div class="float-card float-card-2">
-        <span class="fc-icon" aria-hidden="true">🥪</span>
-        <div>
-          <strong>Formule du midi</strong>
-          <small>Sandwich, salade ou soupe</small>
-        </div>
-      </div>
+    <div class="stage" id="stage">
+      <canvas id="scene" aria-hidden="true"></canvas>
+      <div class="stage-fallback" aria-hidden="true"><svg class="ico xl"><use href="#i-croissant"></use></svg></div>
+      <p class="stage-cap"><span>01</span> Croissant pur beurre — cuisson du matin</p>
+    </div>
+  </div>
+
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-run">
+      <span>Croissant pur beurre</span><i>✳</i><span>Baguette tradition</span><i>✳</i><span>Pain au chocolat</span><i>✳</i><span>Sandwichs du midi</span><i>✳</i><span>Soupes maison</span><i>✳</i><span>Café au comptoir</span><i>✳</i>
+      <span>Croissant pur beurre</span><i>✳</i><span>Baguette tradition</span><i>✳</i><span>Pain au chocolat</span><i>✳</i><span>Sandwichs du midi</span><i>✳</i><span>Soupes maison</span><i>✳</i><span>Café au comptoir</span><i>✳</i>
     </div>
   </div>
 </section>
 
-<!-- ============ CARROUSEL CARTE ============ -->
-<section class="section carousel-section" id="carte">
-  <div class="wrap">
-    <div class="section-head">
-      <p class="eyebrow">La carte</p>
-      <h2>Les incontournables de la vitrine</h2>
+<!-- ================= VITRINE ================= -->
+<section class="band" id="vitrine">
+  <div class="shell">
+    <header class="band-head reveal">
+      <p class="kicker">La vitrine</p>
+      <h2>Ce qu'on trouve<br>au comptoir</h2>
+      <p class="band-note">Prix indicatifs — la vitrine change chaque jour.</p>
+    </header>
+
+    <div class="filters reveal" role="group" aria-label="Filtrer la vitrine">
+      <button class="chip is-on" data-filter="tout">Tout</button>
+      <button class="chip" data-filter="viennoiserie">Viennoiseries</button>
+      <button class="chip" data-filter="pain">Pains</button>
+      <button class="chip" data-filter="dejeuner">Déjeuner</button>
+      <button class="chip" data-filter="boisson">Café</button>
     </div>
 
-    <div class="carousel">
-      <button class="car-nav prev" id="prev" aria-label="Produits précédents">‹</button>
-      <div class="car-track" id="track" tabindex="0" aria-label="Liste des produits">
-
-        <article class="pcard tone-red">
-          <div class="pcard-photo"><span aria-hidden="true">🥐</span></div>
+    <div class="grid-produits" id="produits">
+      <article class="carte tilt reveal" data-cat="viennoiserie">
+        <div class="carte-in">
+          <div class="plaque"><svg class="ico"><use href="#i-croissant"></use></svg></div>
+          <p class="cat">Viennoiserie</p>
           <h3>Croissant pur beurre</h3>
-          <p class="price">1,30 €</p>
-          <div class="pcard-foot"><span class="tag">Viennoiserie</span><span class="stars">★ 5,0</span></div>
-        </article>
+          <p class="desc">Feuilletage cuit sur place, sorti du four tout au long de la matinée.</p>
+          <p class="tarif">1,30 <span>€</span></p>
+        </div>
+      </article>
 
-        <article class="pcard tone-orange">
-          <div class="pcard-photo"><span aria-hidden="true">🍫</span></div>
+      <article class="carte tilt reveal" data-cat="viennoiserie">
+        <div class="carte-in">
+          <div class="plaque"><svg class="ico"><use href="#i-patisserie"></use></svg></div>
+          <p class="cat">Viennoiserie</p>
           <h3>Pain au chocolat</h3>
-          <p class="price">1,50 €</p>
-          <div class="pcard-foot"><span class="tag">Viennoiserie</span><span class="stars">★ 4,9</span></div>
-        </article>
+          <p class="desc">Deux barres de chocolat, feuilletage doré, encore tiède au petit matin.</p>
+          <p class="tarif">1,50 <span>€</span></p>
+        </div>
+      </article>
 
-        <article class="pcard tone-green">
-          <div class="pcard-photo"><span aria-hidden="true">🥖</span></div>
+      <article class="carte tilt reveal" data-cat="pain">
+        <div class="carte-in">
+          <div class="plaque"><svg class="ico"><use href="#i-baguette"></use></svg></div>
+          <p class="cat">Pain</p>
           <h3>Baguette tradition</h3>
-          <p class="price">1,20 €</p>
-          <div class="pcard-foot"><span class="tag">Pain</span><span class="stars">★ 4,8</span></div>
-        </article>
+          <p class="desc">Croûte croustillante, mie alvéolée. La fournée reprend dans la journée.</p>
+          <p class="tarif">1,20 <span>€</span></p>
+        </div>
+      </article>
 
-        <article class="pcard tone-blue">
-          <div class="pcard-photo"><span aria-hidden="true">🥪</span></div>
+      <article class="carte tilt reveal" data-cat="pain">
+        <div class="carte-in">
+          <div class="plaque"><svg class="ico"><use href="#i-pain"></use></svg></div>
+          <p class="cat">Pain</p>
+          <h3>Pains spéciaux</h3>
+          <p class="desc">Campagne, céréales, complet — selon la fournée du jour.</p>
+          <p class="tarif">2,40 <span>€</span></p>
+        </div>
+      </article>
+
+      <article class="carte tilt reveal" data-cat="dejeuner">
+        <div class="carte-in">
+          <div class="plaque"><svg class="ico"><use href="#i-sandwich"></use></svg></div>
+          <p class="cat">Déjeuner</p>
           <h3>Sandwich du jour</h3>
-          <p class="price">5,50 €</p>
-          <div class="pcard-foot"><span class="tag">Déjeuner</span><span class="stars">★ 4,6</span></div>
-        </article>
+          <p class="desc">Préparé le matin même, dans notre pain. À emporter en deux minutes.</p>
+          <p class="tarif">5,50 <span>€</span></p>
+        </div>
+      </article>
 
-        <article class="pcard tone-red">
-          <div class="pcard-photo"><span aria-hidden="true">🥗</span></div>
+      <article class="carte tilt reveal" data-cat="dejeuner">
+        <div class="carte-in">
+          <div class="plaque"><svg class="ico"><use href="#i-salade"></use></svg></div>
+          <p class="cat">Déjeuner</p>
           <h3>Salade composée</h3>
-          <p class="price">6,90 €</p>
-          <div class="pcard-foot"><span class="tag">Déjeuner</span><span class="stars">★ 4,7</span></div>
-        </article>
+          <p class="desc">Une formule fraîche pour le midi, à emporter ou à manger sur place.</p>
+          <p class="tarif">6,90 <span>€</span></p>
+        </div>
+      </article>
 
-        <article class="pcard tone-orange">
-          <div class="pcard-photo"><span aria-hidden="true">🍲</span></div>
+      <article class="carte tilt reveal" data-cat="dejeuner">
+        <div class="carte-in">
+          <div class="plaque"><svg class="ico"><use href="#i-soupe"></use></svg></div>
+          <p class="cat">Déjeuner</p>
           <h3>Soupe maison</h3>
-          <p class="price">4,50 €</p>
-          <div class="pcard-foot"><span class="tag">Déjeuner</span><span class="stars">★ 4,5</span></div>
-        </article>
+          <p class="desc">Servie chaude au comptoir, avec le pain qui va avec.</p>
+          <p class="tarif">4,50 <span>€</span></p>
+        </div>
+      </article>
 
-        <article class="pcard tone-green">
-          <div class="pcard-photo"><span aria-hidden="true">☕</span></div>
+      <article class="carte tilt reveal" data-cat="boisson">
+        <div class="carte-in">
+          <div class="plaque"><svg class="ico"><use href="#i-cafe"></use></svg></div>
+          <p class="cat">Café</p>
           <h3>Café au comptoir</h3>
-          <p class="price">1,50 €</p>
-          <div class="pcard-foot"><span class="tag">Boisson</span><span class="stars">★ 4,8</span></div>
-        </article>
-
-        <article class="pcard tone-blue">
-          <div class="pcard-photo"><span aria-hidden="true">🍰</span></div>
-          <h3>Pâtisserie du jour</h3>
-          <p class="price">3,20 €</p>
-          <div class="pcard-foot"><span class="tag">Sucré</span><span class="stars">★ 4,7</span></div>
-        </article>
-
-      </div>
-      <button class="car-nav next" id="next" aria-label="Produits suivants">›</button>
-    </div>
-    <p class="fineprint">Prix indicatifs — la vitrine change chaque jour. Comptez 1 à 10 € par personne.</p>
-  </div>
-</section>
-
-<!-- ============ CATEGORIES ============ -->
-<section class="section" id="categories">
-  <div class="wrap cat-grid">
-    <div class="mosaic">
-      <div class="tile tile-big">
-        <span class="tile-emoji" aria-hidden="true">🥖</span>
-        <div class="tile-label"><small>La fournée</small><strong>Pains du jour</strong></div>
-      </div>
-      <div class="tile tile-a">
-        <span class="tile-emoji" aria-hidden="true">🍩</span>
-        <div class="tile-label"><strong>Sucré</strong></div>
-      </div>
-      <div class="tile tile-b">
-        <span class="tile-emoji" aria-hidden="true">🥗</span>
-        <div class="tile-label"><strong>Salades</strong></div>
-      </div>
-    </div>
-
-    <div class="cat-list">
-      <p class="eyebrow">Nos rayons</p>
-      <h2>Tout ce qu'il faut,<br>du petit-déjeuner au déjeuner</h2>
-
-      <ul class="cat-items">
-        <li>
-          <span class="cat-ico ico-red" aria-hidden="true">🥐</span>
-          <div>
-            <h3>Viennoiseries</h3>
-            <p>Croissants, pains au chocolat et brioches, cuits sur place et sortis du four tout au long de la matinée.</p>
-          </div>
-        </li>
-        <li>
-          <span class="cat-ico ico-purple" aria-hidden="true">🥖</span>
-          <div>
-            <h3>Pains</h3>
-            <p>Baguettes, pains spéciaux et pains de campagne à emporter, pour accompagner tous les repas.</p>
-          </div>
-        </li>
-        <li>
-          <span class="cat-ico ico-green" aria-hidden="true">🥪</span>
-          <div>
-            <h3>Sandwichs, salades &amp; soupes</h3>
-            <p>La formule du midi, préparée le jour même. Service au comptoir, rapide, à emporter ou sur place.</p>
-          </div>
-        </li>
-      </ul>
+          <p class="desc">Le vrai départ de la journée, debout, en trois gorgées.</p>
+          <p class="tarif">1,50 <span>€</span></p>
+        </div>
+      </article>
     </div>
   </div>
 </section>
 
-<!-- ============ LA MAISON ============ -->
-<section class="section maison" id="maison">
-  <div class="wrap maison-grid">
-    <div>
-      <p class="eyebrow red">Boulangerie &amp; café</p>
-      <h2>Une adresse de quartier,<br>au cœur de Sète</h2>
-      <p class="lead">
-        Au Bon Pain, c'est le café du matin pris debout au comptoir, la baguette
+<!-- ================= LA MAISON ================= -->
+<section class="band maison" id="maison">
+  <div class="shell duo">
+    <div class="duo-copy">
+      <p class="kicker reveal">La maison</p>
+      <h2 class="reveal">Une adresse de quartier,<br>ouverte avant tout le monde</h2>
+      <p class="lead reveal">
+        Au Bon Pain, c'est le café pris debout au comptoir avant le travail, la baguette
         récupérée en rentrant, et la pause du midi entre deux rendez-vous.
       </p>
-      <p>
-        Chaîne de cafés avec service au comptoir, la maison propose soupes, salades,
-        sandwichs, pains et viennoiseries. Rue Paul Bousquet, la boutique ouvre ses
-        portes dès 06h30 pour la première fournée.
+      <p class="reveal">
+        Soupes, salades, sandwichs, pains et viennoiseries : tout est servi au comptoir,
+        sur place ou à emporter, rue Paul Bousquet, à Sète.
       </p>
 
-      <div class="mini-cards">
-        <div class="mini-card">
-          <span aria-hidden="true">⏱️</span>
-          <strong>Service rapide</strong>
-          <small>Au comptoir, sans attente</small>
-        </div>
-        <div class="mini-card">
-          <span aria-hidden="true">🥡</span>
-          <strong>Sur place ou à emporter</strong>
-          <small>Comme vous préférez</small>
-        </div>
-      </div>
-    </div>
-
-    <div class="maison-visual">
-      <div class="disc-yellow"><span aria-hidden="true">👩‍🍳</span></div>
-      <span class="sticker s1" aria-hidden="true">🥨</span>
-      <span class="sticker s2" aria-hidden="true">☕</span>
-    </div>
-  </div>
-</section>
-
-<!-- ============ TOP PRODUITS ============ -->
-<section class="section tops">
-  <div class="wrap">
-    <div class="section-head center">
-      <p class="eyebrow">Les plus demandés</p>
-      <h2>Le top de la vitrine</h2>
-    </div>
-    <div class="top-grid">
-      <article class="top-item"><span aria-hidden="true">🥐</span><h3>Croissant</h3><p>Le préféré des habitués</p></article>
-      <article class="top-item"><span aria-hidden="true">🍫</span><h3>Pain au chocolat</h3><p>Sorti du four le matin</p></article>
-      <article class="top-item"><span aria-hidden="true">🥖</span><h3>Baguette</h3><p>Croustillante, tous les jours</p></article>
-      <article class="top-item"><span aria-hidden="true">🥪</span><h3>Sandwich</h3><p>La formule du midi</p></article>
-    </div>
-  </div>
-</section>
-
-<!-- ============ AVIS ============ -->
-<section class="section avis" id="avis">
-  <div class="wrap">
-    <div class="section-head center">
-      <p class="eyebrow red">Ils en parlent</p>
-      <h2>Vos avis</h2>
-      <p class="rating-line">
-        <span class="rating-big">4,3</span>
-        <span class="rating-stars" aria-hidden="true">★★★★☆</span>
-        <span class="rating-count">79 avis Google</span>
-      </p>
-    </div>
-
-    <div class="avis-grid">
-      <blockquote class="avis-card">
-        <div class="avis-top"><span class="avatar">J</span><div><strong>Jérémy Vatuone</strong><small>Google · il y a un mois</small></div><span class="note">5/5</span></div>
-        <p>Visité en juillet.</p>
-      </blockquote>
-
-      <blockquote class="avis-card">
-        <div class="avis-top"><span class="avatar">S</span><div><strong>Sandrine Preaud</strong><small>Google · il y a 2 mois</small></div><span class="note">5/5</span></div>
-        <p>« Sans aucun doute ma boulangerie préférée de Sète. Les viennoiseries sont absolument divines. »</p>
-      </blockquote>
-
-      <blockquote class="avis-card">
-        <div class="avis-top"><span class="avatar">M</span><div><strong>Mattéo Vandenberghe</strong><small>Google · il y a 3 mois</small></div><span class="note">5/5</span></div>
-        <p>« Très bonne variété de produits. En séjour avec ma conjointe, nous avons pu profiter chaque jour de cette boulangerie, avec des produits délicieux et changeants. »</p>
-      </blockquote>
-    </div>
-
-    <p class="fineprint center">Extraits d'avis publiés sur Google. Les avis ne sont pas vérifiés par nos soins.</p>
-  </div>
-</section>
-
-<!-- ============ CONTACT ============ -->
-<section class="section contact" id="contact">
-  <div class="wrap contact-grid">
-    <div class="contact-card">
-      <p class="eyebrow">Nous trouver</p>
-      <h2>36 Rue Paul Bousquet<br>34200 Sète</h2>
-
-      <ul class="infos">
-        <li><span aria-hidden="true">📞</span> <a href="tel:+33467535931">04 67 53 59 31</a></li>
-        <li><span aria-hidden="true">💶</span> Prix par personne : 1–10 €</li>
-        <li><span aria-hidden="true">🛎️</span> Service au comptoir · sur place ou à emporter</li>
+      <ul class="pills reveal">
+        <li><svg class="ico sm"><use href="#i-cafe"></use></svg> Service au comptoir</li>
+        <li><svg class="ico sm"><use href="#i-sandwich"></use></svg> Sur place ou à emporter</li>
+        <li><svg class="ico sm"><use href="#i-pain"></use></svg> Fournée du matin</li>
       </ul>
+    </div>
 
-      <div class="hours">
-        <h3>Horaires</h3>
-        <p class="hours-open"><span class="dot"></span> Ouverture à <strong>06h30</strong></p>
-        <p class="hours-note">Horaires de fermeture susceptibles de varier — appelez-nous pour confirmer.</p>
+    <div class="duo-visual reveal">
+      <div class="deck">
+        <div class="deck-card d1"><svg class="ico lg"><use href="#i-croissant"></use></svg><span>06h30</span><small>Première fournée</small></div>
+        <div class="deck-card d2"><svg class="ico lg"><use href="#i-baguette"></use></svg><span>1–10 €</span><small>Par personne</small></div>
+        <div class="deck-card d3"><svg class="ico lg"><use href="#i-etoile"></use></svg><span>4,3/5</span><small>79 avis Google</small></div>
       </div>
+    </div>
+  </div>
+</section>
 
-      <div class="contact-cta">
-        <a class="btn btn-primary" href="tel:+33467535931">Appeler la boulangerie</a>
-        <a class="btn btn-ghost" href="https://www.google.com/maps/dir/?api=1&destination=36+Rue+Paul+Bousquet+34200+S%C3%A8te" target="_blank" rel="noopener">Ouvrir dans Maps</a>
+<!-- ================= AVIS ================= -->
+<section class="band" id="avis">
+  <div class="shell">
+    <header class="band-head center reveal">
+      <p class="kicker">Ils y reviennent</p>
+      <h2>Vos avis</h2>
+      <p class="score">
+        <b>4,3</b>
+        <span class="etoiles" aria-hidden="true">
+          <svg class="ico xs"><use href="#i-etoile"></use></svg><svg class="ico xs"><use href="#i-etoile"></use></svg><svg class="ico xs"><use href="#i-etoile"></use></svg><svg class="ico xs"><use href="#i-etoile"></use></svg><svg class="ico xs half"><use href="#i-etoile"></use></svg>
+        </span>
+        <em>79 avis publiés sur Google</em>
+      </p>
+    </header>
+
+    <div class="avis-rail">
+      <blockquote class="avis tilt reveal">
+        <p>« Sans aucun doute ma boulangerie préférée de Sète. Les viennoiseries sont absolument divines. »</p>
+        <footer><span class="init">S</span><b>Sandrine Preaud</b><small>Google · il y a 2 mois</small><span class="note">5/5</span></footer>
+      </blockquote>
+
+      <blockquote class="avis tilt reveal">
+        <p>« Très bonne variété de produits. En séjour avec ma conjointe, nous avons pu profiter chaque jour de cette boulangerie, avec des produits délicieux et changeants. »</p>
+        <footer><span class="init">M</span><b>Mattéo Vandenberghe</b><small>Google · il y a 3 mois</small><span class="note">5/5</span></footer>
+      </blockquote>
+
+      <blockquote class="avis tilt reveal">
+        <p>« Visité en juillet. »</p>
+        <footer><span class="init">J</span><b>Jérémy Vatuone</b><small>Google · il y a un mois</small><span class="note">5/5</span></footer>
+      </blockquote>
+    </div>
+    <p class="band-note center">Extraits d'avis publiés sur Google. Les avis ne sont pas vérifiés par nos soins.</p>
+  </div>
+</section>
+
+<!-- ================= VENIR ================= -->
+<section class="band venir" id="venir">
+  <div class="shell duo duo-tight">
+    <div class="fiche reveal">
+      <p class="kicker">Nous trouver</p>
+      <h2>36 rue Paul Bousquet<br><span>34200 Sète</span></h2>
+
+      <dl class="infos">
+        <div><dt>Téléphone</dt><dd><a href="tel:+33467535931">04 67 53 59 31</a></dd></div>
+        <div><dt>Ouverture</dt><dd>06h30 — horaires de fermeture à confirmer par téléphone</dd></div>
+        <div><dt>Budget</dt><dd>1 à 10 € par personne</dd></div>
+        <div><dt>Service</dt><dd>Au comptoir · sur place ou à emporter</dd></div>
+      </dl>
+
+      <div class="cta-row">
+        <a class="btn btn-gold btn-lg magnetic" href="tel:+33467535931"><span>Appeler la boulangerie</span></a>
       </div>
     </div>
 
-    <div class="map-card">
-      <iframe
-        title="Carte — 36 Rue Paul Bousquet, 34200 Sète"
-        src="https://www.openstreetmap.org/export/embed.html?bbox=3.6900%2C43.4000%2C3.7100%2C43.4110&amp;layer=mapnik&amp;marker=43.4055%2C3.7000"
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"></iframe>
-      <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=36+Rue+Paul+Bousquet+34200+S%C3%A8te" target="_blank" rel="noopener">Voir en plein écran →</a>
-    </div>
+    <a class="plan reveal magnetic" href="https://www.google.com/maps/dir/?api=1&amp;destination=36+Rue+Paul+Bousquet+34200+S%C3%A8te" target="_blank" rel="noopener">
+      <span class="plan-grid" aria-hidden="true"></span>
+      <span class="plan-pin" aria-hidden="true"></span>
+      <span class="plan-txt">
+        <b>36 rue Paul Bousquet</b>
+        <small>34200 Sète</small>
+        <em>Ouvrir l'itinéraire →</em>
+      </span>
+    </a>
   </div>
 </section>
 
 </main>
 
-<!-- ============ FOOTER ============ -->
-<footer class="site-footer">
-  <div class="wrap footer-grid">
+<!-- ================= FOOTER ================= -->
+<footer class="pied">
+  <div class="shell pied-grid">
     <div>
-      <a class="brand" href="#haut">
-        <span class="brand-mark" aria-hidden="true">🥖</span>
-        <span class="brand-name">Au Bon Pain</span>
+      <a class="logo" href="#haut">
+        <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M6 22C6 11 14 5 26 8" /><path d="M6 22c6 2 12-1 16-7" />
+        </svg>
+        <span class="logo-type">Au Bon Pain<small>Sète</small></span>
       </a>
-      <p class="footer-blurb">
-        Boulangerie et café à Sète. Pains, viennoiseries, sandwichs,
-        salades et soupes, tous les jours dès 06h30.
-      </p>
+      <p class="pied-mot">Boulangerie et café, 36 rue Paul Bousquet à Sète.<br>Première fournée à 06h30.</p>
     </div>
-
+    <nav aria-label="Pied de page">
+      <h3>Le site</h3>
+      <a href="#vitrine">La vitrine</a><a href="#maison">La maison</a><a href="#avis">Avis</a><a href="#venir">Nous trouver</a>
+    </nav>
     <div>
-      <h4>La maison</h4>
-      <ul>
-        <li><a href="#maison">Notre histoire</a></li>
-        <li><a href="#categories">Nos rayons</a></li>
-        <li><a href="#avis">Avis clients</a></li>
-      </ul>
-    </div>
-
-    <div>
-      <h4>La carte</h4>
-      <ul>
-        <li><a href="#carte">Viennoiseries</a></li>
-        <li><a href="#carte">Pains</a></li>
-        <li><a href="#carte">Sandwichs &amp; salades</a></li>
-        <li><a href="#carte">Soupes</a></li>
-      </ul>
-    </div>
-
-    <div>
-      <h4>Nous trouver</h4>
-      <ul>
-        <li>36 Rue Paul Bousquet</li>
-        <li>34200 Sète</li>
-        <li><a href="tel:+33467535931">04 67 53 59 31</a></li>
-      </ul>
+      <h3>Contact</h3>
+      <a href="tel:+33467535931">04 67 53 59 31</a>
+      <a href="https://www.google.com/maps/search/?api=1&amp;query=36+Rue+Paul+Bousquet+34200+S%C3%A8te" target="_blank" rel="noopener">36 rue Paul Bousquet, 34200 Sète</a>
     </div>
   </div>
-  <div class="wrap footer-bottom">
-    <small>© <span id="year">2026</span> Au Bon Pain — Sète. Tous droits réservés.</small>
-    <small><a href="#haut">Retour en haut ↑</a></small>
+  <div class="shell pied-bas">
+    <small>© <span id="annee">2026</span> Au Bon Pain — Sète</small>
+    <a href="#haut">Retour en haut ↑</a>
   </div>
 </footer>
 
-<script src="script.js"></script>
+<a class="cta-mobile" href="tel:+33467535931">Appeler · 04 67 53 59 31</a>
+
+<script src="script.js" defer></script>
 </body>
 </html>
