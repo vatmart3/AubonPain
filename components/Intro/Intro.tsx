@@ -6,7 +6,7 @@ import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { defilerVers, mouvementReduit, stockage } from '@/lib/defilement';
 import { aSete, statutBoutique, statutCourt } from '@/lib/temps';
 import { boutique } from '@/content/boutique';
-import { cheminFrame, introConfig, type ModeIntro } from './intro.config';
+import { cheminFrame, introConfig, srcPlaceholder, type ModeIntro } from './intro.config';
 import { CIBLES, IMAGE, LARGEUR_MOBILE, PORTE, enPourcents } from './geometrie';
 import { reveillerAudio, sonnerClochette } from './clochette';
 import styles from './Intro.module.css';
@@ -19,16 +19,15 @@ type Format = 'desktop' | 'mobile';
 const MQ_MOBILE = '(max-aspect-ratio: 5/6)';
 const MQ_DESKTOP = '(min-aspect-ratio: 5/6)';
 
-const P = introConfig.placeholder.dossier;
 
 function Photo({ nom, alt = '', priorite = false, className }: { nom: string; alt?: string; priorite?: boolean; className?: string }) {
   return (
     <picture>
-      <source type="image/avif" media={MQ_MOBILE} srcSet={`${P}/mobile/${nom}.avif`} />
-      <source type="image/webp" media={MQ_MOBILE} srcSet={`${P}/mobile/${nom}.webp`} />
-      <source type="image/avif" srcSet={`${P}/desktop/${nom}.avif`} />
+      {srcPlaceholder('mobile', nom, 'avif') && <source type="image/avif" media={MQ_MOBILE} srcSet={srcPlaceholder('mobile', nom, 'avif')!} />}
+      <source type="image/webp" media={MQ_MOBILE} srcSet={srcPlaceholder('mobile', nom, 'webp')!} />
+      {srcPlaceholder('desktop', nom, 'avif') && <source type="image/avif" srcSet={srcPlaceholder('desktop', nom, 'avif')!} />}
       <img
-        src={`${P}/desktop/${nom}.webp`}
+        src={srcPlaceholder('desktop', nom, 'webp')!}
         alt={alt}
         width={IMAGE.w}
         height={IMAGE.h}
@@ -344,8 +343,12 @@ export function Intro({ mode }: { mode: ModeIntro }) {
         </>
       ) : (
         <>
-          <link rel="preload" as="image" type="image/avif" href={`${P}/desktop/facade.avif`} media={MQ_DESKTOP} fetchPriority="high" />
-          <link rel="preload" as="image" type="image/avif" href={`${P}/mobile/facade.avif`} media={MQ_MOBILE} fetchPriority="high" />
+          {srcPlaceholder('desktop', 'facade', 'avif') && (
+            <>
+              <link rel="preload" as="image" type="image/avif" href={srcPlaceholder('desktop', 'facade', 'avif')!} media={MQ_DESKTOP} fetchPriority="high" />
+              <link rel="preload" as="image" type="image/avif" href={srcPlaceholder('mobile', 'facade', 'avif')!} media={MQ_MOBILE} fetchPriority="high" />
+            </>
+          )}
         </>
       )}
 

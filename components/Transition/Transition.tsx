@@ -41,11 +41,13 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
   const [etat, setEtat] = useState<Etat>('repos');
   const [nom, setNom] = useState('');
   const cible = useRef<string | null>(null);
+  const cheminCourant = useRef(chemin);
+  cheminCourant.current = chemin;
 
   const aller = useCallback(
     (href: string) => {
       const url = new URL(href, window.location.href);
-      const memePage = url.pathname === window.location.pathname;
+      const memePage = url.pathname === cheminCourant.current;
       if (memePage) {
         if (url.hash) defilerVers(url.hash, { decalage: -40 });
         else defilerVers(0);

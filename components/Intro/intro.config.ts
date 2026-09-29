@@ -44,3 +44,11 @@ export function cheminFrame(format: 'desktop' | 'mobile', n: number) {
   const f = introConfig.frames;
   return `${f[format].dossier}/${String(n).padStart(f.chiffres, '0')}.${f.extension}`;
 }
+
+/**
+ * Adresse d'une image provisoire (facade, porte-ouverte, interieur, comptoir).
+ * null = format non fourni (la balise <source> correspondante est omise).
+ */
+export function srcPlaceholder(format: 'desktop' | 'mobile', nom: string, ext: 'avif' | 'webp'): string | null {
+  return `${introConfig.placeholder.dossier}/${format}/${nom}.${ext}`;
+}
