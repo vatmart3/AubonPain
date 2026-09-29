@@ -34,7 +34,8 @@
 }
 .aValider {
   background: rgb(207 180 140 / 0.6);
-  padding: 0 0.3em;
+  padding: 0 0.4em;
+  border-radius: 6px;
   font-weight: 700;
 }
 .maj {

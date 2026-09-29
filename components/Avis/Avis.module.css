@@ -26,6 +26,7 @@
   top: var(--y);
   rotate: var(--r);
   color: var(--encre);
+  border-radius: var(--r-s);
   box-shadow:
     0 1px 0 rgb(0 0 0 / 0.06),
     0 24px 40px -18px rgb(42 34 29 / 0.55);
@@ -44,16 +45,7 @@
     repeating-linear-gradient(90deg, rgb(168 116 63 / 0.55) 0 3px, transparent 3px 11px) top / 100% 3.6rem no-repeat,
     #f7f1e6;
 }
-/* le bord du haut, coupé en dents */
-.sachet::before {
-  content: '';
-  position: absolute;
-  top: -6px;
-  left: 0;
-  right: 0;
-  height: 7px;
-  background: conic-gradient(from 135deg at top, #0000, #f7f1e6 1deg 89deg, #0000 90deg) top / 12px 100%;
-}
+
 
 /* Le grand sac kraft à soufflet */
 .sac {
@@ -73,6 +65,7 @@
   left: 0;
   right: 0;
   height: 2.6rem;
+  border-radius: var(--r-s) var(--r-s) 0 0;
   background: var(--kraft-fonce);
   border-bottom: 1px dashed rgb(42 34 29 / 0.35);
 }
@@ -201,14 +194,24 @@
 .lien a {
   display: inline-flex;
   align-items: center;
-  min-height: 48px;
+  min-height: 52px;
+  padding: 0 1.6rem;
+  border-radius: var(--r-pilule);
+  background: var(--encre);
+  color: var(--farine);
   font-weight: 700;
-  font-size: 1.15rem;
-  color: var(--encre);
-  text-decoration-thickness: 1.5px;
+  font-size: 1.05rem;
+  text-decoration: none;
+  box-shadow: var(--ombre-douce);
+  transition:
+    scale 0.25s var(--ease-apple),
+    background-color 0.2s;
 }
 .lien a:hover {
-  color: var(--croute-texte);
+  background: var(--four);
+}
+.lien a:active {
+  scale: 0.97;
 }
 
 /* Mobile : les papiers s'empilent, se chevauchent un peu, toujours de travers */

@@ -42,7 +42,7 @@ function phraseDuMoment(i: Instant): Phrase {
 const position = (f: Fournee) => ((enMinutes(f.heure) - DEBUT) / (FIN - DEBUT)) * 100;
 
 /** Les étiquettes ne se chevauchent pas : chacune au moins ECART % sous la précédente. */
-const ECART = 8.5;
+const ECART = 11;
 function placer(liste: Fournee[]) {
   const tops: number[] = [];
   liste.forEach((f, i) => tops.push(i ? Math.max(position(f), tops[i - 1] + ECART) : position(f)));

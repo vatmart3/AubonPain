@@ -10,8 +10,8 @@
 .pied::before {
   content: '';
   width: min(30rem, 100%);
-  height: 10px;
-  border-radius: 5px;
+  height: 12px;
+  border-radius: var(--r-pilule);
   background: #0a0806;
   box-shadow:
     inset 0 3px 4px rgb(0 0 0 / 0.9),
@@ -36,6 +36,7 @@
   line-height: 1.5;
   letter-spacing: 0.01em;
   padding: 2.2rem 1.6rem 1.6rem;
+  border-radius: var(--r-m) var(--r-m) 0 0;
   /* léger jaunissement du papier thermique vers les bords */
   box-shadow: inset 0 0 40px rgb(166 140 90 / 0.12);
 }

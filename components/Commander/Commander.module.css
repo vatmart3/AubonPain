@@ -24,7 +24,7 @@
     0 4px 0 #efe6d4,
     0 6px 0 #e3d8c3,
     0 30px 60px -20px rgb(0 0 0 / 0.75);
-  border-radius: 3px;
+  border-radius: var(--r-l);
 }
 .carnet[data-tamponne='true'] {
   animation: secousse 0.35s 0.3s;
@@ -50,7 +50,7 @@
   gap: 0.8rem;
   padding: 2rem 0.4rem;
   background: #efe5d2;
-  border-radius: 3px 0 0 3px;
+  border-radius: var(--r-l) 0 0 var(--r-l);
 }
 /* La perforation entre la souche et le bon */
 .souche::after {
@@ -94,17 +94,26 @@
     repeating-linear-gradient(to bottom, transparent 0 calc(2.1rem - 1px), var(--ligne-carnet) calc(2.1rem - 1px) 2.1rem),
     #f6efe0;
   background-position: 0 0.9rem;
-  border-radius: 0 3px 3px 0;
+  border-radius: 0 var(--r-l) var(--r-l) 0;
   overflow: hidden;
 }
 
 .ajoute {
   display: inline-block;
   margin-bottom: 1.4rem;
-  padding: 0.3rem 0.8rem;
-  background: var(--mie);
-  border-left: 3px solid var(--croute);
+  padding: 0.45rem 1rem;
+  border-radius: var(--r-pilule);
+  background: var(--encre);
+  color: var(--farine);
   font-weight: 700;
+  animation: arrive 0.6s var(--ease-apple) both;
+}
+@keyframes arrive {
+  from {
+    opacity: 0;
+    translate: 0 -8px;
+    scale: 0.96;
+  }
 }
 
 .bloc {
@@ -158,58 +167,57 @@
 
 /* ── Intercalaires (onglets) ──────────────────────────────────────── */
 .intercalaires {
+  /* un contrôle segmenté : une piste arrondie, l'onglet actif en relief */
   display: flex;
-  gap: 0.25rem;
+  gap: 2px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 4px;
+  margin-bottom: 1rem;
   overflow-x: auto;
   scrollbar-width: none;
-  padding-top: 0.4rem;
-  margin: 0 calc(-1 * clamp(1.1rem, 4vw, 3.2rem));
-  padding-left: clamp(1.1rem, 4vw, 3.2rem);
-  padding-right: clamp(1.1rem, 4vw, 3.2rem);
+  border-radius: var(--r-pilule);
+  background: rgb(42 34 29 / 0.08);
 }
 .intercalaires::-webkit-scrollbar {
   display: none;
 }
 .intercalaire {
   flex: none;
-  min-height: 52px;
-  padding: 0.6rem 1.3rem 0.5rem;
+  min-height: 44px;
+  padding: 0 1.15rem;
   border: 0;
-  background: #e2d3b7;
+  border-radius: var(--r-pilule);
+  background: transparent;
   color: var(--encre);
   font-weight: 700;
-  font-size: 1.05rem;
-  /* la forme d'un intercalaire de classeur */
-  clip-path: polygon(10% 0, 90% 0, 100% 100%, 0 100%);
-  padding-inline: 1.7rem;
+  font-size: 1rem;
   transition:
-    background-color 0.2s,
-    translate 0.25s var(--ease-papier);
-  translate: 0 6px;
-}
-.intercalaire:nth-child(2n) {
-  background: #d8c6a5;
+    background-color 0.3s var(--ease-apple),
+    box-shadow 0.3s var(--ease-apple),
+    scale 0.25s var(--ease-apple);
 }
 .intercalaire:hover {
-  translate: 0 2px;
+  background: rgb(42 34 29 / 0.06);
 }
 .intercalaire[aria-selected='true'] {
-  background: var(--kraft);
-  translate: 0 0;
+  background: var(--farine);
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.12),
+    0 3px 8px -2px rgb(0 0 0 / 0.15);
 }
 .intercalaire:focus-visible {
-  outline: none;
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 0.2em;
+  outline: 3px solid var(--encre);
+  outline-offset: 1px;
 }
 
 .produits {
   list-style: none;
-  margin: 0 calc(-1 * clamp(1.1rem, 4vw, 3.2rem));
-  padding: 0.6rem clamp(1.1rem, 4vw, 3.2rem) 0.6rem;
-  background: rgb(207 180 140 / 0.35);
-  border-top: 3px solid var(--kraft);
+  margin: 0;
+  padding: 0.3rem 1.1rem;
+  border-radius: var(--r-m);
+  background: var(--farine);
+  box-shadow: 0 1px 2px rgb(42 34 29 / 0.08);
 }
 
 .ligneProduit {
@@ -302,13 +310,16 @@
   padding-bottom: 0.5rem;
   min-height: 92px;
   background: var(--farine);
-  border: 1px solid rgb(42 34 29 / 0.25);
-  border-radius: 3px;
+  border: 0;
+  border-radius: var(--r-s);
   cursor: pointer;
-  box-shadow: 0 3px 0 -1px #e3d7c1;
+  box-shadow:
+    0 1px 2px rgb(42 34 29 / 0.12),
+    0 4px 10px -4px rgb(42 34 29 / 0.25);
   transition:
-    translate 0.2s var(--ease-papier),
-    box-shadow 0.2s;
+    translate 0.3s var(--ease-apple),
+    box-shadow 0.3s var(--ease-apple),
+    scale 0.25s var(--ease-apple);
 }
 /* les deux anneaux du bloc éphéméride */
 .ephemeride::before {
@@ -330,7 +341,7 @@
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  border-radius: 2px 2px 0 0;
+  border-radius: var(--r-s) var(--r-s) 0 0;
 }
 .ephJour {
   font-family: var(--f-titre);
@@ -342,6 +353,9 @@
 }
 .ephemeride:hover:not([data-ferme='true']) {
   translate: 0 -3px;
+}
+.ephemeride:active:not([data-ferme='true']) {
+  scale: 0.96;
 }
 .ephemeride[data-choisi='true'] {
   background: var(--kraft);
@@ -379,28 +393,36 @@
   display: grid;
   place-items: center;
   min-width: 5.2rem;
-  min-height: 52px;
-  padding: 0 0.8rem;
+  min-height: 48px;
+  padding: 0 1rem;
+  border-radius: var(--r-pilule);
   background: var(--farine);
-  border: 1.5px dashed rgb(42 34 29 / 0.45);
+  box-shadow: inset 0 0 0 1.5px rgb(42 34 29 / 0.2);
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   cursor: pointer;
+  transition:
+    background-color 0.25s var(--ease-apple),
+    color 0.25s,
+    scale 0.25s var(--ease-apple);
 }
 .creneau:hover {
-  border-style: solid;
+  box-shadow: inset 0 0 0 1.5px rgb(42 34 29 / 0.5);
+}
+.creneau:active {
+  scale: 0.95;
 }
 .creneau[data-choisi='true'] {
   background: var(--encre);
   color: var(--farine);
-  border-style: solid;
+  box-shadow: none;
 }
 
 .alerte {
   margin-top: 1.4rem;
   padding: 1rem 1.2rem;
+  border-radius: var(--r-m);
   background: var(--mie);
-  border-left: 4px solid var(--encre);
 }
 .alerte ul {
   margin: 0.4rem 0 0;
@@ -409,13 +431,12 @@
 }
 .lienBouton {
   min-height: 44px;
-  padding: 0 0.3rem;
+  padding: 0 0.9rem;
   border: 0;
-  background: transparent;
+  border-radius: var(--r-pilule);
+  background: rgb(42 34 29 / 0.08);
   color: inherit;
   font-weight: 700;
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
 }
 
 /* ── Les champs, façon carnet ─────────────────────────────────────── */
@@ -437,14 +458,15 @@
 .champ textarea {
   width: 100%;
   min-height: 52px;
-  padding: 0.5rem 0.2rem;
+  padding: 0.6rem 1rem;
   border: 0;
-  border-bottom: 2px solid var(--encre);
-  border-radius: 0;
-  background: rgb(250 246 239 / 0.7);
-  font-size: 1.2rem;
+  border-radius: var(--r-s);
+  background: var(--farine);
+  box-shadow: inset 0 0 0 1.5px rgb(42 34 29 / 0.18);
+  font-size: 1.15rem;
   font-family: var(--f-texte);
   color: var(--encre);
+  transition: box-shadow 0.25s var(--ease-apple);
 }
 .champ textarea {
   resize: vertical;
@@ -453,14 +475,13 @@
 .champ input:focus-visible,
 .champ textarea:focus-visible {
   outline: none;
-  border-bottom-color: var(--croute);
-  background: var(--farine);
-  box-shadow: 0 3px 0 0 var(--croute);
+  box-shadow:
+    inset 0 0 0 2px var(--croute),
+    0 0 0 4px rgb(168 116 63 / 0.25);
 }
 .champ[data-erreur='true'] input,
 .champ[data-erreur='true'] textarea {
-  border-bottom-width: 3px;
-  border-bottom-style: dashed;
+  box-shadow: inset 0 0 0 2.5px var(--encre);
 }
 .aide {
   font-size: 0.975rem;
@@ -503,18 +524,22 @@
   height: 28px;
   margin: 0.05rem 0 0;
   border: 2px solid var(--encre);
-  border-radius: 2px;
+  border-radius: 8px;
   background: var(--farine);
   display: grid;
   place-items: center;
   cursor: pointer;
+  transition: background-color 0.2s var(--ease-apple);
+}
+.case input:checked {
+  background: var(--encre);
 }
 .case input:checked::after {
   content: '';
   width: 14px;
   height: 8px;
-  border-left: 3px solid var(--encre);
-  border-bottom: 3px solid var(--encre);
+  border-left: 3px solid var(--farine);
+  border-bottom: 3px solid var(--farine);
   rotate: -45deg;
   translate: 0 -2px;
 }
@@ -542,6 +567,7 @@
 .echec {
   margin: 1rem 0 1.4rem;
   padding: 1.1rem 1.2rem;
+  border-radius: var(--r-m);
   background: var(--four);
   color: var(--farine);
   display: grid;
@@ -559,7 +585,7 @@
   padding: 0.9rem 1.2rem;
   min-height: 84px;
   border: 0;
-  border-radius: 4px;
+  border-radius: var(--r-m);
   background: var(--encre);
   color: var(--farine);
   text-align: left;
@@ -636,7 +662,7 @@
   bottom: 18%;
   padding: 0.2em 0.5em;
   border: 5px solid var(--tomette);
-  border-radius: 8px;
+  border-radius: 18px;
   color: var(--tomette);
   font-family: var(--f-texte);
   font-weight: 700;
@@ -702,7 +728,7 @@
   padding: 1.4rem 1.3rem 1.2rem;
   background: var(--farine);
   color: var(--encre);
-  border-radius: 2px;
+  border-radius: var(--r-l);
 }
 .recapTitre {
   font-size: 1.8rem;
@@ -765,7 +791,7 @@
   padding: 2rem 0.4rem;
   background: #efe5d2;
   color: var(--encre);
-  border-radius: 3px 0 0 3px;
+  border-radius: var(--r-l) 0 0 var(--r-l);
   box-shadow: 0 30px 60px -20px rgb(0 0 0 / 0.75);
 }
 .ticket {
@@ -774,13 +800,14 @@
   padding: clamp(1.8rem, 5vw, 3rem) clamp(1.3rem, 5vw, 3rem) clamp(2rem, 5vw, 3rem);
   background: #f6efe0;
   color: var(--encre);
+  border-radius: 0 var(--r-l) var(--r-l) 0;
   -webkit-mask:
     radial-gradient(circle 5px at 0 50%, #0000 97%, #000) 0 0 / 51% 14px repeat-y,
     linear-gradient(#000 0 0) right / 50% 100% no-repeat;
   mask:
     radial-gradient(circle 5px at 0 50%, #0000 97%, #000) 0 0 / 51% 14px repeat-y,
     linear-gradient(#000 0 0) right / 50% 100% no-repeat;
-  animation: detache 0.9s var(--ease-sortie) both;
+  animation: detache 0.9s var(--ease-apple) both;
   transform-origin: 0 0;
 }
 @keyframes detache {
@@ -860,11 +887,16 @@
   align-items: center;
   justify-content: center;
   min-height: 52px;
-  padding: 0 1.4rem;
-  border-radius: 2px;
+  padding: 0 1.5rem;
+  border-radius: var(--r-pilule);
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   text-decoration: none;
+  transition: scale 0.25s var(--ease-apple);
+}
+.boutonPlein:active,
+.boutonTrait:active {
+  scale: 0.97;
 }
 .boutonPlein {
   border: 0;
@@ -893,16 +925,16 @@
     position: fixed;
     left: 0.75rem;
     right: 0.75rem;
-    bottom: calc(76px + env(safe-area-inset-bottom));
+    bottom: calc(84px + env(safe-area-inset-bottom));
     z-index: 70;
     display: flex;
     align-items: center;
     gap: 0.9rem;
-    padding: 0.35rem 0.9rem 0.35rem 0.5rem;
+    padding: 0.35rem 0.5rem 0.35rem 0.7rem;
     background: var(--kraft);
     color: var(--encre);
-    border-radius: 4px;
-    box-shadow: 0 10px 24px rgb(0 0 0 / 0.4);
+    border-radius: var(--r-pilule);
+    box-shadow: var(--ombre-haute);
     font-weight: 700;
   }
   .sacBarre .num {

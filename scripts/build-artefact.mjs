@@ -50,17 +50,17 @@ const css = r.outputFiles.find((f) => f.path.endsWith('.css')).text.replace(/<\/
 
 const demoCss = `
 .demo{position:fixed;left:0;top:50%;z-index:140;translate:0 -50%;display:flex;align-items:flex-start;font-family:var(--f-texte)}
-.demo-onglet{writing-mode:vertical-rl;rotate:180deg;min-width:40px;padding:1rem .55rem;border:0;border-radius:0 4px 4px 0;background:var(--croute);color:var(--farine);font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:.85rem}
-.demo-panneau{width:min(22rem,calc(100vw - 4rem));max-height:80vh;overflow:auto;padding:1.1rem 1.1rem 1rem;background:var(--farine);color:var(--encre);box-shadow:0 20px 40px rgb(0 0 0 / .5);font-size:1rem;line-height:1.45;display:grid;gap:.8rem}
+.demo-onglet{writing-mode:vertical-rl;rotate:180deg;min-width:40px;padding:1rem .55rem;border:0;border-radius:0 16px 16px 0;background:var(--croute);color:var(--farine);font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:.85rem}
+.demo-panneau{width:min(22rem,calc(100vw - 4rem));max-height:80vh;overflow:auto;padding:1.2rem 1.2rem 1.1rem;border-radius:0 var(--r-l) var(--r-l) 0;background:var(--farine);color:var(--encre);box-shadow:0 20px 40px rgb(0 0 0 / .5);font-size:1rem;line-height:1.45;display:grid;gap:.8rem}
 .demo-titre{font-family:var(--f-titre);font-size:1.5rem;line-height:1}
 .demo-case{display:flex;gap:.6rem;align-items:center;font-weight:700;min-height:44px}
 .demo-case input{width:22px;height:22px;accent-color:var(--encre)}
-.demo-whatsapp{background:#dcf2d0;color:#1d2a1a;border-radius:8px 8px 8px 0;padding:.7rem .8rem}
+.demo-whatsapp{background:#dcf2d0;color:#1d2a1a;border-radius:18px 18px 18px 4px;padding:.7rem .8rem}
 .demo-de{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.4rem}
 .demo-whatsapp pre{margin:0;white-space:pre-wrap;font-family:var(--f-texte);font-size:.95rem}
 .demo-vide{font-style:italic}
 .demo-panneau[hidden]{display:none}
-.demo-fermer{justify-self:start;min-height:44px;padding:0 1rem;border:2px solid var(--encre);background:transparent;color:var(--encre);font-weight:700}
+.demo-fermer{justify-self:start;min-height:44px;padding:0 1.2rem;border-radius:999px;border:2px solid var(--encre);background:transparent;color:var(--encre);font-weight:700}
 .demo-onglet:focus-visible,.demo-fermer:focus-visible{outline:2.5px solid var(--encre);outline-offset:3px}
 `;
 

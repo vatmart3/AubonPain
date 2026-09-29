@@ -1,85 +1,83 @@
+/* Le bouton-ticket, version arrondie : une pilule, et le numéro de file
+   d'attente dans une pastille ronde à gauche. */
 .ticket {
-  --dent: 5px;
   --papier: var(--farine);
   --encre-t: var(--encre);
+  --pastille: var(--encre);
+  --pastille-texte: var(--farine);
   position: relative;
   display: inline-flex;
-  align-items: stretch;
+  align-items: center;
+  gap: 0.15em;
   min-height: 48px;
+  padding: 0.3em 1.3em 0.3em 0.3em;
   border: 0;
-  padding: 0;
+  border-radius: var(--r-pilule);
   background: var(--papier);
   color: var(--encre-t);
   text-decoration: none;
   font-family: var(--f-texte);
   font-weight: 700;
-  letter-spacing: 0.01em;
-  /* bords haut et bas crantés, comme arrachés du rouleau */
-  -webkit-mask:
-    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / calc(var(--dent) * 2) 51% repeat-x,
-    conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top / calc(var(--dent) * 2) 51% repeat-x;
-  mask:
-    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / calc(var(--dent) * 2) 51% repeat-x,
-    conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top / calc(var(--dent) * 2) 51% repeat-x;
-  filter: drop-shadow(0 1px 0 rgb(0 0 0 / 0.08));
+  box-shadow: var(--ombre-douce);
   transition:
-    transform 0.35s var(--ease-papier),
+    scale 0.3s var(--ease-apple),
+    box-shadow 0.3s var(--ease-apple),
     background-color 0.2s;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
-
 .ticket:hover {
-  transform: translateY(-3px) rotate(-1.2deg);
+  box-shadow: var(--ombre-haute);
 }
 .ticket:active {
-  transform: translateY(1px) rotate(0deg) scale(0.98);
+  scale: 0.97;
   transition-duration: 0.08s;
 }
-/* Le contour de focus est masqué par le mask : on marque l'intérieur. */
 .ticket:focus-visible {
-  outline: none;
-}
-.ticket:focus-visible .texte {
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 0.25em;
+  outline: 3px solid var(--croute);
+  outline-offset: 3px;
 }
 
 .croute {
   --papier: var(--croute);
   --encre-t: var(--farine);
+  --pastille: var(--farine);
+  --pastille-texte: var(--croute-texte);
 }
 .croute:hover {
   --papier: #b8824a;
 }
 
+/* Le numéro, dans sa pastille */
 .souche {
   display: grid;
   place-content: center;
   justify-items: center;
-  padding: 0 0.7em 0 0.8em;
-  border-right: 2px dotted color-mix(in srgb, var(--encre-t) 45%, transparent);
+  flex: none;
+  width: 2.35em;
+  height: 2.35em;
+  border-radius: 50%;
+  background: var(--pastille);
+  color: var(--pastille-texte);
   line-height: 1;
 }
 .no {
-  font-size: 0.55em;
-  letter-spacing: 0.1em;
-  opacity: 0.75;
+  font-size: 0.42em;
+  letter-spacing: 0.08em;
+  opacity: 0.8;
 }
 .numero {
   font-family: var(--f-titre);
   font-weight: 400;
-  font-size: 1.1em;
+  font-size: 0.95em;
 }
 
 .texte {
   display: flex;
   align-items: center;
-  padding: 0.6em 1.1em 0.6em 0.9em;
-  font-variant-caps: all-small-caps;
-  letter-spacing: 0.08em;
-  font-size: 1.12em;
+  padding-left: 0.65em;
+  letter-spacing: 0.01em;
+  font-size: 1.05em;
   white-space: nowrap;
 }
 
@@ -88,29 +86,20 @@
 }
 
 .grand {
-  --dent: 9px;
-  font-size: clamp(1.2rem, 1rem + 1.2vw, 1.75rem);
-  min-height: 84px;
+  font-size: clamp(1.15rem, 1rem + 1vw, 1.6rem);
+  min-height: 72px;
+  padding-right: 1.8em;
 }
 .grand .texte {
-  padding: 0.7em 1.5em 0.7em 1.2em;
-  font-variant-caps: normal;
-  letter-spacing: 0.005em;
   font-family: var(--f-titre);
   font-weight: 400;
   font-size: 1.15em;
-}
-.grand .souche {
-  padding: 0 1em;
+  letter-spacing: -0.005em;
 }
 
 @media (max-width: 480px) {
   .grand .texte {
     white-space: normal;
-    padding: 0.6em 1em 0.6em 0.8em;
     font-size: 1.05em;
-  }
-  .grand .souche {
-    padding: 0 0.7em;
   }
 }

@@ -15,11 +15,13 @@
   box-shadow: 0 30px 50px -24px rgb(42 34 29 / 0.55);
   background: var(--farine);
   padding: 0.9rem 0.9rem 0;
+  border-radius: var(--r-l);
 }
 .portrait svg,
 .portrait img {
   width: 100%;
   height: auto;
+  border-radius: calc(var(--r-l) - 0.9rem);
 }
 .portrait figcaption {
   padding: 0.7rem 0 0.9rem;
@@ -148,6 +150,7 @@
   margin-bottom: 1.6rem;
   padding: 0.6rem 0.6rem 0;
   background: var(--farine);
+  border-radius: var(--r-m);
   rotate: 2deg;
 }
 .etape:nth-child(even) .etapePhoto {
@@ -160,6 +163,7 @@
   aspect-ratio: 3 / 2;
   object-fit: cover;
   background: var(--kraft);
+  border-radius: calc(var(--r-m) - 0.6rem);
 }
 .etapePhoto figcaption {
   padding: 0.45rem 0 0.6rem;

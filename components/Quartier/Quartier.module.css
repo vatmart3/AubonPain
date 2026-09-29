@@ -52,13 +52,18 @@
   align-items: center;
   gap: 0.5em;
   min-height: 52px;
-  padding: 0 1.4rem;
-  border-radius: 2px;
+  padding: 0 1.5rem;
+  border-radius: var(--r-pilule);
   font-weight: 700;
   text-decoration: none;
-  font-variant-caps: all-small-caps;
-  letter-spacing: 0.08em;
-  font-size: 1.2rem;
+  font-size: 1.05rem;
+  transition:
+    scale 0.25s var(--ease-apple),
+    background-color 0.2s;
+}
+.itineraire:active,
+.appeler:active {
+  scale: 0.97;
 }
 .itineraire {
   background: var(--encre);
@@ -75,7 +80,6 @@
   background: rgb(42 34 29 / 0.08);
 }
 .appeler .num {
-  font-variant-caps: normal;
   letter-spacing: 0.02em;
 }
 
@@ -94,6 +98,7 @@
     linear-gradient(90deg, rgb(42 34 29 / 0.07) 1px, transparent 1px) 0 0 / 22px 22px,
     var(--farine);
   rotate: 1.4deg;
+  border-radius: var(--r-l);
   box-shadow: 0 30px 50px -24px rgb(42 34 29 / 0.6);
 }
 .carnet::before,
@@ -102,6 +107,7 @@
   position: absolute;
   width: 110px;
   height: 30px;
+  border-radius: 6px;
   background: rgb(242 232 216 / 0.75);
   box-shadow: 0 1px 2px rgb(0 0 0 / 0.1);
 }

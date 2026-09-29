@@ -36,6 +36,14 @@ Les décisions prises sans demander, et pourquoi. En bas : **tout ce qui reste [
 - **Frise du four sur téléphone** : elle devient une liste en flux, car les étiquettes se chevauchaient. Le repère « maintenant » s’insère entre deux fournées.
 - **Paiements** : le §1 cite CB, sans contact et Pluxee, le §7 ajoute les espèces. Les espèces sont affichées partout (en France, le refus des espèces est l’exception), mais c’est à confirmer.
 
+## Virage « plus rond, plus Apple » (demande du client)
+
+- **Une échelle d'arrondis** (`--r-xs` 8 px → `--r-l` 32 px, `--r-pilule`) appliquée partout : étiquettes de prix, étagères, ardoise, sachets, carnet de commande, champs, calendrier, tickets. Tous les boutons deviennent des pilules. Le bouton-ticket garde son numéro de file d'attente, dans une pastille ronde.
+- **Barres flottantes translucides** : la navigation desktop devient une capsule qui se matérialise (flou + échelle) après l'intro. Sur mobile, le distributeur « Prenez un ticket » est une capsule posée au-dessus du bas d'écran, et son ticket s'ouvre en feuille arrondie depuis le bouton. Le brief interdisait le verre dépoli : la demande « comme Apple » l'emporte, mais on s'en tient à la barre de navigation, à la barre mobile et aux boutons de l'intro. Tout redevient opaque avec `prefers-reduced-transparency`.
+- **Mouvement** : une seule courbe, celle des feuilles iOS (`--ease-apple`, `cubic-bezier(0.32, 0.72, 0, 1)`), et un retour tactile immédiat à l'appui (léger rétrécissement à 97 %) sur tous les boutons.
+- **Formulaire de commande** : onglets en contrôle segmenté, champs remplis et arrondis avec halo de focus, cases à cocher arrondies et pleines une fois cochées, créneaux en pilules.
+- Les polices du brief (Gloock, Karla, Nanum Pen Script) sont conservées. Passer le texte courant en police système (SF Pro sur Apple) accentuerait l'effet, mais effacerait une partie de l'identité : à décider avec le client.
+
 ## Performance mesurée (Lighthouse mobile, simulation, dans le conteneur de build)
 
 | Page | Perf | Accessibilité | Bonnes pratiques | SEO | CLS |
