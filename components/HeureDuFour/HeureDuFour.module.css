@@ -1,0 +1,221 @@
+/* ─── L'heure du four : un ruban de papier, de 6h à 13h ──────────────── */
+
+.four {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: clamp(2rem, 6vw, 7rem);
+  padding: clamp(5rem, 11vw, 10rem) var(--gouttiere) clamp(5rem, 11vw, 10rem);
+  background-image: var(--grain);
+  background-size: 220px;
+}
+.four::before {
+  /* fibres du kraft */
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: var(--grain);
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+}
+
+.gauche {
+  position: sticky;
+  top: 18vh;
+  align-self: start;
+}
+
+.surtitre {
+  font-family: var(--f-texte);
+  font-weight: 700;
+  font-size: 1.05rem;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.16em;
+  line-height: 1.2;
+  margin-bottom: 1.4rem;
+  color: var(--croute-texte);
+}
+
+.phrase {
+  font-family: var(--f-titre);
+  font-size: clamp(2.4rem, 1.4rem + 3.6vw, 5.4rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  min-height: 3.9em;
+  text-wrap: balance;
+}
+.heure {
+  display: block;
+  color: var(--croute-texte);
+}
+
+.suite {
+  margin-top: 1.4rem;
+  max-width: 30rem;
+  font-size: 1.15rem;
+}
+.note {
+  margin-top: 2.5rem;
+  max-width: 26rem;
+  font-size: 0.95rem;
+  opacity: 0.8;
+}
+
+/* Le ruban : une bande de papier perforée */
+.ruban {
+  position: relative;
+  height: clamp(760px, 140vh, 1200px);
+  margin-left: 3.5rem;
+  border-left: 2px solid var(--encre);
+}
+.ruban::before {
+  content: '';
+  position: absolute;
+  inset: -1.5rem auto -1.5rem -1px;
+  width: 34px;
+  translate: -50% 0;
+  background: var(--farine);
+  box-shadow: 0 6px 18px -8px rgb(42 34 29 / 0.5);
+  /* perforations */
+  -webkit-mask: radial-gradient(circle 4px at 50% 12px, #0000 98%, #000) 0 0 / 100% 24px;
+  mask: radial-gradient(circle 4px at 50% 12px, #0000 98%, #000) 0 0 / 100% 24px;
+  z-index: 0;
+}
+
+.graduation {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.graduation li {
+  position: absolute;
+  left: 0;
+  translate: calc(-100% - 1.6rem) -50%;
+  font-family: var(--f-titre);
+  font-size: 1.3rem;
+  color: var(--encre);
+}
+
+.fournees {
+  position: absolute;
+  inset: 0;
+}
+.fournee {
+  position: absolute;
+  left: 2.4rem;
+  right: 0;
+  translate: 0 -0.8rem;
+  display: grid;
+  grid-template-columns: 4.2rem 1fr;
+  column-gap: 1rem;
+  align-items: baseline;
+  padding-left: 0.2rem;
+}
+/* Le petit trait qui relie l'étiquette à son heure sur le ruban */
+.fournee::before {
+  content: '';
+  position: absolute;
+  left: -2.4rem;
+  top: 0.8rem;
+  width: 2rem;
+  border-top: 2px dotted var(--encre);
+}
+.coches {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.coches li {
+  position: absolute;
+  left: -6px;
+  width: 12px;
+  height: 12px;
+  margin-top: -6px;
+  border-radius: 50%;
+  background: var(--encre);
+  box-shadow: 0 0 0 3px var(--farine);
+}
+.fHeure {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+.fQuoi {
+  font-family: var(--f-titre);
+  font-size: clamp(1.35rem, 1rem + 1vw, 1.9rem);
+  line-height: 1.05;
+}
+.fDetail {
+  grid-column: 2;
+  font-size: 1rem;
+  margin-top: 0.25rem;
+  max-width: 24rem;
+}
+.fournee[data-passee='true'] .fQuoi {
+  text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
+  text-decoration-color: rgb(42 34 29 / 0.55);
+}
+.fournee[data-passee='true'] {
+  opacity: 0.62;
+}
+
+/* « maintenant » : deuxième usage de la tomette */
+.maintenant {
+  position: absolute;
+  left: -2.4rem;
+  right: -0.5rem;
+  height: 0;
+  border-top: 2.5px solid var(--tomette);
+  z-index: 2;
+  transition: top 1s var(--ease-sortie);
+}
+.maintenant::before {
+  content: '';
+  position: absolute;
+  left: -7px;
+  top: -8.5px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--tomette);
+  box-shadow: 0 0 0 4px var(--kraft);
+}
+.maintenantLabel {
+  position: absolute;
+  right: 0;
+  top: 0.2rem;
+  color: var(--tomette);
+  font-weight: 700;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.12em;
+  font-size: 1.05rem;
+}
+
+@media (max-width: 860px) {
+  .four {
+    grid-template-columns: 1fr;
+  }
+  .gauche {
+    position: relative;
+    top: 0;
+  }
+  .phrase {
+    min-height: 0;
+  }
+  .ruban {
+    margin-left: 3.2rem;
+    height: 980px;
+  }
+  .fournee {
+    left: 1.6rem;
+    grid-template-columns: 1fr;
+  }
+  .fournee::before {
+    left: -1.6rem;
+    width: 1.3rem;
+  }
+  .fDetail {
+    grid-column: 1;
+  }
+}

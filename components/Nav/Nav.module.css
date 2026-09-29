@@ -124,3 +124,12 @@
     width: 92px;
   }
 }
+
+/* Pendant l'intro, les images sont claires : encre sombre. */
+:global(html[data-intro='en-cours']) .entete[data-bande='false'] .logo,
+:global(html[data-intro='en-cours']) .entete[data-bande='false'] .lien {
+  color: var(--four);
+}
+:global(html[data-intro='en-cours']) .entete[data-bande='false'] .logo:hover {
+  color: var(--encre);
+}

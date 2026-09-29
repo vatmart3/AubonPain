@@ -1,0 +1,244 @@
+/* ─── Ce qu'on en dit : sachets à baguette et sacs kraft en vrac ────── */
+
+.section {
+  position: relative;
+  padding: clamp(5rem, 11vw, 9rem) var(--gouttiere) clamp(4rem, 8vw, 7rem);
+  overflow: hidden;
+}
+
+.titre {
+  font-size: clamp(3.4rem, 11vw, 11rem);
+  text-align: right;
+  line-height: 0.86;
+  color: var(--encre);
+  margin-right: -0.04em;
+}
+
+.vrac {
+  position: relative;
+  height: clamp(760px, 92vw, 1080px);
+  margin-top: clamp(-4rem, -4vw, -1rem);
+}
+
+.papier {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  rotate: var(--r);
+  color: var(--encre);
+  box-shadow:
+    0 1px 0 rgb(0 0 0 / 0.06),
+    0 24px 40px -18px rgb(42 34 29 / 0.55);
+  transition: rotate 0.5s var(--ease-papier);
+}
+.papier:hover {
+  rotate: calc(var(--r) * 0.4);
+}
+
+/* Le sachet à baguette : long, fin, papier blanc, rayures imprimées en haut */
+.sachet {
+  width: clamp(230px, 20vw, 280px);
+  min-height: clamp(460px, 44vw, 560px);
+  padding: 5.2rem 1.4rem 2rem;
+  background:
+    repeating-linear-gradient(90deg, rgb(168 116 63 / 0.55) 0 3px, transparent 3px 11px) top / 100% 3.6rem no-repeat,
+    #f7f1e6;
+}
+/* le bord du haut, coupé en dents */
+.sachet::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 0;
+  right: 0;
+  height: 7px;
+  background: conic-gradient(from 135deg at top, #0000, #f7f1e6 1deg 89deg, #0000 90deg) top / 12px 100%;
+}
+
+/* Le grand sac kraft à soufflet */
+.sac {
+  width: clamp(290px, 27vw, 370px);
+  min-height: clamp(360px, 32vw, 420px);
+  padding: 4.8rem 2rem 5rem;
+  background:
+    linear-gradient(90deg, rgb(0 0 0 / 0.07) 0 10%, transparent 10% 90%, rgb(0 0 0 / 0.07) 90%),
+    var(--kraft);
+}
+.sac::before,
+.petitSac::before {
+  /* le rabat replié */
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2.6rem;
+  background: var(--kraft-fonce);
+  border-bottom: 1px dashed rgb(42 34 29 / 0.35);
+}
+.sac::after,
+.petitSac::after {
+  /* la découpe en demi-lune pour attraper le sac */
+  content: '';
+  position: absolute;
+  top: 0.8rem;
+  left: 50%;
+  width: 3.4rem;
+  height: 1.1rem;
+  translate: -50% 0;
+  border-radius: 0 0 2rem 2rem;
+  background: rgb(42 34 29 / 0.28);
+}
+
+.petitSac {
+  width: clamp(230px, 20vw, 270px);
+  min-height: 300px;
+  padding: 4.4rem 1.6rem 4.6rem;
+  background: var(--kraft);
+}
+
+.imprime {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: grid;
+  justify-items: center;
+  gap: 0.1rem;
+  color: var(--croute-texte);
+  pointer-events: none;
+}
+.sachet .imprime {
+  top: 4rem;
+}
+.sac .imprime,
+.petitSac .imprime {
+  bottom: 1rem;
+}
+.imprime span:first-child {
+  font-family: var(--f-titre);
+  font-size: 1.15rem;
+}
+.imprimeRue {
+  font-size: 0.8rem;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.14em;
+}
+.sac .imprime,
+.petitSac .imprime {
+  color: rgb(42 34 29 / 0.75);
+}
+
+.citation blockquote {
+  margin: 0;
+}
+.citation p {
+  font-family: var(--f-titre);
+  font-size: clamp(1.6rem, 1.2rem + 1.1vw, 2.2rem);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+}
+.sachet .citation {
+  margin-top: 2.6rem;
+}
+.citation figcaption {
+  margin-top: 1.1rem;
+  font-weight: 700;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.12em;
+  font-size: 1.05rem;
+}
+
+.note {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+.chiffre {
+  font-family: var(--f-titre);
+  font-size: 6rem;
+  line-height: 0.9;
+}
+.sur {
+  font-family: var(--f-titre);
+  font-size: 1.6rem;
+}
+.nb {
+  margin-top: 0.6rem;
+  font-size: 1.0625rem;
+}
+
+.cites {
+  margin-top: 2.6rem;
+}
+.citesTitre {
+  font-weight: 700;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.1em;
+  font-size: 1.05rem;
+  margin-bottom: 0.8rem;
+}
+.cites ul {
+  display: grid;
+  gap: 0.35rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.cites li {
+  font-family: var(--f-titre);
+  font-size: 1.35rem;
+  line-height: 1.1;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid rgb(42 34 29 / 0.15);
+}
+
+.lien {
+  position: relative;
+  z-index: 10;
+  margin-top: 2rem;
+  text-align: center;
+}
+.lien a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--encre);
+  text-decoration-thickness: 1.5px;
+}
+.lien a:hover {
+  color: var(--croute-texte);
+}
+
+/* Mobile : les papiers s'empilent, se chevauchent un peu, toujours de travers */
+@media (max-width: 860px) {
+  .titre {
+    text-align: left;
+  }
+  .vrac {
+    height: auto;
+    display: grid;
+    justify-items: center;
+    margin-top: 2rem;
+  }
+  .papier {
+    position: relative;
+    left: auto;
+    top: auto;
+    min-height: 0;
+    width: min(100%, 22rem);
+  }
+  .papier + .papier {
+    margin-top: -1.2rem;
+  }
+  .papier:nth-child(odd) {
+    justify-self: start;
+  }
+  .papier:nth-child(even) {
+    justify-self: end;
+  }
+  .sachet {
+    padding-bottom: 2.4rem;
+  }
+}

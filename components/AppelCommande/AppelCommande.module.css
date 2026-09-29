@@ -1,0 +1,43 @@
+.section {
+  position: relative;
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 2rem;
+  padding: clamp(5rem, 10vw, 8rem) var(--gouttiere);
+  overflow: hidden;
+}
+
+.rappel {
+  justify-self: end;
+  max-width: 19rem;
+  color: var(--blond);
+  font-size: 1.05rem;
+  border-top: 1px solid rgb(216 185 140 / 0.4);
+  padding-top: 0.8rem;
+}
+
+.phrase {
+  align-self: center;
+  font-size: clamp(3.4rem, 10.5vw, 12.5rem);
+  line-height: 0.86;
+  letter-spacing: -0.035em;
+  color: var(--mie);
+  margin-left: -0.04em;
+}
+.retrait {
+  display: block;
+  padding-left: clamp(0rem, 12vw, 16rem);
+  color: var(--blond);
+}
+
+.bas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.2rem 2rem;
+}
+.sous {
+  color: var(--blond);
+  font-size: 1.1rem;
+}

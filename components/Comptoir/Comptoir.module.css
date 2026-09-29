@@ -1,0 +1,305 @@
+/* ─── Ce matin sur le comptoir ────────────────────────────────────────
+   On est derrière la vitre réfrigérée : deux étagères en bois,
+   les produits posés dessus, une étiquette piquée dans chacun. */
+
+.comptoir {
+  position: relative;
+  z-index: 1;
+  /* Se glisse sous la fin de l'intro : la vitre remonte et découvre la section. */
+  margin-top: -100svh;
+  padding: clamp(7rem, 16vh, 10rem) 0 clamp(5rem, 10vw, 8rem);
+  overflow: hidden;
+}
+
+.tete {
+  position: relative;
+  padding: 0 var(--gouttiere);
+  margin-bottom: clamp(2.5rem, 6vw, 5rem);
+}
+
+.titre {
+  font-size: clamp(4.2rem, 14.5vw, 17rem);
+  line-height: 0.84;
+  color: var(--mie);
+  white-space: nowrap;
+  margin-left: -0.05em;
+  letter-spacing: -0.035em;
+}
+
+.chapeau {
+  max-width: 34rem;
+  margin-top: 1.6rem;
+  margin-left: clamp(0rem, 22vw, 26rem);
+  color: var(--blond);
+}
+
+.vitrine {
+  position: relative;
+}
+/* Le verre de la vitrine : un reflet en biais, très léger */
+.vitrine::before {
+  content: '';
+  position: absolute;
+  inset: -2rem 0 0;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(104deg, transparent 38%, rgb(250 246 239 / 0.045) 44%, transparent 47%, transparent 71%, rgb(250 246 239 / 0.03) 74%, transparent 76%);
+}
+
+.etagere {
+  position: relative;
+}
+.etagere + .etagere {
+  margin-top: clamp(1.5rem, 4vw, 3rem);
+}
+
+.defile {
+  position: relative;
+  z-index: 2;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  cursor: grab;
+  -webkit-overflow-scrolling: touch;
+}
+.defile::-webkit-scrollbar {
+  display: none;
+}
+.defile[data-glisse='true'] {
+  cursor: grabbing;
+  user-select: none;
+}
+.defile:focus {
+  outline: none;
+}
+
+.rang {
+  display: flex;
+  gap: clamp(1.5rem, 4vw, 4.5rem);
+  width: max-content;
+  padding: 1.5rem var(--gouttiere) 0;
+  padding-right: calc(var(--gouttiere) + 8vw);
+}
+
+/* La planche : une face du dessus, un chant éclairé, une ombre dessous */
+.planche {
+  position: relative;
+  z-index: 1;
+  height: 26px;
+  margin-top: -12px;
+  background:
+    linear-gradient(to bottom, #7c5533 0 12px, #4f321c 12px 14px, #603d22 14px 100%);
+  box-shadow:
+    0 18px 30px -6px rgb(0 0 0 / 0.65),
+    inset 0 1px 0 rgb(216 185 140 / 0.35);
+}
+.planche::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--grain);
+  opacity: 0.35;
+  mix-blend-mode: multiply;
+}
+
+.produit {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  width: clamp(200px, 22vw, 260px);
+  flex: none;
+}
+
+.pose {
+  position: relative;
+  width: 100%;
+  margin-top: -18px;
+}
+.visuel {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  pointer-events: none;
+  user-select: none;
+}
+/* L'ombre au sol, réaliste : un ovale flou, plus dense au centre */
+.ombre {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: 2%;
+  height: 12%;
+  border-radius: 50%;
+  background: rgb(0 0 0 / 0.55);
+  filter: blur(9px);
+}
+
+/* ── L'étiquette de prix, piquée dans le produit ───────────────────── */
+.etiquette {
+  position: relative;
+  z-index: 2;
+  width: 188px;
+  height: 148px;
+  perspective: 900px;
+  rotate: var(--incl);
+  transition: rotate 0.4s var(--ease-papier);
+}
+.pique {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: 4px;
+  height: 58px;
+  margin-left: -2px;
+  border-radius: 0 0 2px 2px;
+  background: linear-gradient(90deg, #c9a27a, #e3c49c 50%, #b58c62);
+  z-index: -1;
+}
+
+.carte {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s var(--ease-sortie);
+}
+.etiquette[data-retournee='true'] .carte,
+.etiquette:focus-within .carte {
+  transform: rotateY(180deg);
+}
+@media (hover: hover) {
+  .etiquette:hover .carte {
+    transform: rotateY(180deg);
+  }
+  .etiquette:hover {
+    rotate: 0deg;
+  }
+}
+
+.recto,
+.verso {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background: var(--farine);
+  color: var(--encre);
+  border-radius: 3px;
+  box-shadow:
+    0 1px 0 rgb(0 0 0 / 0.08),
+    0 12px 22px -8px rgb(0 0 0 / 0.6);
+}
+/* Petit trou de la pique, en haut */
+.recto::before,
+.verso::before {
+  content: '';
+  position: absolute;
+  top: 9px;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  margin-left: -3.5px;
+  border-radius: 50%;
+  background: var(--four);
+  box-shadow: inset 0 1px 1px rgb(0 0 0 / 0.5);
+}
+
+.recto {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 0.15rem;
+  padding: 1.4rem 0.8rem 0.9rem;
+  border: 0;
+  text-align: center;
+  cursor: pointer;
+}
+.recto:focus-visible {
+  outline: none;
+}
+.etiquette:focus-within .verso {
+  outline: 2.5px solid var(--croute);
+  outline-offset: 4px;
+}
+
+.nom {
+  font-weight: 700;
+  font-size: 1.0625rem;
+  line-height: 1.15;
+}
+.prix {
+  font-family: var(--f-titre);
+  font-size: 2rem;
+  line-height: 1;
+}
+.unite {
+  font-size: 0.9375rem;
+  color: var(--croute-texte);
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.06em;
+}
+
+.verso {
+  transform: rotateY(180deg);
+  display: grid;
+  grid-template-rows: 1fr auto;
+  padding: 1.35rem 0.7rem 0.6rem;
+  text-align: center;
+}
+.description {
+  font-size: 1rem;
+  line-height: 1.3;
+  align-self: center;
+}
+.deCote {
+  min-height: 48px;
+  border: 0;
+  border-radius: 2px;
+  background: var(--croute);
+  color: var(--farine);
+  font-weight: 700;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.07em;
+  font-size: 1.1rem;
+  transition: background-color 0.2s;
+}
+.deCote:hover {
+  background: var(--four-2);
+}
+
+.glisser {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  color: var(--blond);
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.14em;
+  font-size: 1rem;
+}
+.trait {
+  width: 3rem;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.6;
+}
+
+@media (max-width: 760px) {
+  .chapeau {
+    margin-left: 0;
+  }
+  .produit {
+    width: 190px;
+  }
+  .etiquette {
+    width: 176px;
+    height: 150px;
+  }
+  .description {
+    font-size: 1.0625rem;
+  }
+}
