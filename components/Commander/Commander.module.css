@@ -1,0 +1,968 @@
+/* ─── Commander : le carnet de bons à souches ─────────────────────────── */
+
+.page {
+  padding: 0 var(--gouttiere) clamp(4rem, 8vw, 7rem);
+}
+
+.grille {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(260px, 26vw, 340px);
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: start;
+  max-width: var(--max);
+  margin: 0 auto;
+}
+
+/* ── Le carnet ─────────────────────────────────────────────────────── */
+.carnet {
+  position: relative;
+  display: grid;
+  grid-template-columns: clamp(3.4rem, 7vw, 5.6rem) 1fr;
+  color: var(--encre);
+  box-shadow:
+    0 2px 0 #e6dcc8,
+    0 4px 0 #efe6d4,
+    0 6px 0 #e3d8c3,
+    0 30px 60px -20px rgb(0 0 0 / 0.75);
+  border-radius: 3px;
+}
+.carnet[data-tamponne='true'] {
+  animation: secousse 0.35s 0.3s;
+}
+@keyframes secousse {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  30% {
+    translate: 0 5px;
+  }
+  60% {
+    translate: -2px -1px;
+  }
+}
+
+.souche {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 2rem 0.4rem;
+  background: #efe5d2;
+  border-radius: 3px 0 0 3px;
+}
+/* La perforation entre la souche et le bon */
+.souche::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: -5px;
+  width: 10px;
+  background: radial-gradient(circle 3px, var(--four) 96%, transparent) 50% 0 / 10px 14px repeat-y;
+  z-index: 2;
+}
+.soucheNo {
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+.soucheNumero,
+.soucheLigne {
+  writing-mode: vertical-rl;
+  rotate: 180deg;
+}
+.soucheNumero {
+  font-family: var(--f-titre);
+  font-size: clamp(1.4rem, 1rem + 1vw, 2rem);
+  letter-spacing: 0.08em;
+  color: var(--croute-texte);
+}
+.soucheLigne {
+  margin-top: auto;
+  font-size: 1rem;
+  border-left: 1px solid rgb(42 34 29 / 0.3);
+  padding-left: 0.3rem;
+}
+
+.feuille {
+  position: relative;
+  padding: clamp(1.6rem, 4vw, 3.2rem) clamp(1.1rem, 4vw, 3.2rem) clamp(2rem, 4vw, 3.2rem);
+  background:
+    /* marge rouge pâle… non : lignes bleu pâle, comme un vrai carnet de bons */
+    repeating-linear-gradient(to bottom, transparent 0 calc(2.1rem - 1px), var(--ligne-carnet) calc(2.1rem - 1px) 2.1rem),
+    #f6efe0;
+  background-position: 0 0.9rem;
+  border-radius: 0 3px 3px 0;
+  overflow: hidden;
+}
+
+.ajoute {
+  display: inline-block;
+  margin-bottom: 1.4rem;
+  padding: 0.3rem 0.8rem;
+  background: var(--mie);
+  border-left: 3px solid var(--croute);
+  font-weight: 700;
+}
+
+.bloc {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+.bloc + .bloc {
+  margin-top: clamp(2.5rem, 5vw, 3.8rem);
+  padding-top: clamp(2rem, 4vw, 3rem);
+  border-top: 2px dashed rgb(42 34 29 / 0.25);
+}
+.bloc[data-verrou='true'] > *:not(legend):not(.verrouNote) {
+  opacity: 0.38;
+  filter: grayscale(0.4);
+}
+
+.blocTitre {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0;
+  margin-bottom: 1.4rem;
+  font-family: var(--f-titre);
+  font-size: clamp(1.9rem, 1.3rem + 2vw, 3rem);
+  line-height: 1;
+}
+.blocNum {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 1.5em;
+  height: 1.5em;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  font-size: 0.6em;
+  translate: 0 -0.15em;
+}
+
+.verrouNote {
+  margin: -0.4rem 0 1rem;
+  font-weight: 700;
+  color: var(--croute-texte);
+}
+
+.consigne {
+  margin-bottom: 1.2rem;
+  max-width: 36rem;
+}
+
+/* ── Intercalaires (onglets) ──────────────────────────────────────── */
+.intercalaires {
+  display: flex;
+  gap: 0.25rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-top: 0.4rem;
+  margin: 0 calc(-1 * clamp(1.1rem, 4vw, 3.2rem));
+  padding-left: clamp(1.1rem, 4vw, 3.2rem);
+  padding-right: clamp(1.1rem, 4vw, 3.2rem);
+}
+.intercalaires::-webkit-scrollbar {
+  display: none;
+}
+.intercalaire {
+  flex: none;
+  min-height: 52px;
+  padding: 0.6rem 1.3rem 0.5rem;
+  border: 0;
+  background: #e2d3b7;
+  color: var(--encre);
+  font-weight: 700;
+  font-size: 1.05rem;
+  /* la forme d'un intercalaire de classeur */
+  clip-path: polygon(10% 0, 90% 0, 100% 100%, 0 100%);
+  padding-inline: 1.7rem;
+  transition:
+    background-color 0.2s,
+    translate 0.25s var(--ease-papier);
+  translate: 0 6px;
+}
+.intercalaire:nth-child(2n) {
+  background: #d8c6a5;
+}
+.intercalaire:hover {
+  translate: 0 2px;
+}
+.intercalaire[aria-selected='true'] {
+  background: var(--kraft);
+  translate: 0 0;
+}
+.intercalaire:focus-visible {
+  outline: none;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+
+.produits {
+  list-style: none;
+  margin: 0 calc(-1 * clamp(1.1rem, 4vw, 3.2rem));
+  padding: 0.6rem clamp(1.1rem, 4vw, 3.2rem) 0.6rem;
+  background: rgb(207 180 140 / 0.35);
+  border-top: 3px solid var(--kraft);
+}
+
+.ligneProduit {
+  display: grid;
+  grid-template-columns: 76px 1fr auto;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid rgb(42 34 29 / 0.14);
+}
+.ligneProduit:last-child {
+  border-bottom: 0;
+}
+.ligneProduit[data-indispo='true'] {
+  opacity: 0.5;
+}
+.miniature svg,
+.miniature img {
+  width: 76px;
+  height: auto;
+}
+.produitTexte {
+  display: grid;
+  gap: 0.1rem;
+}
+.produitNom {
+  font-weight: 700;
+  font-size: 1.15rem;
+  line-height: 1.2;
+}
+.ligneProduit[data-choisi='true'] .produitNom {
+  color: var(--croute-texte);
+}
+.produitPrix {
+  font-size: 1.0625rem;
+}
+.produitUnite {
+  color: rgb(42 34 29 / 0.72);
+}
+.pasCeJour {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+/* Gros stepper, cibles de 52 px */
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 2px solid var(--encre);
+  border-radius: 30px;
+  background: var(--farine);
+}
+.stepBtn {
+  width: 52px;
+  height: 52px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  font-size: 1.7rem;
+  line-height: 1;
+  font-weight: 500;
+  color: var(--encre);
+  touch-action: manipulation;
+  transition: background-color 0.15s;
+}
+.stepBtn:hover:not(:disabled) {
+  background: rgb(168 116 63 / 0.18);
+}
+.stepBtn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+.stepQte {
+  min-width: 2ch;
+  text-align: center;
+  font-family: var(--f-titre);
+  font-size: 1.5rem;
+}
+
+/* ── Calendrier de comptoir (éphémérides) ─────────────────────────── */
+.calendrier {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+.ephemeride {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  padding-bottom: 0.5rem;
+  min-height: 92px;
+  background: var(--farine);
+  border: 1px solid rgb(42 34 29 / 0.25);
+  border-radius: 3px;
+  cursor: pointer;
+  box-shadow: 0 3px 0 -1px #e3d7c1;
+  transition:
+    translate 0.2s var(--ease-papier),
+    box-shadow 0.2s;
+}
+/* les deux anneaux du bloc éphéméride */
+.ephemeride::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 28%;
+  right: 28%;
+  height: 8px;
+  background: radial-gradient(circle 3.5px, #6d5a4c 90%, transparent) 0 0 / 50% 100% repeat-x;
+}
+.ephMois {
+  width: 100%;
+  padding: 0.25rem 0 0.15rem;
+  background: var(--encre);
+  color: var(--farine);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-radius: 2px 2px 0 0;
+}
+.ephJour {
+  font-family: var(--f-titre);
+  font-size: 2.1rem;
+  line-height: 1.1;
+}
+.ephSemaine {
+  font-size: 0.95rem;
+}
+.ephemeride:hover:not([data-ferme='true']) {
+  translate: 0 -3px;
+}
+.ephemeride[data-choisi='true'] {
+  background: var(--kraft);
+  box-shadow: 0 0 0 3px var(--encre);
+}
+.ephemeride[data-choisi='true'] .ephMois {
+  background: var(--croute-texte);
+}
+.ephemeride[data-ferme='true'] {
+  cursor: not-allowed;
+  opacity: 0.42;
+  background: transparent;
+  box-shadow: none;
+}
+.ephemeride[data-ferme='true'] .ephJour {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+}
+.ephemeride:has(input:focus-visible),
+.creneau:has(input:focus-visible) {
+  outline: 2.5px solid var(--tomette);
+  outline-offset: 3px;
+}
+
+.sousTitre {
+  margin: 1.6rem 0 0.8rem;
+}
+
+.creneaux {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.creneau {
+  display: grid;
+  place-items: center;
+  min-width: 5.2rem;
+  min-height: 52px;
+  padding: 0 0.8rem;
+  background: var(--farine);
+  border: 1.5px dashed rgb(42 34 29 / 0.45);
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+.creneau:hover {
+  border-style: solid;
+}
+.creneau[data-choisi='true'] {
+  background: var(--encre);
+  color: var(--farine);
+  border-style: solid;
+}
+
+.alerte {
+  margin-top: 1.4rem;
+  padding: 1rem 1.2rem;
+  background: var(--mie);
+  border-left: 4px solid var(--encre);
+}
+.alerte ul {
+  margin: 0.4rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.lienBouton {
+  min-height: 44px;
+  padding: 0 0.3rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* ── Les champs, façon carnet ─────────────────────────────────────── */
+.champsDuo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 1.4rem;
+}
+.champ {
+  display: grid;
+  gap: 0.2rem;
+  margin-bottom: 1.3rem;
+}
+.champ label {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+.champ input,
+.champ textarea {
+  width: 100%;
+  min-height: 52px;
+  padding: 0.5rem 0.2rem;
+  border: 0;
+  border-bottom: 2px solid var(--encre);
+  border-radius: 0;
+  background: rgb(250 246 239 / 0.7);
+  font-size: 1.2rem;
+  font-family: var(--f-texte);
+  color: var(--encre);
+}
+.champ textarea {
+  resize: vertical;
+  line-height: 1.4;
+}
+.champ input:focus-visible,
+.champ textarea:focus-visible {
+  outline: none;
+  border-bottom-color: var(--croute);
+  background: var(--farine);
+  box-shadow: 0 3px 0 0 var(--croute);
+}
+.champ[data-erreur='true'] input,
+.champ[data-erreur='true'] textarea {
+  border-bottom-width: 3px;
+  border-bottom-style: dashed;
+}
+.aide {
+  font-size: 0.975rem;
+  color: rgb(42 34 29 / 0.8);
+}
+.erreur {
+  display: block;
+  margin-top: 0.3rem;
+  font-weight: 700;
+  color: var(--encre);
+  padding-left: 1.4rem;
+  position: relative;
+}
+.erreur::before {
+  content: '!';
+  position: absolute;
+  left: 0;
+  top: 0.05em;
+  width: 1.05rem;
+  height: 1.05rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--encre);
+  color: var(--farine);
+  font-size: 0.8rem;
+}
+
+.case {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.8rem;
+  align-items: start;
+  margin: 0.4rem 0 1.2rem;
+  cursor: pointer;
+}
+.case input {
+  appearance: none;
+  width: 28px;
+  height: 28px;
+  margin: 0.05rem 0 0;
+  border: 2px solid var(--encre);
+  border-radius: 2px;
+  background: var(--farine);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.case input:checked::after {
+  content: '';
+  width: 14px;
+  height: 8px;
+  border-left: 3px solid var(--encre);
+  border-bottom: 3px solid var(--encre);
+  rotate: -45deg;
+  translate: 0 -2px;
+}
+.case input:focus-visible {
+  outline: 2.5px solid var(--tomette);
+  outline-offset: 3px;
+}
+.case[data-erreur='true'] input {
+  border-style: dashed;
+  border-width: 3px;
+}
+.case a {
+  color: inherit;
+  font-weight: 700;
+}
+
+.piege {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.echec {
+  margin: 1rem 0 1.4rem;
+  padding: 1.1rem 1.2rem;
+  background: var(--four);
+  color: var(--farine);
+  display: grid;
+  gap: 0.9rem;
+  justify-items: start;
+}
+
+/* ── Le tampon ─────────────────────────────────────────────────────── */
+.tampon {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  width: 100%;
+  margin-top: 1.4rem;
+  padding: 0.9rem 1.2rem;
+  min-height: 84px;
+  border: 0;
+  border-radius: 4px;
+  background: var(--encre);
+  color: var(--farine);
+  text-align: left;
+  transition: background-color 0.2s;
+}
+.tampon:hover:not(:disabled) {
+  background: var(--four);
+}
+.tampon:disabled {
+  cursor: progress;
+}
+.tamponObjet {
+  position: relative;
+  flex: none;
+  width: 64px;
+  height: 64px;
+  transition: translate 0.2s var(--ease-sortie);
+}
+.tamponManche {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 26px;
+  height: 34px;
+  margin-left: -13px;
+  border-radius: 13px 13px 4px 4px;
+  background: linear-gradient(90deg, #7a5230, #a8743f 50%, #6b4527);
+}
+.tamponSemelle {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 4px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 3px;
+  background: #3b2a1f;
+  border-bottom: 5px solid var(--tomette);
+  color: var(--blond);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.tampon:hover:not(:disabled) .tamponObjet {
+  translate: 0 -3px;
+}
+.tampon:active .tamponObjet,
+.carnet[data-tamponne='true'] .tamponObjet {
+  animation: frappe 0.45s var(--ease-sortie);
+}
+@keyframes frappe {
+  0% {
+    translate: 0 -6px;
+  }
+  45% {
+    translate: 0 8px;
+    scale: 1.04 0.94;
+  }
+  100% {
+    translate: 0 0;
+  }
+}
+.tamponTexte {
+  font-family: var(--f-titre);
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+  line-height: 1.05;
+}
+
+/* L'encre du tampon sur le bon : troisième usage de la tomette */
+.encre {
+  position: absolute;
+  right: 8%;
+  bottom: 18%;
+  padding: 0.2em 0.5em;
+  border: 5px solid var(--tomette);
+  border-radius: 8px;
+  color: var(--tomette);
+  font-family: var(--f-texte);
+  font-weight: 700;
+  font-size: clamp(2.4rem, 5vw, 4.2rem);
+  letter-spacing: 0.1em;
+  rotate: -14deg;
+  opacity: 0;
+  scale: 1.6;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  -webkit-mask: var(--grain) 0 0 / 180px;
+  mask: var(--grain) 0 0 / 180px;
+}
+.carnet[data-tamponne='true'] .encre {
+  opacity: 0.88;
+  scale: 1;
+  transition:
+    opacity 0.05s 0.3s,
+    scale 0.25s 0.25s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+
+/* ── Le côté : sac kraft + récapitulatif ──────────────────────────── */
+.cote {
+  position: sticky;
+  top: 6.5rem;
+  display: grid;
+  gap: 1.4rem;
+  justify-items: center;
+}
+
+.sac {
+  position: relative;
+  width: min(220px, 100%);
+  scale: var(--gonfle);
+  transform-origin: 50% 100%;
+  transition: scale 0.4s var(--ease-papier);
+}
+.sacDessin {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 16px 20px rgb(0 0 0 / 0.45));
+}
+.sacTampon {
+  font-family: var(--f-titre);
+  font-size: 22px;
+  fill: rgb(42 34 29 / 0.55);
+}
+.sacCompte {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 38%;
+  text-align: center;
+  font-family: var(--f-main);
+  font-size: 2.1rem;
+  color: var(--encre);
+  rotate: -5deg;
+}
+
+.recap {
+  width: 100%;
+  padding: 1.4rem 1.3rem 1.2rem;
+  background: var(--farine);
+  color: var(--encre);
+  border-radius: 2px;
+}
+.recapTitre {
+  font-size: 1.8rem;
+  margin-bottom: 0.8rem;
+}
+.recapVide {
+  color: rgb(42 34 29 / 0.8);
+}
+.recapLignes {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0 0 0.8rem;
+  list-style: none;
+  border-bottom: 1px dashed rgb(42 34 29 / 0.4);
+}
+.recapLignes li {
+  display: grid;
+  grid-template-columns: 2.6rem 1fr auto;
+  gap: 0.4rem;
+}
+.recapLignes li[data-indispo='true'] span:nth-child(2) {
+  text-decoration: line-through;
+}
+.recapTotal {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.7rem;
+  font-family: var(--f-titre);
+  font-size: 1.5rem;
+}
+.recapPaiement,
+.recapRappel {
+  margin-top: 0.6rem;
+  font-size: 0.975rem;
+}
+.recapRappel {
+  font-weight: 700;
+}
+
+.sacBarre {
+  display: none;
+}
+
+/* ── Confirmation : le ticket détaché ─────────────────────────────── */
+.confirmation {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 44rem;
+  margin: 0 auto;
+}
+.soucheSeule {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  width: clamp(3.4rem, 7vw, 5.6rem);
+  align-self: stretch;
+  padding: 2rem 0.4rem;
+  background: #efe5d2;
+  color: var(--encre);
+  border-radius: 3px 0 0 3px;
+  box-shadow: 0 30px 60px -20px rgb(0 0 0 / 0.75);
+}
+.ticket {
+  --dent: 8px;
+  flex: 1;
+  padding: clamp(1.8rem, 5vw, 3rem) clamp(1.3rem, 5vw, 3rem) clamp(2rem, 5vw, 3rem);
+  background: #f6efe0;
+  color: var(--encre);
+  -webkit-mask:
+    radial-gradient(circle 5px at 0 50%, #0000 97%, #000) 0 0 / 51% 14px repeat-y,
+    linear-gradient(#000 0 0) right / 50% 100% no-repeat;
+  mask:
+    radial-gradient(circle 5px at 0 50%, #0000 97%, #000) 0 0 / 51% 14px repeat-y,
+    linear-gradient(#000 0 0) right / 50% 100% no-repeat;
+  animation: detache 0.9s var(--ease-sortie) both;
+  transform-origin: 0 0;
+}
+@keyframes detache {
+  0% {
+    translate: -14px 0;
+    rotate: 0deg;
+  }
+  35% {
+    translate: 6px 4px;
+    rotate: 2.5deg;
+  }
+  100% {
+    translate: 18px 10px;
+    rotate: 1.2deg;
+  }
+}
+.ticketEnseigne {
+  font-family: var(--f-titre);
+  font-size: 1.3rem;
+  color: var(--croute-texte);
+}
+.ticketTitre {
+  font-size: clamp(2.4rem, 2rem + 2vw, 3.6rem);
+  margin: 0.3rem 0 1rem;
+}
+.ticketMessage {
+  font-size: 1.2rem;
+  font-weight: 700;
+  max-width: 28rem;
+}
+.ticketInfos {
+  display: grid;
+  gap: 0.6rem;
+  margin: 1.6rem 0;
+  padding: 1rem 0;
+  border-top: 1px dashed rgb(42 34 29 / 0.4);
+  border-bottom: 1px dashed rgb(42 34 29 / 0.4);
+}
+.ticketInfos div {
+  display: grid;
+  grid-template-columns: 7rem 1fr;
+}
+.ticketInfos dt {
+  font-weight: 700;
+}
+.ticketLignes {
+  display: grid;
+  gap: 0.3rem;
+}
+.ticketLignes li {
+  display: grid;
+  grid-template-columns: 2.6rem 1fr auto;
+  gap: 0.4rem;
+}
+.ticketTotal {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  padding-top: 0.8rem;
+  border-top: 2px solid var(--encre);
+  font-family: var(--f-titre);
+  font-size: 1.6rem;
+}
+.ticketPaiement {
+  margin-top: 0.6rem;
+}
+.ticketActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 1.8rem;
+}
+
+.boutonPlein,
+.boutonTrait {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 1.4rem;
+  border-radius: 2px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-decoration: none;
+}
+.boutonPlein {
+  border: 0;
+  background: var(--croute);
+  color: var(--farine);
+}
+.boutonPlein:hover {
+  background: #8f6030;
+}
+.boutonTrait {
+  border: 2px solid var(--encre);
+  color: var(--encre);
+}
+
+@media (max-width: 960px) {
+  .grille {
+    grid-template-columns: 1fr;
+  }
+  .cote {
+    position: static;
+  }
+  .cote .sac {
+    display: none;
+  }
+  .sacBarre {
+    position: fixed;
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: calc(76px + env(safe-area-inset-bottom));
+    z-index: 70;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.35rem 0.9rem 0.35rem 0.5rem;
+    background: var(--kraft);
+    color: var(--encre);
+    border-radius: 4px;
+    box-shadow: 0 10px 24px rgb(0 0 0 / 0.4);
+    font-weight: 700;
+  }
+  .sacBarre .num {
+    margin-left: auto;
+  }
+  .sacCompact {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .sacCompact .sacDessin {
+    width: 40px;
+    height: 48px;
+    filter: none;
+  }
+  .sacCompact .sacCompte {
+    position: static;
+    font-size: 1.6rem;
+    rotate: 0deg;
+  }
+  .page {
+    padding-bottom: 9rem;
+  }
+}
+
+@media (min-width: 761px) and (max-width: 960px) {
+  .sacBarre {
+    bottom: 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .calendrier {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .champsDuo {
+    grid-template-columns: 1fr;
+  }
+  .ligneProduit {
+    grid-template-columns: 56px 1fr;
+    grid-template-areas: 'img texte' 'img stepper';
+    row-gap: 0.5rem;
+  }
+  .miniature {
+    grid-area: img;
+    align-self: start;
+  }
+  .miniature svg,
+  .miniature img {
+    width: 56px;
+  }
+  .produitTexte {
+    grid-area: texte;
+  }
+  .stepper {
+    grid-area: stepper;
+    justify-self: start;
+  }
+  .soucheNumero {
+    font-size: 1.2rem;
+  }
+}

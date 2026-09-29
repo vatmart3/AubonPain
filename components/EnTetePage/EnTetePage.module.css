@@ -1,0 +1,28 @@
+.entete {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 22rem);
+  align-items: end;
+  gap: 1rem 3rem;
+  padding: clamp(8rem, 18vh, 11rem) var(--gouttiere) clamp(2.5rem, 5vw, 4rem);
+  max-width: var(--max);
+  margin: 0 auto;
+}
+.titre {
+  font-size: clamp(3.2rem, 9vw, 9rem);
+  line-height: 0.86;
+  color: var(--mie);
+  letter-spacing: -0.03em;
+}
+.chapeau {
+  color: var(--blond);
+  font-size: 1.15rem;
+}
+.note {
+  grid-column: 1 / -1;
+  color: var(--blond);
+}
+@media (max-width: 860px) {
+  .entete {
+    grid-template-columns: 1fr;
+  }
+}
