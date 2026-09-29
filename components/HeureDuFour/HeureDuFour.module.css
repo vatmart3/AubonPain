@@ -192,9 +192,55 @@
   font-size: 1.05rem;
 }
 
+.maintenantMobile {
+  display: none;
+}
+
 @media (max-width: 860px) {
   .four {
     grid-template-columns: 1fr;
+  }
+  /* Sur téléphone, la frise devient une liste : pas de chevauchement possible */
+  .ruban {
+    height: auto !important;
+    padding: 0.5rem 0;
+  }
+  .graduation,
+  .coches,
+  .maintenant {
+    display: none;
+  }
+  .fournees {
+    position: relative;
+    display: grid;
+    gap: 1.6rem;
+  }
+  .fournee {
+    position: relative;
+    top: auto !important;
+    translate: none;
+  }
+  .maintenantMobile {
+    display: block;
+    position: relative;
+    margin-left: -1.6rem;
+    padding: 0.2rem 0 0.2rem 1.6rem;
+    border-top: 2.5px solid var(--tomette);
+    color: var(--tomette);
+    font-weight: 700;
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.12em;
+  }
+  .maintenantMobile::before {
+    content: '';
+    position: absolute;
+    left: -7px;
+    top: -8.5px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--tomette);
+    box-shadow: 0 0 0 4px var(--kraft);
   }
   .gauche {
     position: relative;
@@ -204,8 +250,7 @@
     min-height: 0;
   }
   .ruban {
-    margin-left: 3.2rem;
-    height: 980px;
+    margin-left: 1.2rem;
   }
   .fournee {
     left: 1.6rem;

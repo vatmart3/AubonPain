@@ -16,9 +16,9 @@ export function Nav() {
   useEffect(() => {
     const surveiller = () => {
       // Sur l'accueil, la bande n'apparaît qu'une fois l'intro passée.
+      // Ailleurs, la bande est toujours là (les pages commencent parfois sur fond clair).
       const intro = document.getElementById('intro');
-      const seuil = intro ? intro.offsetTop + intro.offsetHeight - window.innerHeight * 1.05 : 40;
-      setBande(window.scrollY > seuil);
+      setBande(intro ? window.scrollY > intro.offsetTop + intro.offsetHeight - window.innerHeight * 1.05 : true);
     };
     surveiller();
     window.addEventListener('scroll', surveiller, { passive: true });

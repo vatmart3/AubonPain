@@ -289,6 +289,11 @@
 }
 
 @media (max-width: 760px) {
+  .titre {
+    white-space: normal;
+    font-size: 17vw;
+    line-height: 0.88;
+  }
   .chapeau {
     margin-left: 0;
   }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { fournees, type Fournee } from '@/content/fournees';
 import { boutique } from '@/content/boutique';
 import { aSete, enMinutes, heureLisible, jourDeLaSemaine, quandLisible, statutBoutique, type Instant } from '@/lib/temps';
@@ -96,9 +96,10 @@ export function HeureDuFour() {
         <ol role="list" className={styles.fournees}>
           {liste.map((f, k) => {
             const passee = instant ? ouvert && enMinutes(f.heure) <= instant.minutes : false;
+            const derniereVue = passee && !(k + 1 < liste.length && instant && enMinutes(liste[k + 1].heure) <= instant.minutes);
             return (
+              <Fragment key={f.heure}>
               <li
-                key={f.heure}
                 className={styles.fournee}
                 data-passee={passee}
                 style={{ top: `${tops[k]}%` }}
@@ -107,6 +108,12 @@ export function HeureDuFour() {
                 <span className={styles.fQuoi}>{f.quoi}</span>
                 {f.detail && <span className={styles.fDetail}>{f.detail}</span>}
               </li>
+              {derniereVue && (
+                <li className={styles.maintenantMobile} aria-hidden="true">
+                  maintenant
+                </li>
+              )}
+              </Fragment>
             );
           })}
         </ol>

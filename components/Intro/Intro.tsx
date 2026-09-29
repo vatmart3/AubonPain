@@ -349,7 +349,7 @@ export function Intro({ mode }: { mode: ModeIntro }) {
               <Photo nom="interieur" />
               <svg className={styles.annotations} viewBox={vb} preserveAspectRatio="none" aria-hidden="true">
                 <g data-annot="1" opacity="0">
-                  <text x="1010" y="478" className={styles.annotTexte}>
+                  <text x={format === 'desktop' ? 1010 : 690} y="478" className={styles.annotTexte}>
                     les pains aux raisins géants
                   </text>
                   <path data-trait pathLength={1} d="M1210 492 C 1236 505, 1236 522, 1214 538 M1214 538 l 4 -16 M1214 538 l 15 -6" className={styles.annotTrait} />

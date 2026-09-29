@@ -1,0 +1,44 @@
+.prose {
+  background: var(--mie);
+  color: var(--encre);
+  padding: clamp(3rem, 7vw, 6rem) var(--gouttiere);
+}
+.colonne {
+  max-width: 44rem;
+  margin: 0 auto;
+}
+.prose h2 {
+  font-size: clamp(1.8rem, 1.4rem + 1.6vw, 2.6rem);
+  margin: 2.6rem 0 0.9rem;
+  line-height: 1;
+}
+.prose h2:first-child {
+  margin-top: 0;
+}
+.prose p,
+.prose ul {
+  margin-bottom: 1rem;
+}
+.prose ul {
+  padding-left: 1.2rem;
+}
+.prose li + li {
+  margin-top: 0.35rem;
+}
+.prose a {
+  color: var(--encre);
+  font-weight: 700;
+}
+.prose a:focus-visible {
+  outline-color: var(--tomette);
+}
+.aValider {
+  background: rgb(207 180 140 / 0.6);
+  padding: 0 0.3em;
+  font-weight: 700;
+}
+.maj {
+  margin-top: 3rem;
+  font-size: 0.95rem;
+  color: rgb(42 34 29 / 0.8);
+}
