@@ -1,33 +1,57 @@
 # Photos du site
 
-Déposez les fichiers dans ce dossier avec exactement ces noms. Dès qu'un
-fichier est présent, il remplace automatiquement le panneau d'attente sur
-toutes les pages où il est utilisé.
+Les photos sont déclarées dans **`../images.css`**, une règle par emplacement.
+Pour en changer une, modifiez seulement l'adresse dans ce fichier — soit une
+autre URL, soit un fichier local déposé ici.
 
-| Fichier | Où il apparaît | Format conseillé |
+## D'où viennent les photos actuelles
+
+De **Pexels** — licence Pexels : utilisation gratuite, y compris commerciale,
+sans attribution obligatoire, modification autorisée. La page source de chaque
+photo est indiquée en commentaire dans `images.css`, pour que vous puissiez la
+vérifier ou en choisir une autre.
+
+Ce sont des photos d'illustration, pas des photos de la boutique : à remplacer
+par les vôtres dès que possible.
+
+## Héberger les photos vous-même
+
+Le site charge actuellement les images depuis Pexels. Pour les servir depuis
+votre propre serveur (plus rapide, aucune dépendance extérieure) :
+
+```bash
+./fetch-photos.sh
+```
+
+Les fichiers arrivent dans ce dossier, puis décommentez le bloc
+« version locale » à la fin de `images.css`.
+
+## Utiliser vos propres photos
+
+Déposez vos fichiers ici et pointez-les dans `images.css` :
+
+```css
+[data-photo="croissant"]{ --img:url("images/croissant.jpg"); }
+```
+
+| Clé | Où elle apparaît | Format conseillé |
 | --- | --- | --- |
-| `vitrine.jpg` | Accueil (grande image), collage, galerie | portrait, 1200 × 1600 |
-| `viennoiseries.jpg` | Accueil (petite image), spécialités | carré, 1200 × 1200 |
-| `pains.jpg` | Spécialités, carte (pains spéciaux) | paysage, 1600 × 1200 |
-| `sandwichs.jpg` | Spécialités | paysage, 1600 × 1200 |
-| `cafe.jpg` | Spécialités, carte (café) | paysage, 1600 × 1200 |
-| `boutique.jpg` | Collage, page La maison | paysage, 1600 × 1200 |
-| `fournee.jpg` | Collage, galerie | paysage, 1600 × 1200 |
-| `comptoir.jpg` | Galerie | paysage, 1600 × 1200 |
-| `croissant.jpg` | Carte — croissant | carré |
-| `pain-chocolat.jpg` | Carte — pain au chocolat | carré |
-| `brioche.jpg` | Carte — brioche | carré |
-| `baguette.jpg` | Carte — baguette | carré |
-| `campagne.jpg` | Carte — pain de campagne | carré |
-| `sandwich.jpg` | Carte — sandwich | carré |
-| `salade.jpg` | Carte — salade | carré |
-| `soupe.jpg` | Carte — soupe | carré |
-| `cafe-formule.jpg` | Carte — formule matin | carré |
-| `patisserie.jpg` | Carte — pâtisserie du jour | carré |
+| `vitrine` | Accueil (grande image), collage, galerie | portrait, 1200 × 1600 |
+| `viennoiseries` | Accueil (petite image), spécialités | carré, 1200 × 1200 |
+| `pains` | Spécialités, carte (pains spéciaux) | paysage, 1600 × 1200 |
+| `sandwichs` | Spécialités | paysage |
+| `cafe` | Spécialités, carte (café) | paysage |
+| `boutique` | Collage, page La maison | paysage |
+| `fournee` | Collage, galerie | paysage |
+| `comptoir` | Galerie | paysage |
+| `croissant`, `pain-chocolat`, `brioche` | Carte — viennoiseries | carré |
+| `baguette`, `campagne` | Carte — pains | carré |
+| `sandwich`, `salade`, `soupe` | Carte — le midi | carré |
+| `cafe-formule`, `patisserie` | Carte — café & douceurs | carré |
 
-Conseils : lumière du jour, de préférence près de la vitrine ; photo prise
-d'assez près ; éviter le flash. Compressez les fichiers à moins de 300 Ko
-(par exemple avec squoosh.app) pour que le site reste rapide.
+Conseils de prise de vue : lumière du jour près de la vitrine, cadrage assez
+serré, pas de flash. Compressez à moins de 300 Ko (par exemple avec
+squoosh.app).
 
-N'utilisez que des photos dont vous détenez les droits, ou des photos
-libres de droits (Unsplash, Pexels).
+Tant qu'une photo ne charge pas, le site affiche automatiquement un panneau
+d'attente : rien ne casse.

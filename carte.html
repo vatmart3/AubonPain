@@ -14,6 +14,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23C4552F'/><text x='16' y='23' font-family='Georgia,serif' font-size='18' text-anchor='middle' fill='%23FDF7EF'>A</text></svg>">
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="images.css">
 <script>document.documentElement.className = 'js';</script>
 <script type="application/ld+json">
 {
@@ -79,9 +80,9 @@
       <p>Cuits à la fournée, du matin jusqu’en fin de journée.</p>
     </div>
     <div class="grille-produits">
-      <article class="produit rev" style="--c:var(--terre)"><div class="photo ratio-1x1" style="--img:url('images/baguette.jpg')" data-legende="Photo — baguette tradition"></div><span class="cat">Pains</span><h3>Baguette tradition</h3><p class="det">Croûte croustillante, mie alvéolée</p><p class="tarif">1,20 €</p></article>
-      <article class="produit rev" style="--c:var(--terre)"><div class="photo ratio-1x1" style="--img:url('images/campagne.jpg')" data-legende="Photo — pain de campagne"></div><span class="cat">Pains</span><h3>Pain de campagne</h3><p class="det">À la coupe, se garde plusieurs jours</p><p class="tarif">2,20 €</p></article>
-      <article class="produit rev" style="--c:var(--terre)"><div class="photo ratio-1x1" style="--img:url('images/pains.jpg')" data-legende="Photo — pains spéciaux"></div><span class="cat">Pains</span><h3>Pains spéciaux</h3><p class="det">Céréales, complet, selon la fournée</p><p class="tarif">2,40 €</p></article>
+      <article class="produit rev" style="--c:var(--terre)"><div class="photo ratio-1x1" data-photo="baguette" data-legende="Photo — baguette tradition"></div><span class="cat">Pains</span><h3>Baguette tradition</h3><p class="det">Croûte croustillante, mie alvéolée</p><p class="tarif">1,20 €</p></article>
+      <article class="produit rev" style="--c:var(--terre)"><div class="photo ratio-1x1" data-photo="campagne" data-legende="Photo — pain de campagne"></div><span class="cat">Pains</span><h3>Pain de campagne</h3><p class="det">À la coupe, se garde plusieurs jours</p><p class="tarif">2,20 €</p></article>
+      <article class="produit rev" style="--c:var(--terre)"><div class="photo ratio-1x1" data-photo="pains" data-legende="Photo — pains spéciaux"></div><span class="cat">Pains</span><h3>Pains spéciaux</h3><p class="det">Céréales, complet, selon la fournée</p><p class="tarif">2,40 €</p></article>
     </div>
   </div>
 </section>
@@ -92,9 +93,9 @@
       <p>Feuilletage cuit sur place, sorti du four toute la matinée.</p>
     </div>
     <div class="grille-produits">
-      <article class="produit rev" style="--c:var(--miel)"><div class="photo ratio-1x1" style="--img:url('images/croissant.jpg')" data-legende="Photo — croissant pur beurre"></div><span class="cat">Viennoiseries</span><h3>Croissant pur beurre</h3><p class="det">Le préféré des habitués</p><p class="tarif">1,30 €</p></article>
-      <article class="produit rev" style="--c:var(--miel)"><div class="photo ratio-1x1" style="--img:url('images/pain-chocolat.jpg')" data-legende="Photo — pain au chocolat"></div><span class="cat">Viennoiseries</span><h3>Pain au chocolat</h3><p class="det">Deux barres de chocolat, feuilletage doré</p><p class="tarif">1,50 €</p></article>
-      <article class="produit rev" style="--c:var(--miel)"><div class="photo ratio-1x1" style="--img:url('images/brioche.jpg')" data-legende="Photo — brioche du jour"></div><span class="cat">Viennoiseries</span><h3>Brioche du jour</h3><p class="det">Selon la fournée</p><p class="tarif">1,80 €</p></article>
+      <article class="produit rev" style="--c:var(--miel)"><div class="photo ratio-1x1" data-photo="croissant" data-legende="Photo — croissant pur beurre"></div><span class="cat">Viennoiseries</span><h3>Croissant pur beurre</h3><p class="det">Le préféré des habitués</p><p class="tarif">1,30 €</p></article>
+      <article class="produit rev" style="--c:var(--miel)"><div class="photo ratio-1x1" data-photo="pain-chocolat" data-legende="Photo — pain au chocolat"></div><span class="cat">Viennoiseries</span><h3>Pain au chocolat</h3><p class="det">Deux barres de chocolat, feuilletage doré</p><p class="tarif">1,50 €</p></article>
+      <article class="produit rev" style="--c:var(--miel)"><div class="photo ratio-1x1" data-photo="brioche" data-legende="Photo — brioche du jour"></div><span class="cat">Viennoiseries</span><h3>Brioche du jour</h3><p class="det">Selon la fournée</p><p class="tarif">1,80 €</p></article>
     </div>
   </div>
 </section>
@@ -105,9 +106,9 @@
       <p>Préparé le matin même, à emporter ou à manger sur place.</p>
     </div>
     <div class="grille-produits">
-      <article class="produit rev" style="--c:var(--olive)"><div class="photo ratio-1x1" style="--img:url('images/sandwich.jpg')" data-legende="Photo — sandwich du jour"></div><span class="cat">Le midi</span><h3>Sandwich du jour</h3><p class="det">Dans notre pain, garni le matin</p><p class="tarif">5,50 €</p></article>
-      <article class="produit rev" style="--c:var(--olive)"><div class="photo ratio-1x1" style="--img:url('images/salade.jpg')" data-legende="Photo — salade composée"></div><span class="cat">Le midi</span><h3>Salade composée</h3><p class="det">Fraîche, prête à emporter</p><p class="tarif">6,90 €</p></article>
-      <article class="produit rev" style="--c:var(--olive)"><div class="photo ratio-1x1" style="--img:url('images/soupe.jpg')" data-legende="Photo — soupe maison"></div><span class="cat">Le midi</span><h3>Soupe maison</h3><p class="det">Servie chaude, avec le pain qui va avec</p><p class="tarif">4,50 €</p></article>
+      <article class="produit rev" style="--c:var(--olive)"><div class="photo ratio-1x1" data-photo="sandwich" data-legende="Photo — sandwich du jour"></div><span class="cat">Le midi</span><h3>Sandwich du jour</h3><p class="det">Dans notre pain, garni le matin</p><p class="tarif">5,50 €</p></article>
+      <article class="produit rev" style="--c:var(--olive)"><div class="photo ratio-1x1" data-photo="salade" data-legende="Photo — salade composée"></div><span class="cat">Le midi</span><h3>Salade composée</h3><p class="det">Fraîche, prête à emporter</p><p class="tarif">6,90 €</p></article>
+      <article class="produit rev" style="--c:var(--olive)"><div class="photo ratio-1x1" data-photo="soupe" data-legende="Photo — soupe maison"></div><span class="cat">Le midi</span><h3>Soupe maison</h3><p class="det">Servie chaude, avec le pain qui va avec</p><p class="tarif">4,50 €</p></article>
     </div>
   </div>
 </section>
@@ -118,9 +119,9 @@
       <p>Le comptoir, pour trois minutes ou pour la pause.</p>
     </div>
     <div class="grille-produits">
-      <article class="produit rev" style="--c:var(--prune)"><div class="photo ratio-1x1" style="--img:url('images/cafe.jpg')" data-legende="Photo — café au comptoir"></div><span class="cat">Café & douceurs</span><h3>Café au comptoir</h3><p class="det">Debout, en trois gorgées</p><p class="tarif">1,50 €</p></article>
-      <article class="produit rev" style="--c:var(--prune)"><div class="photo ratio-1x1" style="--img:url('images/cafe-formule.jpg')" data-legende="Photo — formule matin"></div><span class="cat">Café & douceurs</span><h3>Formule matin</h3><p class="det">Café et une viennoiserie</p><p class="tarif">2,60 €</p></article>
-      <article class="produit rev" style="--c:var(--prune)"><div class="photo ratio-1x1" style="--img:url('images/patisserie.jpg')" data-legende="Photo — pâtisserie du jour"></div><span class="cat">Café & douceurs</span><h3>Pâtisserie du jour</h3><p class="det">Selon l’inspiration</p><p class="tarif">3,20 €</p></article>
+      <article class="produit rev" style="--c:var(--prune)"><div class="photo ratio-1x1" data-photo="cafe" data-legende="Photo — café au comptoir"></div><span class="cat">Café & douceurs</span><h3>Café au comptoir</h3><p class="det">Debout, en trois gorgées</p><p class="tarif">1,50 €</p></article>
+      <article class="produit rev" style="--c:var(--prune)"><div class="photo ratio-1x1" data-photo="cafe-formule" data-legende="Photo — formule matin"></div><span class="cat">Café & douceurs</span><h3>Formule matin</h3><p class="det">Café et une viennoiserie</p><p class="tarif">2,60 €</p></article>
+      <article class="produit rev" style="--c:var(--prune)"><div class="photo ratio-1x1" data-photo="patisserie" data-legende="Photo — pâtisserie du jour"></div><span class="cat">Café & douceurs</span><h3>Pâtisserie du jour</h3><p class="det">Selon l’inspiration</p><p class="tarif">3,20 €</p></article>
     </div>
   </div>
 </section>

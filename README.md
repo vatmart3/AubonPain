@@ -20,7 +20,9 @@ python3 -m http.server 8000
 | `contact.html` | Adresse, téléphone, horaires, **plan intégré** et accès |
 | `styles.css` | Feuille de style commune |
 | `script.js` | Interactions communes |
-| `images/` | Photographies du site — voir `images/README.md` |
+| `images.css` | Une règle par photo — le seul endroit à modifier pour changer une image |
+| `fetch-photos.sh` | Télécharge les photos dans `images/` pour les héberger soi-même |
+| `images/` | Photographies locales — voir `images/README.md` |
 | `build-pages.py` | Génère les cinq pages depuis une coquille commune |
 
 L'en-tête et le pied de page sont identiques sur toutes les pages. Pour
@@ -35,10 +37,23 @@ pour les regénérer après une modification de la coquille.
 
 ## Photos
 
-Le site affiche un panneau d'attente tant qu'une photo est absente. Dès
-qu'un fichier est déposé dans `images/` avec le bon nom, il apparaît
-automatiquement et le panneau disparaît. La liste des fichiers attendus est
-dans `images/README.md`.
+Les dix-huit photos du site sont déclarées dans `images.css`, une règle par
+emplacement. Elles proviennent de **Pexels** — licence Pexels : usage gratuit
+y compris commercial, sans attribution obligatoire. La page source de chaque
+photo est en commentaire dans le fichier.
+
+Ce sont des photos d'illustration, à remplacer par celles de la boutique.
+Pour en changer une, il suffit de modifier son adresse dans `images.css`.
+
+Pour héberger les images sur votre propre serveur :
+
+```bash
+./fetch-photos.sh   # télécharge tout dans images/
+```
+puis décommenter le bloc « version locale » à la fin de `images.css`.
+
+Si une photo ne charge pas, le site affiche automatiquement un panneau
+d'attente à la place : rien ne casse.
 
 ## Plan d'accès
 
@@ -76,7 +91,8 @@ Tout est désactivé sous `prefers-reduced-motion`.
 
 ## À compléter avant mise en ligne
 
-1. **Photos** — voir `images/README.md`.
+1. **Photos** — remplacer les photos d'illustration Pexels par celles de la
+   boutique (voir `images/README.md`).
 2. **Horaires complets** — seule l'ouverture (06h30) est connue ; la page
    contact l'indique explicitement.
 3. **Prix** — indicatifs, cohérents avec la fourchette 1–10 € annoncée.

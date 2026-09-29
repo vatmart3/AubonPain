@@ -1,0 +1,93 @@
+/* =====================================================================
+   Photothèque du site
+   ---------------------------------------------------------------------
+   Une règle par emplacement. Pour remplacer une photo, ne changez que
+   l'adresse : soit une autre URL, soit un fichier local (images/nom.jpg).
+
+   Les photos actuelles viennent de Pexels — licence Pexels : utilisation
+   gratuite, y compris commerciale, sans attribution obligatoire.
+   La page source de chaque photo est indiquée en commentaire.
+
+   Pour héberger les images vous-même (site plus rapide, pas de
+   dépendance à Pexels) : lancez ./fetch-photos.sh puis décommentez le
+   bloc « version locale » en bas de ce fichier.
+   ===================================================================== */
+
+/* Breads In A Bakery — https://www.pexels.com/photo/breads-in-a-bakery-3341067/ */
+[data-photo="vitrine"]{ --img:url("https://images.pexels.com/photos/3341067/pexels-photo-3341067.jpeg?auto=compress&cs=tinysrgb&w=1400"); }
+
+/* Croissant with a Price Tag in a Bakery — https://www.pexels.com/photo/croissant-with-a-price-tag-in-a-bakery-19803486/ */
+[data-photo="viennoiseries"]{ --img:url("https://images.pexels.com/photos/19803486/pexels-photo-19803486.jpeg?auto=compress&cs=tinysrgb&w=1400"); }
+
+/* Sourdough bread with burnt crust on table — https://www.pexels.com/photo/sourdough-bread-with-burnt-crust-on-table-6605201/ */
+[data-photo="pains"]{ --img:url("https://images.pexels.com/photos/6605201/pexels-photo-6605201.jpeg?auto=compress&cs=tinysrgb&w=1400"); }
+
+/* A Baguette Sandwich on a Plate — https://www.pexels.com/photo/a-baguette-sandwich-on-a-plate-17498978/ */
+[data-photo="sandwichs"]{ --img:url("https://images.pexels.com/photos/17498978/pexels-photo-17498978.jpeg?auto=compress&cs=tinysrgb&w=1400"); }
+
+/* Cup of Coffee and Bagel — https://www.pexels.com/photo/cup-of-coffee-and-bagel-17180513/ */
+[data-photo="cafe"]{ --img:url("https://images.pexels.com/photos/17180513/pexels-photo-17180513.jpeg?auto=compress&cs=tinysrgb&w=1400"); }
+
+/* Charming Nevis Bakery in Fort William — https://www.pexels.com/photo/charming-nevis-bakery-in-fort-william-31083446/ */
+[data-photo="boutique"]{ --img:url("https://images.pexels.com/photos/31083446/pexels-photo-31083446.jpeg?auto=compress&cs=tinysrgb&w=1400"); }
+
+/* Tray with Croissants for Baking — https://www.pexels.com/photo/tray-with-croissants-for-baking-19987146/ */
+[data-photo="fournee"]{ --img:url("https://images.pexels.com/photos/19987146/pexels-photo-19987146.jpeg?auto=compress&cs=tinysrgb&w=1400"); }
+
+/* Cookies on Display — https://www.pexels.com/photo/cookies-on-display-16637678/ */
+[data-photo="comptoir"]{ --img:url("https://images.pexels.com/photos/16637678/pexels-photo-16637678.jpeg?auto=compress&cs=tinysrgb&w=1400"); }
+
+/* Croissant, Flowers and Bread — https://www.pexels.com/photo/croissant-flowers-and-bread-20410181/ */
+[data-photo="croissant"]{ --img:url("https://images.pexels.com/photos/20410181/pexels-photo-20410181.jpeg?auto=compress&cs=tinysrgb&w=1400"); }
+
+/* Man Basting Croissants before Baking — https://www.pexels.com/photo/man-basting-croissants-before-baking-7965949/ */
+[data-photo="pain-chocolat"]{ --img:url("https://images.pexels.com/photos/7965949/pexels-photo-7965949.jpeg?auto=compress&cs=tinysrgb&w=1400"); }
+
+/* A Pastry Chef Making Croissants — https://www.pexels.com/photo/a-pastry-chef-making-croissants-7966375/ */
+[data-photo="brioche"]{ --img:url("https://images.pexels.com/photos/7966375/pexels-photo-7966375.jpeg?auto=compress&cs=tinysrgb&w=1400"); }
+
+/* Close-up of a Loaf of Bread — https://www.pexels.com/photo/close-up-of-a-loaf-of-bread-15301249/ */
+[data-photo="baguette"]{ --img:url("https://images.pexels.com/photos/15301249/pexels-photo-15301249.jpeg?auto=compress&cs=tinysrgb&w=1400"); }
+
+/* Slices of bread on cutting board — https://www.pexels.com/photo/slices-of-bread-on-cutting-board-6605208/ */
+[data-photo="campagne"]{ --img:url("https://images.pexels.com/photos/6605208/pexels-photo-6605208.jpeg?auto=compress&cs=tinysrgb&w=1400"); }
+
+/* Delicious Tomato and Lettuce Baguette Sandwich — https://www.pexels.com/photo/delicious-tomato-and-lettuce-baguette-sandwich-34593400/ */
+[data-photo="sandwich"]{ --img:url("https://images.pexels.com/photos/34593400/pexels-photo-34593400.jpeg?auto=compress&cs=tinysrgb&w=1400"); }
+
+/* Vegetable Salad in a Bowl — https://www.pexels.com/photo/vegetable-salad-in-a-bowl-7660426/ */
+[data-photo="salade"]{ --img:url("https://images.pexels.com/photos/7660426/pexels-photo-7660426.jpeg?auto=compress&cs=tinysrgb&w=1400"); }
+
+/* Soup and Bread Served in a Restaurant — https://www.pexels.com/photo/soup-and-bread-served-in-a-restaurant-19503784/ */
+[data-photo="soupe"]{ --img:url("https://images.pexels.com/photos/19503784/pexels-photo-19503784.jpeg?auto=compress&cs=tinysrgb&w=1400"); }
+
+/* A Cup of Coffee and a Toasted Sandwich on a Tray — https://www.pexels.com/photo/a-cup-of-coffee-and-a-toasted-sandwich-on-a-tray-6612776/ */
+[data-photo="cafe-formule"]{ --img:url("https://images.pexels.com/photos/6612776/pexels-photo-6612776.jpeg?auto=compress&cs=tinysrgb&w=1400"); }
+
+/* Baked Cookies and Pastry on the Plate — https://www.pexels.com/photo/baked-cookies-and-pastry-on-the-plate-10819659/ */
+[data-photo="patisserie"]{ --img:url("https://images.pexels.com/photos/10819659/pexels-photo-10819659.jpeg?auto=compress&cs=tinysrgb&w=1400"); }
+
+
+/* ---------------------------------------------------------------------
+   Version locale — à activer après ./fetch-photos.sh
+   ---------------------------------------------------------------------
+
+[data-photo="vitrine"]{ --img:url("images/vitrine.jpg"); }
+[data-photo="viennoiseries"]{ --img:url("images/viennoiseries.jpg"); }
+[data-photo="pains"]{ --img:url("images/pains.jpg"); }
+[data-photo="sandwichs"]{ --img:url("images/sandwichs.jpg"); }
+[data-photo="cafe"]{ --img:url("images/cafe.jpg"); }
+[data-photo="boutique"]{ --img:url("images/boutique.jpg"); }
+[data-photo="fournee"]{ --img:url("images/fournee.jpg"); }
+[data-photo="comptoir"]{ --img:url("images/comptoir.jpg"); }
+[data-photo="croissant"]{ --img:url("images/croissant.jpg"); }
+[data-photo="pain-chocolat"]{ --img:url("images/pain-chocolat.jpg"); }
+[data-photo="brioche"]{ --img:url("images/brioche.jpg"); }
+[data-photo="baguette"]{ --img:url("images/baguette.jpg"); }
+[data-photo="campagne"]{ --img:url("images/campagne.jpg"); }
+[data-photo="sandwich"]{ --img:url("images/sandwich.jpg"); }
+[data-photo="salade"]{ --img:url("images/salade.jpg"); }
+[data-photo="soupe"]{ --img:url("images/soupe.jpg"); }
+[data-photo="cafe-formule"]{ --img:url("images/cafe-formule.jpg"); }
+[data-photo="patisserie"]{ --img:url("images/patisserie.jpg"); }
+--------------------------------------------------------------------- */

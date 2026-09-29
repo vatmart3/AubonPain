@@ -93,7 +93,7 @@ def page(nom, contenu):
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%%23C4552F'/><text x='16' y='23' font-family='Georgia,serif' font-size='18' text-anchor='middle' fill='%%23FDF7EF'>A</text></svg>">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css">\n<link rel="stylesheet" href="images.css">
 <script>document.documentElement.className = 'js';</script>
 %s
 </head>
@@ -120,9 +120,10 @@ def page(nom, contenu):
 #  Contenu des pages
 # =====================================================================
 
-def photo(fichier, legende, classes='', attrs=''):
-    return ('<div class="photo %s"%s style="--img:url(\'images/%s\')" data-legende="%s"></div>'
-            % (classes, (' ' + attrs) if attrs else '', fichier, legende))
+def photo(cle, legende, classes='', attrs=''):
+    """cle = identifiant de la photo, défini dans images.css"""
+    return ('<div class="photo %s"%s data-photo="%s" data-legende="%s"></div>'
+            % (classes, (' ' + attrs) if attrs else '', cle.replace('.jpg', ''), legende))
 
 BANDE_CONTACT = '''
 <section class="section appel-final">

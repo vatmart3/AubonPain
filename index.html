@@ -14,6 +14,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23C4552F'/><text x='16' y='23' font-family='Georgia,serif' font-size='18' text-anchor='middle' fill='%23FDF7EF'>A</text></svg>">
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="images.css">
 <script>document.documentElement.className = 'js';</script>
 <script type="application/ld+json">
 {
@@ -85,8 +86,8 @@
     </div>
 
     <div class="hero-vis rev">
-      <div class="photo vis-grande" style="--img:url('images/vitrine.jpg')" data-legende="Photo — la vitrine du matin"></div>
-      <div class="photo vis-petite" style="--img:url('images/viennoiseries.jpg')" data-legende="Photo — viennoiseries"></div>
+      <div class="photo vis-grande" data-photo="vitrine" data-legende="Photo — la vitrine du matin"></div>
+      <div class="photo vis-petite" data-photo="viennoiseries" data-legende="Photo — viennoiseries"></div>
       <div class="jeton"><b>4,3</b><span>79 avis Google</span></div>
     </div>
   </div>
@@ -127,19 +128,19 @@
     </div>
     <div class="quatuor">
       <article class="famille rev" style="--c:var(--terre)">
-        <span class="numero">01</span><div class="photo ratio-4x3" style="--img:url('images/pains.jpg')" data-legende="Photo — pains"></div>
+        <span class="numero">01</span><div class="photo ratio-4x3" data-photo="pains" data-legende="Photo — pains"></div>
         <div class="famille-txt"><h3>Pains du jour</h3><p>Baguettes tradition, pains de campagne et pains spéciaux, à la fournée.</p><a href="carte.html#pains">Voir la carte</a></div>
       </article>
       <article class="famille rev" style="--c:var(--miel)">
-        <span class="numero">02</span><div class="photo ratio-4x3" style="--img:url('images/viennoiseries.jpg')" data-legende="Photo — viennoiseries"></div>
+        <span class="numero">02</span><div class="photo ratio-4x3" data-photo="viennoiseries" data-legende="Photo — viennoiseries"></div>
         <div class="famille-txt"><h3>Viennoiseries</h3><p>Croissants pur beurre, pains au chocolat et brioches, cuits sur place.</p><a href="carte.html#viennoiseries">Voir la carte</a></div>
       </article>
       <article class="famille rev" style="--c:var(--olive)">
-        <span class="numero">03</span><div class="photo ratio-4x3" style="--img:url('images/sandwichs.jpg')" data-legende="Photo — sandwichs"></div>
+        <span class="numero">03</span><div class="photo ratio-4x3" data-photo="sandwichs" data-legende="Photo — sandwichs"></div>
         <div class="famille-txt"><h3>Le midi</h3><p>Sandwichs préparés le matin, salades composées et soupes maison.</p><a href="carte.html#midi">Voir la carte</a></div>
       </article>
       <article class="famille rev" style="--c:var(--prune)">
-        <span class="numero">04</span><div class="photo ratio-4x3" style="--img:url('images/cafe.jpg')" data-legende="Photo — café"></div>
+        <span class="numero">04</span><div class="photo ratio-4x3" data-photo="cafe" data-legende="Photo — café"></div>
         <div class="famille-txt"><h3>Café &amp; douceurs</h3><p>Le café pris debout au comptoir, et la pâtisserie du jour qui va avec.</p><a href="carte.html#cafe">Voir la carte</a></div>
       </article>
     </div>
@@ -160,9 +161,9 @@
       <a class="bouton clair" href="maison.html">Notre histoire</a>
     </div>
     <div class="collage rev">
-      <div class="photo grand para" data-para="14" style="--img:url('images/boutique.jpg')" data-legende="Photo — la boutique"></div>
-      <div class="photo para" data-para="-10" style="--img:url('images/vitrine.jpg')" data-legende="Photo — vitrine"></div>
-      <div class="photo para" data-para="8" style="--img:url('images/fournee.jpg')" data-legende="Photo — fournée"></div>
+      <div class="photo grand para" data-para="14" data-photo="boutique" data-legende="Photo — la boutique"></div>
+      <div class="photo para" data-para="-10" data-photo="vitrine" data-legende="Photo — vitrine"></div>
+      <div class="photo para" data-para="8" data-photo="fournee" data-legende="Photo — fournée"></div>
     </div>
   </div>
 </section>
