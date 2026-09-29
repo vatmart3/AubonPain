@@ -138,17 +138,15 @@
     });
   }, { passive: true });
 
-  /* ---- Carrousel de la vitrine ------------------------------------------ */
-  var rail = doc.getElementById('rail'), prec = doc.getElementById('prec'), suiv = doc.getElementById('suiv');
-  if (rail && prec && suiv) {
-    var pas = function () {
-      var c = rail.querySelector('.produit');
-      var gap = parseFloat(getComputedStyle(rail).columnGap || '19') || 19;
-      return Math.round(((c ? c.getBoundingClientRect().width : 228) + gap) * 2);
-    };
-    prec.addEventListener('click', function () { rail.scrollBy({ left: -pas(), behavior: 'smooth' }); });
-    suiv.addEventListener('click', function () { rail.scrollBy({ left: pas(), behavior: 'smooth' }); });
-  }
+  /* ---- Photos réelles : on retire le décor d'attente dès qu'une image charge */
+  [].slice.call(doc.querySelectorAll('.photo')).forEach(function (el) {
+    var brut = getComputedStyle(el).getPropertyValue('--img').trim();
+    var m = brut.match(/url\(['"]?([^'")]+)['"]?\)/);
+    if (!m) return;
+    var test = new Image();
+    test.onload = function () { el.classList.add('chargee'); };
+    test.src = m[1];
+  });
 
   /* ---- Lien de navigation actif ------------------------------------------ */
   var liens = [].slice.call(doc.querySelectorAll('.nav a'));
