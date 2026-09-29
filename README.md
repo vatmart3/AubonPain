@@ -19,10 +19,27 @@ python3 -m http.server 8000
 
 ## Direction
 
-Crème chaude et brun pain, ornements fins, titres en Playfair Display et
-texte en Jost. Mise en page pilotée par l'image : hero en trois panneaux,
-grille de spécialités, collage « la maison », carrousel de la vitrine,
-avis en cartes, pied en quatre colonnes.
+Crème chaude et quatre couleurs de rayon — terre cuite (pains), miel
+(viennoiseries), olive (le midi), prune (café et douceurs) — reprises sur les
+pastilles, les numéros, les étiquettes de prix et les liserés de cartes.
+Titres en Fraunces, texte en Jost. Bords festonnés entre les sections, comme
+une croûte.
+
+### Animations
+
+| Élément | Effet |
+| --- | --- |
+| Titre du hero | Le dernier mot change en boucle : croissant chaud, pain frais, chocolat fondu, café serré, beurre fondu |
+| Compte à rebours | Temps réel jusqu'à la prochaine fournée de 06h30 |
+| Fond du hero | Trois taches de couleur floutées qui dérivent lentement |
+| Vapeur | Filets de vapeur qui montent sur la photo principale |
+| Ruban | Bandeau de produits qui défile en continu |
+| Collage | Parallaxe douce des photos au défilement |
+| Compteurs | 4,3 et 79 comptent depuis zéro à l'entrée dans l'écran |
+| Cartes | Soulèvement au survol, zoom de la photo, flèche qui glisse |
+
+Tout est désactivé si le visiteur a demandé moins d'animations
+(`prefers-reduced-motion`).
 
 ### Emplacements photo
 
