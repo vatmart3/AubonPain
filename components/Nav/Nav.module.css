@@ -1,0 +1,126 @@
+.entete {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 1rem var(--gouttiere);
+  color: var(--mie);
+  pointer-events: none;
+}
+.entete > * {
+  pointer-events: auto;
+}
+
+/* Une fois dans le site : une bande pleine, couleur four (pas de verre dépoli). */
+.entete::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--four);
+  border-bottom: 1px solid rgb(216 185 140 / 0.14);
+  transform: translateY(-100%);
+  transition: transform 0.45s var(--ease-sortie);
+}
+.entete[data-bande='true']::before {
+  transform: none;
+}
+.entete[data-bande='true'] {
+  padding-block: 0.55rem;
+  transition: padding 0.3s var(--ease-sortie);
+}
+
+.logo {
+  display: block;
+  color: var(--blond);
+  transform: rotate(-4deg);
+  transition:
+    transform 0.4s var(--ease-papier),
+    color 0.2s;
+}
+.logo:hover {
+  transform: rotate(-1deg) scale(1.03);
+  color: var(--farine);
+}
+.tampon {
+  width: clamp(104px, 9vw, 128px);
+  height: auto;
+  transition: width 0.3s var(--ease-sortie);
+}
+.entete[data-bande='true'] .tampon {
+  width: 92px;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 2.5vw, 2.4rem);
+}
+
+.liens {
+  display: flex;
+  gap: clamp(1rem, 2.2vw, 2.2rem);
+}
+
+.lien {
+  position: relative;
+  display: inline-block;
+  padding: 0.7rem 0.1rem;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+  font-size: 1.1rem;
+  text-decoration: none;
+  color: var(--mie);
+}
+.lien::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.45rem;
+  height: 1.5px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.35s var(--ease-sortie);
+}
+.lien:hover::after,
+.lien[aria-current='page']::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Le ticket « Commander » n'arrive qu'après l'intro. */
+.ticket {
+  transition:
+    opacity 0.4s,
+    transform 0.5s var(--ease-papier);
+}
+:global(html[data-intro='en-cours']) .ticket {
+  opacity: 0;
+  transform: translateY(-120%) rotate(-6deg);
+  pointer-events: none;
+  visibility: hidden;
+  transition:
+    opacity 0.3s,
+    transform 0.3s,
+    visibility 0s 0.3s;
+}
+
+@media (max-width: 760px) {
+  .nav {
+    display: none;
+  }
+  .entete {
+    padding-top: 0.75rem;
+  }
+  .tampon {
+    width: 92px;
+  }
+}

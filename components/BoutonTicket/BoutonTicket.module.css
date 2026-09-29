@@ -1,0 +1,105 @@
+.ticket {
+  --dent: 5px;
+  --papier: var(--farine);
+  --encre-t: var(--encre);
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  min-height: 48px;
+  border: 0;
+  padding: 0;
+  background: var(--papier);
+  color: var(--encre-t);
+  text-decoration: none;
+  font-family: var(--f-texte);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  /* bords haut et bas crantés, comme arrachés du rouleau */
+  -webkit-mask:
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / calc(var(--dent) * 2) 51% repeat-x,
+    conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top / calc(var(--dent) * 2) 51% repeat-x;
+  mask:
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / calc(var(--dent) * 2) 51% repeat-x,
+    conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top / calc(var(--dent) * 2) 51% repeat-x;
+  filter: drop-shadow(0 1px 0 rgb(0 0 0 / 0.08));
+  transition:
+    transform 0.35s var(--ease-papier),
+    background-color 0.2s;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.ticket:hover {
+  transform: translateY(-3px) rotate(-1.2deg);
+}
+.ticket:active {
+  transform: translateY(1px) rotate(0deg) scale(0.98);
+  transition-duration: 0.08s;
+}
+/* Le contour de focus est masqué par le mask : on marque l'intérieur. */
+.ticket:focus-visible {
+  outline: none;
+}
+.ticket:focus-visible .texte {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.25em;
+}
+
+.croute {
+  --papier: var(--croute);
+  --encre-t: var(--farine);
+}
+.croute:hover {
+  --papier: #b8824a;
+}
+
+.souche {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  padding: 0 0.7em 0 0.8em;
+  border-right: 2px dotted color-mix(in srgb, var(--encre-t) 45%, transparent);
+  line-height: 1;
+}
+.no {
+  font-size: 0.55em;
+  letter-spacing: 0.1em;
+  opacity: 0.75;
+}
+.numero {
+  font-family: var(--f-titre);
+  font-weight: 400;
+  font-size: 1.1em;
+}
+
+.texte {
+  display: flex;
+  align-items: center;
+  padding: 0.6em 1.1em 0.6em 0.9em;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.08em;
+  font-size: 1.12em;
+  white-space: nowrap;
+}
+
+.petit {
+  font-size: 0.95rem;
+}
+
+.grand {
+  --dent: 9px;
+  font-size: clamp(1.2rem, 1rem + 1.2vw, 1.75rem);
+  min-height: 84px;
+}
+.grand .texte {
+  padding: 0.7em 1.5em 0.7em 1.2em;
+  font-variant-caps: normal;
+  letter-spacing: 0.005em;
+  font-family: var(--f-titre);
+  font-weight: 400;
+  font-size: 1.15em;
+}
+.grand .souche {
+  padding: 0 1em;
+}

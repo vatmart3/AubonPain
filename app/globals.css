@@ -1,0 +1,225 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   Au Bon Pain — fondations
+   ───────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Palette (imposée) */
+  --four: #15110e;
+  --four-2: #1f1915;
+  --croute: #a8743f;
+  --blond: #d8b98c;
+  --mie: #f2e8d8;
+  --farine: #faf6ef;
+  --encre: #2a221d;
+  --tomette: #9c3b22;
+
+  /* Dérivés : matières (papier kraft, bois, lignes du carnet) */
+  --kraft: #cfb48c;
+  --kraft-fonce: #b8996c;
+  --bois: #5a3b22;
+  --ligne-carnet: #b9cad6;
+  --croute-texte: #8a5a2b; /* croûte assez sombre pour du texte sur fond clair (AA) */
+
+  /* Texte */
+  --f-titre: var(--font-gloock), 'Iowan Old Style', Georgia, serif;
+  --f-texte: var(--font-karla), 'Helvetica Neue', Arial, sans-serif;
+  --f-main: var(--font-nanum), 'Bradley Hand', cursive;
+  --f-ticket: var(--font-mono), 'Courier New', monospace;
+
+  --t-base: clamp(1.0625rem, 0.98rem + 0.3vw, 1.1875rem);
+  --t-petit: 0.9375rem;
+
+  --gouttiere: clamp(1rem, 4vw, 3.5rem);
+  --max: 88rem;
+
+  --ease-sortie: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-papier: cubic-bezier(0.34, 1.3, 0.64, 1);
+
+  /* Grain papier (SVG noise), commun à tous les fonds */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.45 0 0 0 0 0.4 0 0 0 1.4 -0.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+
+  color-scheme: light;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--four);
+  scroll-behavior: auto;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+body {
+  margin: 0;
+  background: var(--four);
+  color: var(--mie);
+  font-family: var(--f-texte);
+  font-size: var(--t-base);
+  line-height: 1.55;
+  font-feature-settings: 'kern' 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+/* Grain sur tout le site, au-dessus des fonds, sous les interactions */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  background-image: var(--grain);
+  opacity: 0.045;
+  mix-blend-mode: overlay;
+}
+
+img,
+svg,
+canvas,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+ul,
+ol,
+dl,
+dd {
+  margin: 0;
+}
+
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+  padding: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--f-titre);
+  font-weight: 400;
+  line-height: 0.92;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.num {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Focus visible : un trait de crayon croûte, décalé, jamais le contour bleu */
+:focus {
+  outline: none;
+}
+:focus-visible {
+  outline: 2.5px solid var(--croute);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+.sur-clair :focus-visible,
+:where(.sur-clair) :focus-visible {
+  outline-color: var(--tomette);
+}
+
+::selection {
+  background: var(--croute);
+  color: var(--farine);
+}
+
+.sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.lien-evitement {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 200;
+  padding: 0.75rem 1rem;
+  background: var(--farine);
+  color: var(--encre);
+  font-weight: 700;
+  transform: translateY(-160%);
+  transition: transform 0.2s var(--ease-sortie);
+}
+.lien-evitement:focus-visible {
+  transform: none;
+}
+
+/* Sections : sombres (four) et claires (mie / kraft), en alternance */
+.section-four {
+  background: var(--four);
+  color: var(--mie);
+}
+.section-mie {
+  background: var(--mie);
+  color: var(--encre);
+}
+.section-kraft {
+  background: var(--kraft);
+  color: var(--encre);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
