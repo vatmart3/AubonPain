@@ -30,7 +30,7 @@
   font-weight: 700;
 }
 .prose a:focus-visible {
-  outline-color: var(--tomette);
+  outline-color: var(--encre);
 }
 .aValider {
   background: rgb(207 180 140 / 0.6);

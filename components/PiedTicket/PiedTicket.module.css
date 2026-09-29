@@ -134,7 +134,7 @@
 .liens a:focus-visible,
 .tel:focus-visible,
 .credit a:focus-visible {
-  outline-color: var(--tomette);
+  outline-color: var(--encre);
 }
 
 .total {

@@ -1,6 +1,5 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from 'react';
 import { boutique, joursSemaine } from '@/content/boutique';
 import { categories, produitParId, produits, type Categorie } from '@/content/produits';
@@ -31,10 +30,9 @@ const telLien = `tel:${boutique.telephone.lien}`;
 
 export function Commande() {
   const panier = usePanier();
-  const params = useSearchParams();
-  const ajout = params.get('ajout');
-
-  const [onglet, setOnglet] = useState<Categorie>(() => produitParId.get(ajout ?? '')?.categorie ?? 'pains');
+  // Produit arrivé depuis « Mettre de côté » (lu après le montage : la page reste statique).
+  const [ajout, setAjout] = useState<string | null>(null);
+  const [onglet, setOnglet] = useState<Categorie>('pains');
   const [jours, setJours] = useState<JourCalendrier[] | null>(null);
   const [date, setDate] = useState<string | null>(null);
   const [creneau, setCreneau] = useState<string | null>(null);
@@ -55,10 +53,14 @@ export function Commande() {
   useEffect(() => {
     debut.current = Date.now();
     setJours(joursCalendrier(aSete()));
-    if (ajout && produitParId.has(ajout)) {
-      requestAnimationFrame(() => document.getElementById(`p-${ajout}`)?.scrollIntoView({ block: 'center' }));
+    const id = new URLSearchParams(window.location.search).get('ajout');
+    const p = id ? produitParId.get(id) : undefined;
+    if (p) {
+      setAjout(p.id);
+      setOnglet(p.categorie);
+      requestAnimationFrame(() => document.getElementById(`p-${p.id}`)?.scrollIntoView({ block: 'center' }));
     }
-  }, [ajout]);
+  }, []);
 
   const lignes = panier.lignes;
   const indisponibles = date ? lignes.filter((l) => !produitDisponible(produitParId.get(l.id)!, date)) : [];
@@ -325,6 +327,8 @@ export function Commande() {
                 Commande pour le lendemain au plus tôt, avant {heureLisible(enMinutes(boutique.commande.heureLimiteVeille))} la veille. Fermé le dimanche.
               </p>
               <div className={styles.calendrier} role="radiogroup" aria-label="Jour de retrait" id="champ-date" tabIndex={-1}>
+                {!jours &&
+                  Array.from({ length: boutique.commande.joursProposes }, (_, k) => <span key={k} className={styles.ephemeride} data-ferme="true" aria-hidden="true" />)}
                 {(jours ?? []).map((j) => (
                   <label key={j.iso} className={styles.ephemeride} data-ferme={!j.ouvert} data-choisi={date === j.iso} title={j.raison}>
                     <input

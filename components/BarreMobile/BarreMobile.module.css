@@ -154,7 +154,7 @@
   }
   .lien:focus-visible,
   .tel:focus-visible {
-    outline-color: var(--tomette);
+    outline-color: var(--encre);
   }
 
   .tel {

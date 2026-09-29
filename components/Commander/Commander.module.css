@@ -362,7 +362,7 @@
 }
 .ephemeride:has(input:focus-visible),
 .creneau:has(input:focus-visible) {
-  outline: 2.5px solid var(--tomette);
+  outline: 2.5px solid var(--encre);
   outline-offset: 3px;
 }
 
@@ -519,7 +519,7 @@
   translate: 0 -2px;
 }
 .case input:focus-visible {
-  outline: 2.5px solid var(--tomette);
+  outline: 2.5px solid var(--encre);
   outline-offset: 3px;
 }
 .case[data-erreur='true'] input {

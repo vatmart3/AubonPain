@@ -60,7 +60,44 @@
 }
 
 /* ── La porte en deux battants ─────────────────────────────────────── */
+/* Géométrie : variables posées par le composant, format choisi ici. */
+.camera {
+  --px: var(--px-d);
+  --py: var(--py-d);
+  --pw: var(--pw-d);
+  --ph: var(--ph-d);
+  --pwq: var(--pwq-d);
+  --vy: var(--vy-d);
+  transform-origin: var(--origine-d);
+}
+.decoupe {
+  width: var(--dw-d);
+  height: var(--dh-d);
+  left: var(--dl-d);
+  top: var(--dt-d);
+}
+@media (max-aspect-ratio: 5/6) {
+  .camera {
+    --px: var(--px-m);
+    --py: var(--py-m);
+    --pw: var(--pw-m);
+    --ph: var(--ph-m);
+    --pwq: var(--pwq-m);
+    --vy: var(--vy-m);
+    transform-origin: var(--origine-m);
+  }
+  .decoupe {
+    width: var(--dw-m);
+    height: var(--dh-m);
+    left: var(--dl-m);
+    top: var(--dt-m);
+  }
+}
 .porte {
+  left: var(--px);
+  top: var(--py);
+  width: var(--pw);
+  height: var(--ph);
   position: absolute;
   perspective: 1400px;
   transform-style: preserve-3d;
@@ -86,6 +123,12 @@
 .decoupe {
   position: absolute;
 }
+.decoupe picture,
+.decoupe img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
 .dosBattant {
   position: absolute;
   inset: 0;
@@ -96,6 +139,10 @@
 /* ── Le statut, en lettrage adhésif sur la vitre ───────────────────── */
 .vitre {
   position: absolute;
+  left: var(--px);
+  top: var(--vy);
+  width: var(--pw);
+  --porte-w: var(--pwq);
   display: grid;
   justify-items: center;
   pointer-events: none;
@@ -190,9 +237,7 @@
   position: absolute;
   inset: -10% -10% -10% -10%;
   pointer-events: none;
-  background: linear-gradient(115deg, transparent 20%, rgb(255 226 176 / 0.16) 34%, rgb(255 236 200 / 0.22) 42%, transparent 58%);
-  mix-blend-mode: screen;
-  filter: blur(20px);
+  background: linear-gradient(115deg, transparent 18%, rgb(255 226 176 / 0.08) 28%, rgb(255 236 200 / 0.2) 40%, rgb(255 226 176 / 0.08) 50%, transparent 60%);
 }
 
 .farine {

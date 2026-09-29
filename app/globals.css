@@ -18,7 +18,8 @@
   --kraft-fonce: #b8996c;
   --bois: #5a3b22;
   --ligne-carnet: #b9cad6;
-  --croute-texte: #8a5a2b; /* croûte assez sombre pour du texte sur fond clair (AA) */
+  --croute-texte: #8a5a2b; /* croûte assez sombre pour du texte sur mie / farine (AA) */
+  --croute-sombre: #6b4220; /* sur kraft, pour les grands titres seulement (≥ 3:1) */
 
   /* Texte */
   --f-titre: var(--font-gloock), 'Iowan Old Style', Georgia, serif;
@@ -84,8 +85,7 @@ body::after {
   z-index: 90;
   pointer-events: none;
   background-image: var(--grain);
-  opacity: 0.045;
-  mix-blend-mode: overlay;
+  opacity: 0.05;
 }
 
 img,
@@ -163,7 +163,7 @@ button {
 }
 .sur-clair :focus-visible,
 :where(.sur-clair) :focus-visible {
-  outline-color: var(--tomette);
+  outline-color: var(--encre);
 }
 
 ::selection {
@@ -219,7 +219,9 @@ button {
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    /* 0s et non 0,01 ms : sinon chaque changement de style met une image à s'appliquer */
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
     scroll-behavior: auto !important;
   }
 }

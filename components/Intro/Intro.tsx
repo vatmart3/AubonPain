@@ -33,7 +33,7 @@ function Photo({ nom, alt = '', priorite = false, className }: { nom: string; al
         width={IMAGE.w}
         height={IMAGE.h}
         className={className}
-        decoding={priorite ? 'sync' : 'async'}
+        decoding="async"
         fetchPriority={priorite ? 'high' : 'low'}
         draggable={false}
       />
@@ -42,24 +42,43 @@ function Photo({ nom, alt = '', priorite = false, className }: { nom: string; al
 }
 
 /** Un battant de porte : un morceau de l'image « façade » découpé au bon endroit. */
-function Battant({ cote, format }: { cote: 'g' | 'd'; format: Format }) {
-  const porte = enPourcents(PORTE, format);
-  const demi = porte.w / 2;
-  const x = cote === 'g' ? porte.x : porte.x + demi;
-  const style = {
-    width: `${(100 / demi) * 100}%`,
-    height: `${(100 / porte.h) * 100}%`,
-    left: `${(-x / demi) * 100}%`,
-    top: `${(-porte.y / porte.h) * 100}%`,
-  } satisfies CSSProperties;
+function Battant({ cote }: { cote: 'g' | 'd' }) {
+  // Géométrie des deux formats en variables CSS : le bon format est choisi par media query,
+  // sans attendre le JavaScript (pas de décalage à l'hydratation).
+  const vars: Record<string, string> = {};
+  for (const [f, suffixe] of [['desktop', 'd'], ['mobile', 'm']] as const) {
+    const porte = enPourcents(PORTE, f);
+    const demi = porte.w / 2;
+    const x = cote === 'g' ? porte.x : porte.x + demi;
+    vars[`--dw-${suffixe}`] = `${(100 / demi) * 100}%`;
+    vars[`--dh-${suffixe}`] = `${(100 / porte.h) * 100}%`;
+    vars[`--dl-${suffixe}`] = `${(-x / demi) * 100}%`;
+    vars[`--dt-${suffixe}`] = `${(-porte.y / porte.h) * 100}%`;
+  }
   return (
     <div className={`${styles.battant} ${cote === 'g' ? styles.battantG : styles.battantD}`} data-battant={cote}>
-      <div className={styles.decoupe} style={style}>
+      <div className={styles.decoupe} style={vars as CSSProperties}>
         <Photo nom="facade" priorite />
       </div>
       <div className={styles.dosBattant} data-dos />
     </div>
   );
+}
+
+/** Variables CSS de position de la porte, pour les deux formats. */
+function varsPorte() {
+  const v: Record<string, string> = {};
+  for (const [f, sfx] of [['desktop', 'd'], ['mobile', 'm']] as const) {
+    const p = enPourcents(PORTE, f);
+    v[`--px-${sfx}`] = `${p.x}%`;
+    v[`--py-${sfx}`] = `${p.y}%`;
+    v[`--pw-${sfx}`] = `${p.w}%`;
+    v[`--ph-${sfx}`] = `${p.h}%`;
+    v[`--pwq-${sfx}`] = `${p.w}cqw`;
+    v[`--vy-${sfx}`] = `${p.y + p.h * 0.16}%`;
+    v[`--origine-${sfx}`] = `${p.x + p.w / 2}% ${p.y + p.h * 0.55}%`;
+  }
+  return v as CSSProperties;
 }
 
 export function Intro({ mode }: { mode: ModeIntro }) {
@@ -97,9 +116,23 @@ export function Intro({ mode }: { mode: ModeIntro }) {
     const lent = (navigator.hardwareConcurrency ?? 8) <= 4;
     if (etroit && lent) return;
     const n = window.innerWidth < 760 ? Math.round(introConfig.particules / 3) : introConfig.particules;
-    const ric = window.requestIdleCallback ?? ((f: () => void) => window.setTimeout(f, 400));
-    const id = ric(() => setParticules(n));
-    return () => (window.cancelIdleCallback ?? window.clearTimeout)(id as number);
+    // three.js ne se charge qu'au premier geste (ou après quelques secondes) :
+    // la façade s'affiche d'abord, la farine arrive ensuite.
+    const evenements = ['pointermove', 'pointerdown', 'wheel', 'touchstart', 'keydown', 'scroll'] as const;
+    let fait = false;
+    const lancer = () => {
+      if (fait) return;
+      fait = true;
+      setParticules(n);
+      nettoyer();
+    };
+    const minuterie = window.setTimeout(lancer, 6000);
+    const nettoyer = () => {
+      window.clearTimeout(minuterie);
+      evenements.forEach((e) => window.removeEventListener(e, lancer));
+    };
+    evenements.forEach((e) => window.addEventListener(e, lancer, { passive: true, once: true }));
+    return nettoyer;
   }, [reduit]);
 
   useEffect(() => {
@@ -230,7 +263,9 @@ export function Intro({ mode }: { mode: ModeIntro }) {
       }
 
       // Le « bam » : micro-flash, bouffée de farine, le nom qui s'écrit. Minuté, pas au défilement.
-      const bam = gsap
+      const bam = reduit
+        ? null
+        : gsap
         .timeline({ paused: true })
         .fromTo(q('[data-flash]'), { opacity: 0 }, { opacity: 0.8, duration: 0.05, ease: 'none' })
         .to(q('[data-flash]'), { opacity: 0, duration: 0.1, ease: 'power1.out' })
@@ -257,10 +292,10 @@ export function Intro({ mode }: { mode: ModeIntro }) {
             if (p >= 0.92 && !bamJoue) {
               bamJoue = true;
               bouffee.current = performance.now();
-              bam.restart();
+              bam?.restart();
             } else if (p < 0.9 && bamJoue) {
               bamJoue = false;
-              bam.pause(0);
+              bam?.pause(0);
             }
             if (avant < 0.3 && p >= 0.3 && !porteSonnee && sonActif.current) {
               porteSonnee = true;
@@ -271,7 +306,8 @@ export function Intro({ mode }: { mode: ModeIntro }) {
           if (p > 0.9) stockage.ecrire('session', introConfig.cleVue, '1');
         },
       });
-      if (reduit) bam.progress(1);
+      // Les mesures peuvent dater d'avant le changement de hauteur (mouvement réduit, format).
+      requestAnimationFrame(() => ScrollTrigger.refresh());
 
       // Déjà vue dans la session : on reprend face au comptoir.
       if (stockage.lire('session', introConfig.cleVue) && window.scrollY < 5 && !window.location.hash) {
@@ -282,9 +318,7 @@ export function Intro({ mode }: { mode: ModeIntro }) {
     return () => ctx.revert();
   }, [mode, reduit, format]);
 
-  const porte = enPourcents(PORTE, format);
   const vb = format === 'desktop' ? `0 0 ${IMAGE.w} ${IMAGE.h}` : `${IMAGE.w / 2 - LARGEUR_MOBILE / 2} 0 ${LARGEUR_MOBILE} ${IMAGE.h}`;
-  const origineCamera = `${porte.x + porte.w / 2}% ${porte.y + porte.h * 0.55}%`;
   const origineInterieur = `${(CIBLES.comptoir.x / IMAGE.w) * 100}% ${(CIBLES.comptoir.y / IMAGE.h) * 100}%`;
 
   const sign = statut && (
@@ -326,20 +360,13 @@ export function Intro({ mode }: { mode: ModeIntro }) {
         ) : (
           <>
             {/* La façade (la caméra avance dedans) */}
-            <div className={styles.plaque} data-camera style={{ transformOrigin: origineCamera }}>
+            <div className={`${styles.plaque} ${styles.camera}`} data-camera style={varsPorte()}>
               <Photo nom="porte-ouverte" alt="La vitrine d’Au Bon Pain, 36 rue Paul Bousquet à Sète, au petit matin (illustration)" priorite />
-              <div
-                className={styles.porte}
-                style={{ left: `${porte.x}%`, top: `${porte.y}%`, width: `${porte.w}%`, height: `${porte.h}%` }}
-              >
-                <Battant cote="g" format={format} />
-                <Battant cote="d" format={format} />
+              <div className={styles.porte}>
+                <Battant cote="g" />
+                <Battant cote="d" />
               </div>
-              <div
-                className={styles.vitre}
-                data-vitre
-                style={{ left: `${porte.x}%`, top: `${porte.y + porte.h * 0.16}%`, width: `${porte.w}%`, '--porte-w': `${porte.w}cqw` } as CSSProperties}
-              >
+              <div className={styles.vitre} data-vitre>
                 {sign}
               </div>
             </div>

@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { Suspense } from 'react';
 import { EnTetePage } from '@/components/EnTetePage/EnTetePage';
 import { Commande } from '@/components/Commander/Commande';
 
@@ -23,9 +22,7 @@ export default function PageCommander() {
         }
         chapeau="Trois petites étapes, pas de compte, pas de carte bancaire. Vous commandez ici, vous payez en boutique."
       />
-      <Suspense>
-        <Commande />
-      </Suspense>
+      <Commande />
     </>
   );
 }
