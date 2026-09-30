@@ -54,22 +54,17 @@ a{ color:inherit; }
 :focus-visible{ outline:2px solid var(--terre); outline-offset:3px; }
 
 /* --- Emplacements photo (en attendant les photographies) -------------- */
+/* Trois couches : la photographie si elle charge, sinon l'illustration
+   dessinée du produit, posée sur un aplat teinté selon le rayon. */
 .photo{
   position:relative; overflow:hidden; border-radius:var(--r);
   background-image:
     var(--img, none),
-    repeating-linear-gradient(135deg, rgba(255,255,255,.2) 0 2px, transparent 2px 10px),
-    linear-gradient(155deg,#F0D9B6 0%, #E2BE92 55%, #D3A873 100%);
-  background-size:cover, auto, auto;
-  background-position:center, 0 0, 0 0;
-  background-repeat:no-repeat, repeat, no-repeat;
-}
-/* Quand la photo est réellement chargée, on retire le décor d'attente */
-.photo.chargee::before, .photo.chargee::after{ content:none; }
-.photo::before{ content:""; position:absolute; inset:10px; border:1px solid rgba(74,46,32,.18); border-radius:10px; }
-.photo::after{
-  content:attr(data-legende); position:absolute; inset:auto 0 14px; text-align:center;
-  font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(74,46,32,.5);
+    var(--dessin, none),
+    var(--teinte, linear-gradient(155deg,#FBEEDC,#F0DCBE));
+  background-size:cover, auto 68%, auto;
+  background-position:center, center, center;
+  background-repeat:no-repeat, no-repeat, no-repeat;
 }
 .ratio-4x3{ aspect-ratio:4/3; }
 .ratio-1x1{ aspect-ratio:1/1; }

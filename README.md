@@ -20,7 +20,9 @@ python3 -m http.server 8000
 | `contact.html` | Adresse, téléphone, horaires, **plan intégré** et accès |
 | `styles.css` | Feuille de style commune |
 | `script.js` | Interactions communes |
-| `images.css` | Une règle par photo — le seul endroit à modifier pour changer une image |
+| `images.css` | Une règle par emplacement — photo, illustration de repli, teinte (généré) |
+| `build-images.py` | Regénère `images.css` |
+| `build_illustrations.py` | Les illustrations SVG des produits |
 | `fetch-photos.sh` | Télécharge les photos dans `images/` pour les héberger soi-même |
 | `images/` | Photographies locales — voir `images/README.md` |
 | `build-pages.py` | Génère les cinq pages depuis une coquille commune |
@@ -35,15 +37,29 @@ python3 build-pages.py
 Les pages HTML sont versionnées telles quelles — le script n'est utile que
 pour les regénérer après une modification de la coquille.
 
-## Photos
+## Images
 
-Les dix-huit photos du site sont déclarées dans `images.css`, une règle par
-emplacement. Elles proviennent de **Pexels** — licence Pexels : usage gratuit
-y compris commercial, sans attribution obligatoire. La page source de chaque
-photo est en commentaire dans le fichier.
+Chaque emplacement superpose trois couches, déclarées dans `images.css` :
 
-Ce sont des photos d'illustration, à remplacer par celles de la boutique.
-Pour en changer une, il suffit de modifier son adresse dans `images.css`.
+1. **`--img`** — la photographie. Dix-huit photos **Pexels** (licence Pexels :
+   usage gratuit, y compris commercial, sans attribution obligatoire), avec la
+   page source en commentaire. À remplacer par les photos de la boutique.
+2. **`--dessin`** — l'illustration du produit, dessinée en SVG et intégrée au
+   fichier. Elle s'affiche dès que la photographie ne charge pas : le site
+   n'a jamais d'image cassée ni de trou.
+3. **`--teinte`** — l'aplat de fond, à la couleur du rayon.
+
+Pour changer une photo, ne modifiez que `--img`. Pour n'afficher que les
+illustrations, activez le bloc commenté à la fin de `images.css`.
+
+Les illustrations sont écrites dans `build_illustrations.py` (croissant,
+baguette, pain de campagne, pain au chocolat, brioche, sandwich, salade,
+soupe, café, pâtisserie, devanture, vitrine, comptoir, plateau de fournée).
+Après modification :
+
+```bash
+python3 build-images.py   # regénère images.css
+```
 
 Pour héberger les images sur votre propre serveur :
 
