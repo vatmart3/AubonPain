@@ -13,108 +13,80 @@ python3 -m http.server 8000
 
 | Fichier | Contenu |
 | --- | --- |
-| `index.html` | Accueil : hero animé, atouts, spécialités, la maison en bref |
-| `carte.html` | La carte complète, par rayon, avec ancres et prix |
-| `maison.html` | La maison : présentation, moments de la journée, galerie |
-| `avis.html` | Note globale et avis Google |
-| `contact.html` | Adresse, téléphone, horaires, **plan intégré** et accès |
-| `styles.css` | Feuille de style commune |
-| `script.js` | Interactions communes |
-| `images.css` | Une règle par emplacement — photo, illustration de repli, teinte (généré) |
-| `build-images.py` | Regénère `images.css` |
-| `build_illustrations.py` | Les illustrations SVG des produits |
-| `fetch-photos.sh` | Télécharge les photos dans `images/` pour les héberger soi-même |
-| `images/` | Photographies locales — voir `images/README.md` |
-| `build-pages.py` | Génère les cinq pages depuis une coquille commune |
+| `index.html` | Accueil : hero, four en direct, collection, fournil, la maison |
+| `collection.html` | Les pièces du four — douze produits avec prix |
+| `reservation.html` | Pré-commande à emporter : formulaire et créneaux de retrait |
+| `fournil.html` | Le feu, la nuit — le fournil et la première fournée |
+| `contact.html` | Adresse, téléphone, horaires et plan |
 
-L'en-tête et le pied de page sont identiques sur toutes les pages. Pour
-éviter de les modifier cinq fois, elles sont générées par `build-pages.py` :
+## Direction
 
-```bash
-python3 build-pages.py
-```
+Fond nuit (`#0A0908`), or (`#C08A5A`), crème. Playfair Display pour les
+titres, JetBrains Mono pour tout le reste — libellés en capitales espacées,
+chiffres tabulaires, angles vifs et filets d'un pixel.
 
-Les pages HTML sont versionnées telles quelles — le script n'est utile que
-pour les regénérer après une modification de la coquille.
+## Ce qui bouge
+
+| Élément | Comportement |
+| --- | --- |
+| Four en direct | Pendule à la seconde, dernière sortie du four barrée, prochaine fournée calculée sur le planning des cuissons |
+| Horaires | Le jour courant est mis en évidence automatiquement |
+| Curseur | Anneau qui suit le pointeur et s'élargit sur les liens |
+| Sections | Apparition douce au défilement |
+| Créneaux | Boutons d'heure de 06:30 à 13:00, un seul sélectionné |
+
+Le planning des fournées se règle dans `script.js` (`FOURNEES`).
+
+## Réservation
+
+Le formulaire valide les champs obligatoires puis affiche un récapitulatif.
+**Il n'envoie rien pour l'instant** : il n'y a pas de serveur. Deux options :
+
+- renseigner `EMAIL_BOULANGERIE` en haut de `script.js` — le récapitulatif
+  propose alors un envoi par email préparé ;
+- ou brancher un service de formulaire (Formspree, Basin, Netlify Forms) en
+  remplaçant le `submit` par un `fetch` vers leur adresse.
+
+Sans cela, le bouton du récapitulatif propose d'appeler la boulangerie.
 
 ## Images
 
 Chaque emplacement superpose trois couches, déclarées dans `images.css` :
 
 1. **`--img`** — la photographie. Dix-huit photos **Pexels** (licence Pexels :
-   usage gratuit, y compris commercial, sans attribution obligatoire), avec la
-   page source en commentaire. À remplacer par les photos de la boutique.
-2. **`--dessin`** — l'illustration du produit, dessinée en SVG et intégrée au
-   fichier. Elle s'affiche dès que la photographie ne charge pas : le site
-   n'a jamais d'image cassée ni de trou.
-3. **`--teinte`** — l'aplat de fond, à la couleur du rayon.
+   usage gratuit, y compris commercial, sans attribution obligatoire), page
+   source en commentaire. À remplacer par les photos de la boutique.
+2. **`--dessin`** — l'illustration du produit, dessinée en SVG doré et
+   intégrée au fichier. Elle s'affiche dès que la photo ne charge pas.
+3. **`--teinte`** — le fond profond.
 
-Pour changer une photo, ne modifiez que `--img`. Pour n'afficher que les
-illustrations, activez le bloc commenté à la fin de `images.css`.
+Pour changer une photo, ne modifiez que `--img`. Pour héberger les images
+vous-même : `./fetch-photos.sh`, puis activez le bloc en fin de `images.css`.
 
-Les illustrations sont écrites dans `build_illustrations.py` (croissant,
-baguette, pain de campagne, pain au chocolat, brioche, sandwich, salade,
-soupe, café, pâtisserie, devanture, vitrine, comptoir, plateau de fournée).
-Après modification :
+## Regénérer
 
 ```bash
-python3 build-images.py   # regénère images.css
+python3 build-pages.py    # les cinq pages depuis la coquille commune
+python3 build-images.py   # images.css depuis les dessins et la liste de photos
 ```
 
-Pour héberger les images sur votre propre serveur :
+Les illustrations sont dans `build_illustrations.py` (jeu clair et jeu sombre).
 
-```bash
-./fetch-photos.sh   # télécharge tout dans images/
-```
-puis décommenter le bloc « version locale » à la fin de `images.css`.
+## Informations
 
-Si une photo ne charge pas, le site affiche automatiquement un panneau
-d'attente à la place : rien ne casse.
+- 36 rue Paul Bousquet, 34200 Sète
+- 04 67 53 59 31
+- Lundi – Samedi : 06:30 – 19:30 · Dimanche : 07:00 – 13:00
+- 1 à 10 € par personne · 4,3 / 5 sur 79 avis Google
+- Service au comptoir : soupes, salades, sandwichs, pains et viennoiseries
 
-## Plan d'accès
+## À vérifier avant mise en ligne
 
-La page contact intègre un plan OpenStreetMap (iframe). Les coordonnées
-utilisées sont approximatives (43.4045, 3.6985) : à ajuster avec la position
-exacte de la boutique dans `contact.html` et `build-pages.py`.
-
-## Direction
-
-Crème chaude et quatre couleurs de rayon — terre cuite (pains), miel
-(viennoiseries), olive (le midi), prune (café et douceurs). Titres en
-Fraunces, texte en Jost. Bords festonnés entre les sections.
-
-### Animations
-
-| Élément | Effet |
-| --- | --- |
-| Titre de l'accueil | Le dernier mot change en boucle |
-| Compte à rebours | Temps réel jusqu'à la prochaine fournée de 06h30 |
-| Fond | Trois taches de couleur floutées qui dérivent |
-| Ruban | Bandeau de produits qui défile |
-| Collage | Parallaxe douce au défilement |
-| Compteurs | 4,3 et 79 comptent depuis zéro |
-| Cartes | Soulèvement au survol, zoom de la photo |
-
-Tout est désactivé sous `prefers-reduced-motion`.
-
-## Informations reprises de la fiche Google
-
-- Adresse : 36 rue Paul Bousquet, 34200 Sète
-- Téléphone : 04 67 53 59 31
-- Prix par personne : 1–10 €
-- Note : 4,3 / 5 (79 avis Google)
-- Ouverture : 06h30
-
-## À compléter avant mise en ligne
-
-1. **Photos** — remplacer les photos d'illustration Pexels par celles de la
-   boutique (voir `images/README.md`).
-2. **Horaires complets** — seule l'ouverture (06h30) est connue ; la page
-   contact l'indique explicitement.
-3. **Prix** — indicatifs, cohérents avec la fourchette 1–10 € annoncée.
-4. **Coordonnées du plan** — à ajuster précisément.
-5. **Mentions légales / RGPD** — à ajouter si le site est publié.
-
-Les avis affichés sont des extraits publics de la fiche Google (Sandrine
-Preaud, Mattéo Vandenberghe, Jérémy Vatuone), attribués et signalés comme
-non vérifiés.
+1. **Photos** — remplacer les photos d'illustration par celles de la boutique.
+2. **Prix** — indicatifs hors des quatre pièces confirmées (croissant 1,30 €,
+   pain au chocolat 1,50 €, mille-feuille 4,20 €, baguette tradition 1,20 €).
+3. **Planning des fournées** — les horaires de cuisson affichés par « Four en
+   direct » sont à caler sur la réalité.
+4. **Envoi du formulaire** — voir « Réservation ».
+5. **Coordonnées du plan** — affiner le point exact (43.4045, 3.6985).
+6. **Mentions légales / RGPD** — obligatoires pour un site commercial.

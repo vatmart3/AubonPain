@@ -17,7 +17,7 @@ C = {
  'sucre': '#F2D9A8',
 }
 
-DEGRADES = '''
+MODELE_DEGRADES = '''
 <defs>
  <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
    <stop offset="0" stop-color="{croute_c}"/><stop offset="1" stop-color="{croute_f}"/>
@@ -28,7 +28,9 @@ DEGRADES = '''
  <linearGradient id="g3" x1="0" y1="0" x2="0" y2="1">
    <stop offset="0" stop-color="{creme}"/><stop offset="1" stop-color="{sucre}"/>
  </linearGradient>
-</defs>'''.format(**C)
+</defs>'''
+
+DEGRADES = MODELE_DEGRADES.format(**C)
 
 def svg(corps, w=200, h=140):
     return ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d">%s%s</svg>'
@@ -237,3 +239,49 @@ DESSINS = {
   'viennoiseries': svg(viennoiseries_groupe()),
   'cafe-formule':  svg(cafe_formule()),
 }
+
+
+# =====================================================================
+#  Jeu sombre : trait doré sur fonds profonds, pour la version nuit
+# =====================================================================
+SOMBRE = {
+ 'croute_c': '#2E2419', 'croute': '#241C14', 'croute_f': '#1C1610', 'trait': '#C08A5A',
+ 'choco': '#15100C', 'choco_c': '#241A12',
+ 'mie': '#3A2E20',
+ 'vert': '#262019', 'vert_f': '#C08A5A',
+ 'tomate': '#2E2017', 'tomate_f': '#C08A5A',
+ 'jambon': '#3A2A1E',
+ 'creme': '#241C15', 'blanc': '#1E1813',
+ 'cafe': '#15100C', 'cafe_c': '#C08A5A',
+ 'bois': '#2A2016', 'bois_f': '#C08A5A',
+ 'soupe': '#33261A', 'soupe_f': '#C08A5A',
+ 'sucre': '#2A2016',
+}
+
+def construire():
+    """Reconstruit le jeu de dessins avec la palette courante."""
+    global DEGRADES
+    DEGRADES = MODELE_DEGRADES.format(**C)
+    return {
+      'croissant':     svg(croissant()),
+      'baguette':      svg(baguette()),
+      'campagne':      svg(campagne()),
+      'pain-chocolat': svg(pain_chocolat()),
+      'brioche':       svg(brioche()),
+      'sandwich':      svg(sandwich()),
+      'sandwichs':     svg(sandwich()),
+      'salade':        svg(salade()),
+      'soupe':         svg(soupe()),
+      'cafe':          svg(cafe()),
+      'patisserie':    svg(patisserie()),
+      'boutique':      svg(boutique()),
+      'comptoir':      svg(comptoir()),
+      'vitrine':       svg(vitrine()),
+      'fournee':       svg(fournee()),
+      'pains':         svg(pains_groupe()),
+      'viennoiseries': svg(viennoiseries_groupe()),
+      'cafe-formule':  svg(cafe_formule()),
+    }
+
+C.update(SOMBRE)
+DESSINS_SOMBRE = construire()

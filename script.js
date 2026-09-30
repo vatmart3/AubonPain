@@ -3,72 +3,91 @@
    ===================================================================== */
 (function () {
   'use strict';
+
+  /* Adresse email de la boulangerie pour les pré-commandes.
+     Laissez vide pour proposer l'appel téléphonique à la place. */
+  var EMAIL_BOULANGERIE = '';
+  var TELEPHONE = '+33467535931';
+
   var doc = document;
   var reduit = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var grossier = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+  var deuxChiffres = function (n) { return (n < 10 ? '0' : '') + n; };
 
-  /* ---- Menu mobile ---------------------------------------------------- */
+  /* ---- Menu ------------------------------------------------------------ */
   var burger = doc.getElementById('burger'), nav = doc.getElementById('nav');
   if (burger && nav) {
     burger.addEventListener('click', function () {
       var ouvert = nav.classList.toggle('ouvert');
       burger.setAttribute('aria-expanded', String(ouvert));
       burger.setAttribute('aria-label', ouvert ? 'Fermer le menu' : 'Ouvrir le menu');
+      doc.body.style.overflow = ouvert ? 'hidden' : '';
     });
     nav.addEventListener('click', function (e) {
       if (e.target.tagName !== 'A') return;
       nav.classList.remove('ouvert');
       burger.setAttribute('aria-expanded', 'false');
+      doc.body.style.overflow = '';
     });
   }
 
-  /* ---- Le mot qui change dans le titre -------------------------------- */
-  var mot = doc.getElementById('mot');
-  if (mot && !reduit) {
-    var mots = ['croissant chaud', 'pain frais', 'chocolat fondu', 'café serré', 'beurre fondu'];
-    var teintes = ['var(--terre)', 'var(--miel)', 'var(--prune)', 'var(--brun)', 'var(--olive)'];
-    var i = 0;
-    setInterval(function () {
-      var actuel = mot.querySelector('.mot-in');
-      if (!actuel) return;
-      i = (i + 1) % mots.length;
-      actuel.classList.add('sort');
-      var suivant = doc.createElement('span');
-      suivant.className = 'mot-in entre';
-      suivant.textContent = mots[i];
-      suivant.style.color = teintes[i];
-      mot.appendChild(suivant);
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () { suivant.classList.remove('entre'); });
+  /* ---- En-tête ---------------------------------------------------------- */
+  var entete = doc.querySelector('.entete'), attente = false;
+  function auDefilement() {
+    if (attente) return;
+    attente = true;
+    requestAnimationFrame(function () {
+      if (entete) entete.classList.toggle('pose', window.scrollY > 12);
+      attente = false;
+    });
+  }
+  auDefilement();
+  window.addEventListener('scroll', auDefilement, { passive: true });
+
+  /* ---- Le four en direct ------------------------------------------------ */
+  var FOURNEES = [
+    { h: 6,  m: 30, nom: 'Croissants' },
+    { h: 7,  m: 30, nom: 'Baguettes' },
+    { h: 9,  m: 0,  nom: 'Pains spéciaux' },
+    { h: 11, m: 30, nom: 'Salades du jour' },
+    { h: 15, m: 0,  nom: 'Viennoiseries' },
+    { h: 17, m: 0,  nom: 'Baguettes du soir' }
+  ];
+  var pendule = doc.getElementById('pendule');
+  if (pendule) {
+    var sortie = doc.getElementById('sortie');
+    var fnom = doc.getElementById('fournee-nom');
+    var fheure = doc.getElementById('fournee-heure');
+    var majFour = function () {
+      var n = new Date();
+      pendule.textContent = deuxChiffres(n.getHours()) + ':' + deuxChiffres(n.getMinutes()) + ':' + deuxChiffres(n.getSeconds());
+      var minutes = n.getHours() * 60 + n.getMinutes();
+      var passee = null, suivante = null;
+      FOURNEES.forEach(function (f) {
+        var t = f.h * 60 + f.m;
+        if (t <= minutes) passee = f;
+        else if (!suivante) suivante = f;
       });
-      setTimeout(function () { if (actuel.parentNode) actuel.parentNode.removeChild(actuel); }, 700);
-    }, 2600);
-  }
-
-  /* ---- Compte à rebours jusqu'à la prochaine fournée de 06h30 ---------- */
-  var compte = doc.getElementById('compte');
-  if (compte) {
-    var majCompte = function () {
-      var now = new Date();
-      var cible = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 6, 30, 0, 0);
-      if (cible <= now) cible.setDate(cible.getDate() + 1);
-      var reste = Math.max(0, cible - now);
-      var h = Math.floor(reste / 3600000);
-      var m = Math.floor(reste / 60000) % 60;
-      var s = Math.floor(reste / 1000) % 60;
-      var deuxChiffres = function (n) { return (n < 10 ? '0' : '') + n; };
-      compte.textContent = h > 0
-        ? h + ' h ' + deuxChiffres(m) + ' min'
-        : deuxChiffres(m) + ' min ' + deuxChiffres(s) + ' s';
+      if (!suivante) suivante = FOURNEES[0];
+      if (!passee) passee = FOURNEES[FOURNEES.length - 1];
+      var fmt = function (f) { return deuxChiffres(f.h) + ':' + deuxChiffres(f.m); };
+      if (sortie) sortie.textContent = passee.nom.toUpperCase() + ' — ' + fmt(passee);
+      if (fnom) fnom.textContent = suivante.nom;
+      if (fheure) fheure.textContent = fmt(suivante);
     };
-    majCompte();
-    setInterval(majCompte, 1000);
+    majFour();
+    setInterval(majFour, 1000);
   }
 
-  /* ---- Apparitions ----------------------------------------------------- */
+  /* ---- Horaires : le jour courant ---------------------------------------- */
+  var ligneJour = doc.querySelector('.horaires tr[data-jour="' + new Date().getDay() + '"]');
+  if (ligneJour) ligneJour.classList.add('auj');
+
+  /* ---- Apparitions -------------------------------------------------------- */
   var blocs = [].slice.call(doc.querySelectorAll('.rev'));
-  function tout() { blocs.forEach(function (el) { el.classList.add('vu'); }); }
+  function toutMontrer() { blocs.forEach(function (el) { el.classList.add('vu'); }); }
   if (!('IntersectionObserver' in window) || reduit) {
-    tout();
+    toutMontrer();
   } else {
     var io = new IntersectionObserver(function (entrees) {
       entrees.forEach(function (e) {
@@ -78,87 +97,107 @@
       });
     }, { rootMargin: '0px 0px -6% 0px', threshold: 0.05 });
     blocs.forEach(function (el) { io.observe(el); });
-    setTimeout(tout, 1600);
+    setTimeout(toutMontrer, 1600);
   }
 
-  /* ---- Compteurs -------------------------------------------------------- */
-  [].slice.call(doc.querySelectorAll('.nb')).forEach(function (el) {
-    var vers = parseFloat(el.getAttribute('data-vers'));
-    var dec = parseInt(el.getAttribute('data-dec') || '0', 10);
-    if (isNaN(vers) || reduit) return;
-    var lance = false;
-    var anime = function () {
-      if (lance) return;
-      lance = true;
-      var t0 = performance.now();
-      (function pas(t) {
-        var p = Math.min((t - t0) / 1300, 1);
-        var e = 1 - Math.pow(1 - p, 3);
-        el.textContent = (vers * e).toFixed(dec).replace('.', ',');
-        if (p < 1) requestAnimationFrame(pas);
-      })(t0);
-    };
-    if ('IntersectionObserver' in window) {
-      var o = new IntersectionObserver(function (en) { if (en[0].isIntersecting) { anime(); o.disconnect(); } }, { threshold: .6 });
-      o.observe(el);
-    } else { anime(); }
-  });
-
-  /* ---- Parallaxe douce sur le collage ----------------------------------- */
-  var paras = [].slice.call(doc.querySelectorAll('.para'));
-  if (paras.length && !reduit) {
-    var enCours = false;
-    var majPara = function () {
-      var h = window.innerHeight;
-      paras.forEach(function (el) {
-        var r = el.getBoundingClientRect();
-        if (r.bottom < -200 || r.top > h + 200) return;
-        var centre = (r.top + r.height / 2 - h / 2) / h;
-        var force = parseFloat(el.getAttribute('data-para')) || 10;
-        el.style.transform = 'translate3d(0,' + (centre * force).toFixed(2) + 'px,0)';
-      });
-      enCours = false;
-    };
-    window.addEventListener('scroll', function () {
-      if (enCours) return;
-      enCours = true;
-      requestAnimationFrame(majPara);
-    }, { passive: true });
-    majPara();
-  }
-
-  /* ---- En-tête ---------------------------------------------------------- */
-  var entete = doc.querySelector('.entete'), attente = false;
-  window.addEventListener('scroll', function () {
-    if (attente) return;
-    attente = true;
-    requestAnimationFrame(function () {
-      if (entete) entete.classList.toggle('pose', window.scrollY > 6);
-      attente = false;
+  /* ---- Anneau de curseur --------------------------------------------------- */
+  var anneau = doc.getElementById('anneau');
+  if (anneau && !grossier && !reduit) {
+    var x = 0, y = 0, cx = 0, cy = 0, lance = false;
+    window.addEventListener('pointermove', function (e) {
+      x = e.clientX; y = e.clientY;
+      if (!lance) { lance = true; cx = x; cy = y; anneau.classList.add('vu'); boucle(); }
     });
-  }, { passive: true });
+    function boucle() {
+      cx += (x - cx) * 0.18;
+      cy += (y - cy) * 0.18;
+      anneau.style.transform = 'translate(' + cx.toFixed(1) + 'px,' + cy.toFixed(1) + 'px)';
+      requestAnimationFrame(boucle);
+    }
+    doc.addEventListener('pointerover', function (e) {
+      var cible = e.target.closest ? e.target.closest('a,button') : null;
+      anneau.classList.toggle('actif', !!cible);
+    });
+  }
 
-  /* ---- Photos réelles : on retire le décor d'attente dès qu'une image charge */
-  [].slice.call(doc.querySelectorAll('.photo')).forEach(function (el) {
-    var brut = getComputedStyle(el).getPropertyValue('--img').trim();
-    var m = brut.match(/url\(['"]?([^'")]+)['"]?\)/);
-    if (!m) return;
-    var test = new Image();
-    test.onload = function () { el.classList.add('chargee'); };
-    test.src = m[1];
-  });
+  /* ---- Réservation ---------------------------------------------------------- */
+  var form = doc.getElementById('form-reservation');
+  if (form) {
+    /* Créneaux de retrait, de 06:30 à 13:00 */
+    var zone = doc.getElementById('heures');
+    var choisie = '';
+    for (var mn = 6 * 60 + 30; mn <= 13 * 60; mn += 30) {
+      (function (mn) {
+        var lib = deuxChiffres(Math.floor(mn / 60)) + ':' + deuxChiffres(mn % 60);
+        var b = doc.createElement('button');
+        b.type = 'button';
+        b.textContent = lib;
+        b.setAttribute('aria-pressed', 'false');
+        b.addEventListener('click', function () {
+          choisie = lib;
+          [].slice.call(zone.children).forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+        });
+        zone.appendChild(b);
+      })(mn);
+    }
 
-  /* ---- Lien de navigation actif ------------------------------------------ */
-  var liens = [].slice.call(doc.querySelectorAll('.nav a'));
-  var cibles = liens.map(function (a) { return doc.querySelector(a.getAttribute('href')); }).filter(Boolean);
-  if ('IntersectionObserver' in window && cibles.length) {
-    var suivi = new IntersectionObserver(function (entrees) {
-      entrees.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        liens.forEach(function (a) { a.classList.toggle('actif', a.getAttribute('href') === '#' + e.target.id); });
-      });
-    }, { rootMargin: '-45% 0px -50% 0px' });
-    cibles.forEach(function (c) { suivi.observe(c); });
+    /* Date : aujourd'hui par défaut, pas de date passée */
+    var champDate = doc.getElementById('date');
+    var auj = new Date();
+    var iso = auj.getFullYear() + '-' + deuxChiffres(auj.getMonth() + 1) + '-' + deuxChiffres(auj.getDate());
+    champDate.value = iso;
+    champDate.min = iso;
+
+    var erreur = doc.getElementById('erreur');
+    var recap = doc.getElementById('recap');
+    var liste = doc.getElementById('recap-liste');
+    var lien = doc.getElementById('lien-mail');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var nom = doc.getElementById('nom').value.trim();
+      var tel = doc.getElementById('tel').value.trim();
+      var manque = [];
+      if (!nom) manque.push('le nom');
+      if (!tel) manque.push('le téléphone');
+      if (!champDate.value) manque.push('la date');
+      if (!choisie) manque.push("l'heure de retrait");
+
+      if (manque.length) {
+        erreur.textContent = 'Il manque ' + manque.join(', ') + '.';
+        erreur.classList.add('vu');
+        recap.classList.remove('vu');
+        return;
+      }
+      erreur.classList.remove('vu');
+
+      var d = champDate.value.split('-');
+      var lignes = [
+        ['Nom', nom],
+        ['Téléphone', tel],
+        ['Email', doc.getElementById('email').value.trim() || '—'],
+        ['Retrait', d[2] + '/' + d[1] + '/' + d[0] + ' à ' + choisie],
+        ['Panier', doc.getElementById('panier').value || '1'],
+        ['Commande', doc.getElementById('details').value.trim() || '—'],
+        ['Notes', doc.getElementById('notes').value.trim() || '—']
+      ];
+      liste.innerHTML = lignes.map(function (l) {
+        return '<div><dt>' + l[0] + '</dt><dd>' + String(l[1]).replace(/</g, '&lt;') + '</dd></div>';
+      }).join('');
+
+      if (EMAIL_BOULANGERIE) {
+        var corps = lignes.map(function (l) { return l[0] + ' : ' + l[1]; }).join('\n');
+        lien.href = 'mailto:' + EMAIL_BOULANGERIE
+          + '?subject=' + encodeURIComponent('Pré-commande — ' + nom)
+          + '&body=' + encodeURIComponent(corps);
+        lien.firstChild.textContent = 'Envoyer par email ';
+      } else {
+        lien.href = 'tel:' + TELEPHONE;
+        lien.firstChild.textContent = 'Appeler pour confirmer ';
+      }
+      recap.classList.add('vu');
+      recap.scrollIntoView({ behavior: reduit ? 'auto' : 'smooth', block: 'nearest' });
+    });
   }
 
   var annee = doc.getElementById('annee');

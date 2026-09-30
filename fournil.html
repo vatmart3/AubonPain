@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Contact — Au Bon Pain, Sète</title>
-<meta name="description" content="36 rue Paul Bousquet, 34200 Sète. 04 67 53 59 31. Horaires et plan d'accès.">
+<title>Le fournil — Au Bon Pain, Sète</title>
+<meta name="description" content="Le feu, la nuit. Le fournil d'Au Bon Pain à Sète, et la première fournée de 06:30.">
 <meta name="theme-color" content="#0A0908">
-<meta property="og:title" content="Contact — Au Bon Pain, Sète">
-<meta property="og:description" content="36 rue Paul Bousquet, 34200 Sète. 04 67 53 59 31. Horaires et plan d'accès.">
+<meta property="og:title" content="Le fournil — Au Bon Pain, Sète">
+<meta property="og:description" content="Le feu, la nuit. Le fournil d'Au Bon Pain à Sète, et la première fournée de 06:30.">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -48,8 +48,8 @@
       <a href="index.html">Accueil</a>
       <a href="collection.html">La collection</a>
       <a href="reservation.html">Réservation</a>
-      <a href="fournil.html">Le fournil</a>
-      <a href="contact.html" class="actif">Contact</a>
+      <a href="fournil.html" class="actif">Le fournil</a>
+      <a href="contact.html">Contact</a>
     </nav>
     <button class="burger" id="burger" aria-expanded="false" aria-controls="nav" aria-label="Ouvrir le menu"><span></span><span></span></button>
   </div>
@@ -57,60 +57,73 @@
 
 <main id="contenu">
 
-<section class="section" style="padding-top:11rem;padding-bottom:3rem">
+<section class="section" style="padding-top:11rem;padding-bottom:0">
   <div class="cadre">
-    <p class="lib or numero-sec rev">04 / Contact</p>
-    <h2 class="rev" style="margin-top:1.4rem">Nous trouver</h2>
+    <p class="lib or numero-sec rev">03 / Fournil</p>
+    <h1 class="rev" style="font-size:clamp(2.6rem,7vw,5.5rem);margin-top:1.4rem">Le feu,<em style="display:block;font-style:italic;color:var(--or-clair)">la nuit</em></h1>
   </div>
 </section>
 
-<section class="section" style="padding-top:0">
+<section class="section">
   <div class="cadre">
-    <div class="fiche-contact rev">
-      <div class="fiche-bloc">
-        <svg class="ico lg"><use href="#epingle"></use></svg>
-        <p class="lib">Adresse</p>
-        <p class="gros">36 Rue Paul Bousquet</p>
-        <p class="sous">34200 Sète · France</p>
-        <a class="lien-or" href="https://www.google.com/maps/dir/?api=1&amp;destination=36+rue+Paul+Bousquet+34200+S%C3%A8te" target="_blank" rel="noopener">↗ Itinéraire</a>
-      </div>
-      <div class="fiche-bloc">
-        <svg class="ico lg"><use href="#tel"></use></svg>
-        <p class="lib">Téléphone</p>
-        <p class="gros num"><a href="tel:+33467535931" style="text-decoration:none">04 67 53 59 31</a></p>
-        <p class="sous">Appel direct</p>
-      </div>
-      <div class="fiche-bloc">
-        <svg class="ico lg"><use href="#horloge"></use></svg>
-        <p class="lib">Horaires</p>
-        <table class="horaires"><tbody><tr data-jour="1"><td>Lundi</td><td class="num">06:30 – 19:30</td></tr><tr data-jour="2"><td>Mardi</td><td class="num">06:30 – 19:30</td></tr><tr data-jour="3"><td>Mercredi</td><td class="num">06:30 – 19:30</td></tr><tr data-jour="4"><td>Jeudi</td><td class="num">06:30 – 19:30</td></tr><tr data-jour="5"><td>Vendredi</td><td class="num">06:30 – 19:30</td></tr><tr data-jour="6"><td>Samedi</td><td class="num">06:30 – 19:30</td></tr><tr data-jour="0"><td>Dimanche</td><td class="num">07:00 – 13:00</td></tr></tbody></table>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" style="padding-top:0">
-  <div class="cadre">
-    <div class="plan rev">
-      <div class="plan-secours"></div>
-      <div class="plan-etiq"><b>Au Bon Pain</b><span>36 Rue Paul Bousquet<br>34200 Sète</span></div>
-      <iframe title="Plan — 36 rue Paul Bousquet, 34200 Sète"
-        src="https://www.openstreetmap.org/export/embed.html?bbox=3.6845%2C43.3955%2C3.7185%2C43.4135&amp;layer=mapnik&amp;marker=43.4045%2C3.6985"
-        loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-    </div>
+    <div class="plaque rev" data-photo="fournee"></div>
   </div>
 </section>
 
 <section class="section" style="padding-top:0">
   <div class="cadre duo">
-    <div class="rev">
-      <p class="lib or numero-sec">Venir</p>
-      <h2 style="margin-top:1.4rem;font-size:clamp(1.8rem,3.4vw,2.8rem)">Au cœur de Sète</h2>
-    </div>
     <div class="texte rev">
-      <p>La boulangerie se trouve rue Paul Bousquet, dans le centre de Sète, à quelques minutes des quais et du port de plaisance.</p>
-      <p>Service au comptoir, sur place ou à emporter. Comptez 1 à 10 € par personne.</p>
-      <a class="btn btn-plein" href="reservation.html" style="margin-top:1rem">Pré-commander <span class="fl">→</span></a>
+      <p class="intro">Quand la ville dort, le four monte en température. C'est là que tout se joue.</p>
+      <p>La pâte est façonnée avant le jour, les pièces sont enfournées les unes après les autres, et la première fournée sort à 06:30 — à l'heure où la boutique ouvre ses portes.</p>
+      <p>Ensuite, les fournées s'enchaînent toute la matinée : il y a du chaud à sept heures comme à midi. Les sandwichs sont garnis le matin même, les soupes et les salades préparées sur place.</p>
+    </div>
+    <div class="infos rev">
+      <div class="info">
+        <svg class="ico lg"><use href="#feu"></use></svg>
+        <p class="lib">Le four</p>
+        <p>Chauffé la nuit, en service toute la journée.</p>
+      </div>
+      <div class="info">
+        <svg class="ico lg"><use href="#ble"></use></svg>
+        <p class="lib">Les pains</p>
+        <p>Baguettes tradition au levain naturel, pains de campagne à la farine de meule, pains spéciaux selon la fournée.</p>
+      </div>
+      <div class="info">
+        <svg class="ico lg"><use href="#horloge"></use></svg>
+        <p class="lib">Première fournée</p>
+        <p class="num">06:30</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="cadre">
+    <div class="collection">
+      <a class="piece rev" href="reservation.html" data-photo="croissant">
+        <span class="piece-img" data-photo="croissant"></span>
+        <p class="lib">Beurre Charentes-Poitou</p>
+        <h3>Croissant</h3>
+        <p class="prix num">1,30 €</p>
+      </a>
+      <a class="piece rev" href="reservation.html" data-photo="pain-chocolat">
+        <span class="piece-img" data-photo="pain-chocolat"></span>
+        <p class="lib">Chocolat noir</p>
+        <h3>Pain au Chocolat</h3>
+        <p class="prix num">1,50 €</p>
+      </a>
+      <a class="piece rev" href="reservation.html" data-photo="patisserie">
+        <span class="piece-img" data-photo="patisserie"></span>
+        <p class="lib">Crème pâtissière vanille</p>
+        <h3>Mille-Feuille</h3>
+        <p class="prix num">4,20 €</p>
+      </a>
+      <a class="piece rev" href="reservation.html" data-photo="baguette">
+        <span class="piece-img" data-photo="baguette"></span>
+        <p class="lib">Levain naturel</p>
+        <h3>Baguette Tradition</h3>
+        <p class="prix num">1,20 €</p>
+      </a>
     </div>
   </div>
 </section>

@@ -1,77 +1,68 @@
 # -*- coding: utf-8 -*-
 """Génère les pages du site : coquille commune + contenu par page."""
-import os, re
+import os
 
 RACINE = os.path.dirname(os.path.abspath(__file__))
 
-PAGES = ['index', 'carte', 'maison', 'avis', 'contact']
+NAV = [('index', 'Accueil'), ('collection', 'La collection'),
+       ('reservation', 'Réservation'), ('fournil', 'Le fournil'), ('contact', 'Contact')]
+
 TITRES = {
-    'index':   ('Au Bon Pain — Boulangerie artisanale à Sète',
-                "Boulangerie artisanale à Sète. Pains, viennoiseries, sandwichs, salades et soupes, cuits chaque matin dès 06h30."),
-    'carte':   ('La carte — Au Bon Pain, Sète',
-                "La carte d'Au Bon Pain à Sète : pains, viennoiseries, sandwichs, salades, soupes et café."),
-    'maison':  ('La maison — Au Bon Pain, Sète',
-                "Au Bon Pain, boulangerie de quartier à Sète, ouverte dès 06h30, service au comptoir."),
-    'avis':    ('Avis — Au Bon Pain, Sète',
-                "4,3 sur 5 et 79 avis Google pour la boulangerie Au Bon Pain à Sète."),
-    'contact': ('Contact et accès — Au Bon Pain, Sète',
-                "36 rue Paul Bousquet, 34200 Sète. Téléphone 04 67 53 59 31. Plan d'accès et itinéraire."),
+ 'index':       ('Au Bon Pain — Boulangerie artisanale à Sète',
+                 "Boulangerie artisanale à Sète. Pains, viennoiseries, sandwichs, salades et soupes. Le four ouvre à 06:30."),
+ 'collection':  ('La collection — Au Bon Pain, Sète',
+                 "Les pièces du four : croissants, pains au chocolat, mille-feuilles, baguettes tradition et pains de campagne."),
+ 'reservation': ('Réservation — Au Bon Pain, Sète',
+                 "Pré-commande à emporter, retrait à la boulangerie. 36 rue Paul Bousquet, 34200 Sète."),
+ 'fournil':     ('Le fournil — Au Bon Pain, Sète',
+                 "Le feu, la nuit. Le fournil d'Au Bon Pain à Sète, et la première fournée de 06:30."),
+ 'contact':     ('Contact — Au Bon Pain, Sète',
+                 "36 rue Paul Bousquet, 34200 Sète. 04 67 53 59 31. Horaires et plan d'accès."),
 }
-NAV = [('index', 'Accueil'), ('carte', 'La carte'), ('maison', 'La maison'),
-       ('avis', 'Avis'), ('contact', 'Contact')]
 
 SPRITE = '''<svg class="sprite" aria-hidden="true">
-  <symbol id="four" viewBox="0 0 32 32"><rect x="4" y="6" width="24" height="21" rx="3"/><path d="M9 13h14M9 20h14"/></symbol>
-  <symbol id="comptoir" viewBox="0 0 32 32"><path d="M4 20h24v6H4z"/><path d="M7 20V9a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v11"/><path d="M12 13h8"/></symbol>
-  <symbol id="sac" viewBox="0 0 32 32"><path d="M7 11h18l-1.5 16h-15z"/><path d="M12 11V8a4 4 0 0 1 8 0v3"/></symbol>
-  <symbol id="tel" viewBox="0 0 32 32"><path d="M11 5 8 6c-2 .7-3 2.8-2.4 4.8a28 28 0 0 0 15.6 15.6c2 .6 4.1-.4 4.8-2.4l1-3-5.4-2.6-2.4 2.6a21 21 0 0 1-8.4-8.4L13.4 10Z"/></symbol>
-  <symbol id="horloge" viewBox="0 0 32 32"><circle cx="16" cy="16" r="11.5"/><path d="M16 9v7.5l5 2.6"/></symbol>
-  <symbol id="epingle" viewBox="0 0 32 32"><path d="M16 28s9-8.4 9-14a9 9 0 1 0-18 0c0 5.6 9 14 9 14Z"/><circle cx="16" cy="14" r="3.4"/></symbol>
-  <symbol id="etoile" viewBox="0 0 24 24"><path d="m12 2.8 2.85 5.78 6.38.93-4.62 4.5 1.09 6.35L12 17.36l-5.7 3 1.09-6.35-4.62-4.5 6.38-.93z" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="epingle" viewBox="0 0 24 24"><path d="M12 21s7-6.3 7-10.5a7 7 0 1 0-14 0C5 14.7 12 21 12 21Z"/><circle cx="12" cy="10.5" r="2.6"/></symbol>
+  <symbol id="tel" viewBox="0 0 24 24"><path d="M8 3 6 4c-1.5.5-2.2 2-1.8 3.5A21 21 0 0 0 16.5 19.8c1.5.4 3-.3 3.5-1.8l1-2-4-2-1.8 2a15.7 15.7 0 0 1-6.2-6.2L11 8Z"/></symbol>
+  <symbol id="horloge" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.6"/><path d="M12 7v5.4l3.6 1.9"/></symbol>
+  <symbol id="feu" viewBox="0 0 24 24"><path d="M12 21c3.6 0 6-2.4 6-5.6 0-4-3.4-5.6-3.4-9.4-2.2 1-3 3-3 4.6 0 1.4-1 2-1.8 1.2-.7-.7-.8-1.8-.8-2.4C7.2 11 6 12.8 6 15.4 6 18.6 8.4 21 12 21Z"/></symbol>
+  <symbol id="ble" viewBox="0 0 24 24"><path d="M12 22V9"/><path d="M12 9c-3-.6-4.5-2.8-4.5-5.6C10.5 3.4 12 5.6 12 9Zm0 0c3-.6 4.5-2.8 4.5-5.6C13.5 3.4 12 5.6 12 9Z"/><path d="M12 15.5c-3-.6-4.5-2.8-4.5-5.6 3 0 4.5 2.2 4.5 5.6Zm0 0c3-.6 4.5-2.8 4.5-5.6-3 0-4.5 2.2-4.5 5.6Z"/></symbol>
 </svg>'''
 
 def entete(page):
-    liens = '\n      '.join(
-        '<a href="%s.html"%s>%s</a>' % (p, ' class="actif"' if p == page else '', libelle)
-        for p, libelle in NAV)
+    liens = '\n      '.join('<a href="%s.html"%s>%s</a>' % (p, ' class="actif"' if p == page else '', lib)
+                            for p, lib in NAV)
     return '''<header class="entete">
   <div class="cadre entete-in">
-    <a class="logo" href="index.html">
-      <span class="logo-pastille">AB</span>
-      <span class="logo-txt"><b>Au Bon Pain</b><small>Boulangerie · Sète</small></span>
-    </a>
+    <a class="logo" href="index.html"><b>Au Bon Pain</b><small>Sète · Boulangerie</small></a>
     <nav class="nav" id="nav" aria-label="Navigation principale">
       %s
     </nav>
-    <a class="pilule" href="tel:+33467535931"><svg class="ico sm"><use href="#tel"></use></svg> 04 67 53 59 31</a>
     <button class="burger" id="burger" aria-expanded="false" aria-controls="nav" aria-label="Ouvrir le menu"><span></span><span></span></button>
   </div>
 </header>''' % liens
 
 PIED = '''<footer class="pied">
-  <div class="cadre pied-grille">
-    <div class="pied-bloc"><svg class="ico"><use href="#epingle"></use></svg><div><b>Nous trouver</b><span>36 rue Paul Bousquet<br>34200 Sète</span></div></div>
-    <div class="pied-bloc"><svg class="ico"><use href="#horloge"></use></svg><div><b>Ouverture</b><span>Première fournée à 06h30<br><small>Fermeture à confirmer par téléphone</small></span></div></div>
-    <div class="pied-bloc"><svg class="ico"><use href="#etoile"></use></svg><div><b>Avis Google</b><span>4,3 / 5 — 79 avis<br>1 à 10 € par personne</span></div></div>
-    <div class="pied-bloc"><svg class="ico"><use href="#tel"></use></svg><div><b>Nous appeler</b><span><a href="tel:+33467535931">04 67 53 59 31</a></span></div></div>
-  </div>
-  <div class="cadre pied-bas">
+  <div class="cadre pied-in">
+    <a class="logo" href="index.html"><b>Au Bon Pain</b><small>36 rue Paul Bousquet · 34200 Sète</small></a>
     <nav class="pied-nav" aria-label="Pied de page">
-      <a href="index.html">Accueil</a><a href="carte.html">La carte</a><a href="maison.html">La maison</a><a href="avis.html">Avis</a><a href="contact.html">Contact</a>
+      <a href="collection.html">La collection</a><a href="reservation.html">Réservation</a>
+      <a href="fournil.html">Le fournil</a><a href="contact.html">Contact</a>
+      <a href="tel:+33467535931">04 67 53 59 31</a>
     </nav>
-    <small>© <span id="annee">2026</span> Au Bon Pain — Sète</small>
+    <small>© <span id="annee">2026</span> Au Bon Pain</small>
   </div>
 </footer>
-
-<a class="appel-mobile" href="tel:+33467535931">Appeler · 04 67 53 59 31</a>'''
+<div class="anneau" id="anneau" aria-hidden="true"></div>'''
 
 JSONLD = '''<script type="application/ld+json">
 {
   "@context":"https://schema.org","@type":"Bakery","name":"Au Bon Pain",
-  "description":"Boulangerie et café avec service au comptoir : soupes, salades, sandwichs, pains et viennoiseries.",
-  "address":{"@type":"PostalAddress","streetAddress":"36 rue Paul Bousquet","postalCode":"34200","addressLocality":"Sète","addressCountry":"FR"},
-  "telephone":"+33467535931","priceRange":"1–10 €","url":"contact.html",
-  "openingHoursSpecification":{"@type":"OpeningHoursSpecification","opens":"06:30"},
+  "description":"Café avec service au comptoir proposant des soupes, salades, sandwichs, pains et viennoiseries.",
+  "address":{"@type":"PostalAddress","streetAddress":"36 rue Paul Bousquet","postalCode":"34200","addressLocality":"S\\u00e8te","addressCountry":"FR"},
+  "telephone":"+33467535931","priceRange":"1\\u201310 \\u20ac",
+  "openingHoursSpecification":[
+    {"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"opens":"06:30","closes":"19:30"},
+    {"@type":"OpeningHoursSpecification","dayOfWeek":"Sunday","opens":"07:00","closes":"13:00"}],
   "aggregateRating":{"@type":"AggregateRating","ratingValue":"4.3","reviewCount":"79","bestRating":"5"}
 }
 </script>'''
@@ -85,15 +76,16 @@ def page(nom, contenu):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>%s</title>
 <meta name="description" content="%s">
-<meta name="theme-color" content="#FDF7EF">
+<meta name="theme-color" content="#0A0908">
 <meta property="og:title" content="%s">
 <meta property="og:description" content="%s">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%%23C4552F'/><text x='16' y='23' font-family='Georgia,serif' font-size='18' text-anchor='middle' fill='%%23FDF7EF'>A</text></svg>">
-<link rel="stylesheet" href="styles.css">\n<link rel="stylesheet" href="images.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@200;300;400&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%%230A0908'/><text x='16' y='23' font-family='Georgia,serif' font-size='19' text-anchor='middle' fill='%%23C08A5A'>A</text></svg>">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="images.css">
 <script>document.documentElement.className = 'js';</script>
 %s
 </head>
@@ -117,373 +109,370 @@ def page(nom, contenu):
 ''' % (titre, desc, titre, desc, JSONLD, SPRITE, entete(nom), contenu, PIED)
 
 # =====================================================================
+#  Produits
+# =====================================================================
+PIECES = [
+ ('croissant',     'Croissant',          'Beurre Charentes-Poitou',   '1,30 €'),
+ ('pain-chocolat', 'Pain au Chocolat',   'Chocolat noir',             '1,50 €'),
+ ('patisserie',    'Mille-Feuille',      'Crème pâtissière vanille',  '4,20 €'),
+ ('baguette',      'Baguette Tradition', 'Levain naturel',            '1,20 €'),
+ ('campagne',      'Pain de Campagne',   'Farine de meule',           '2,20 €'),
+ ('brioche',       'Brioche',            'Mie filante',               '1,80 €'),
+ ('sandwich',      'Sandwich du Jour',   'Dans notre pain',           '5,50 €'),
+ ('salade',        'Salade Composée',    'Légumes de saison',         '6,90 €'),
+ ('soupe',         'Soupe Maison',       'Velouté du jour',           '4,50 €'),
+ ('cafe',          'Café',               'Service au comptoir',       '1,50 €'),
+ ('pains',         'Pains Spéciaux',     'Céréales · complet',        '2,40 €'),
+ ('cafe-formule',  'Formule Matin',      'Café et viennoiserie',      '2,60 €'),
+]
+
+def piece(cle, nom, sous, prix):
+    return '''<a class="piece rev" href="reservation.html" data-photo="%s">
+        <span class="piece-img" data-photo="%s"></span>
+        <p class="lib">%s</p>
+        <h3>%s</h3>
+        <p class="prix num">%s</p>
+      </a>''' % (cle, cle, sous, nom, prix)
+
+HORAIRES = [('Lundi','06:30 – 19:30'),('Mardi','06:30 – 19:30'),('Mercredi','06:30 – 19:30'),
+            ('Jeudi','06:30 – 19:30'),('Vendredi','06:30 – 19:30'),('Samedi','06:30 – 19:30'),
+            ('Dimanche','07:00 – 13:00')]
+
+def table_horaires():
+    return ('<table class="horaires"><tbody>' +
+            ''.join('<tr data-jour="%d"><td>%s</td><td class="num">%s</td></tr>' % ((i + 1) % 7, j, h)
+                    for i, (j, h) in enumerate(HORAIRES)) +
+            '</tbody></table>')
+
+# =====================================================================
 #  Contenu des pages
 # =====================================================================
+BLOC_FOUR = '''<aside class="four" aria-label="Le four en direct">
+      <div class="four-tete"><i></i><p class="lib or">Four en direct</p></div>
+      <p class="four-heure num" id="pendule">06:30:00</p>
+      <div class="four-bloc">
+        <p class="lib">Sortie du four</p>
+        <p class="four-passe num" id="sortie">—</p>
+      </div>
+      <div class="four-bloc">
+        <p class="lib">Prochaine fournée</p>
+        <p class="four-suivant" id="fournee-nom">Croissants</p>
+        <p class="four-h num" id="fournee-heure">06:30</p>
+      </div>
+    </aside>'''
 
-def photo(cle, legende, classes='', attrs=''):
-    """cle = identifiant de la photo, défini dans images.css"""
-    return ('<div class="photo %s"%s data-photo="%s" data-legende="%s"></div>'
-            % (classes, (' ' + attrs) if attrs else '', cle.replace('.jpg', ''), legende))
-
-BANDE_CONTACT = '''
-<section class="section appel-final">
-  <div class="cadre appel-grille">
-    <div class="rev">
-      <p class="sur-titre clair">Passez nous voir</p>
-      <h2>36 rue Paul Bousquet,<br>tous les matins dès 06h30</h2>
-    </div>
-    <div class="appel-actions rev">
-      <a class="bouton" href="tel:+33467535931">Appeler la boulangerie</a>
-      <a class="bouton clair" href="contact.html">Plan d'accès</a>
-    </div>
-  </div>
-</section>'''
-
-# ---------------------------------------------------------------- ACCUEIL
 ACCUEIL = '''
 <section class="hero">
-  <div class="taches" aria-hidden="true"><i class="t1"></i><i class="t2"></i><i class="t3"></i></div>
-
-  <div class="cadre hero-grille">
-    <div class="hero-txt">
-      <p class="etiq rev">Ouvert dès 06h30 — 36 rue Paul Bousquet, Sète</p>
-      <h1 class="rev">
-        Ce matin,<br>
-        ça sent le <span class="mot" id="mot"><span class="mot-in">croissant chaud</span></span>
-      </h1>
-      <p class="chapo rev">
-        Pains, viennoiseries, sandwichs, salades et soupes.
-        Tout est cuit et préparé sur place, servi au comptoir.
-      </p>
-      <div class="cta rev">
-        <a class="bouton" href="carte.html">Voir la carte</a>
-        <a class="bouton clair" href="contact.html">Nous trouver</a>
-      </div>
-      <div class="minuteur rev">
-        <span class="braise" aria-hidden="true"></span>
-        <div><b>Prochaine fournée du matin</b><strong id="compte">06 h 30</strong></div>
-      </div>
-    </div>
-
-    <div class="hero-vis rev">
-      ''' + photo('vitrine.jpg', 'Photo — la vitrine du matin', 'vis-grande') + '''
-      ''' + photo('viennoiseries.jpg', 'Photo — viennoiseries', 'vis-petite') + '''
-      <div class="jeton"><b>4,3</b><span>79 avis Google</span></div>
+  <div class="hero-fond" data-photo="vitrine" aria-hidden="true"></div>
+  <div class="hero-in">
+    <p class="lib rev">Boulangerie artisanale · Sète depuis toujours</p>
+    <h1 class="rev">Au Bon<em>Pain</em></h1>
+    <p class="hero-txt rev">
+      Chaîne de cafés avec service au comptoir proposant des soupes, salades,
+      sandwichs, pains et viennoiseries. Le four ouvre à 06:30.
+    </p>
+    <div class="hero-actions rev">
+      <a class="btn btn-plein" href="reservation.html">Réserver une table <span class="fl">→</span></a>
+      <a class="btn btn-ligne" href="collection.html">La collection</a>
     </div>
   </div>
-
-  <div class="ruban" aria-hidden="true">
-    <div class="ruban-def">
-      <span>Croissant pur beurre</span><i>✦</i><span>Baguette tradition</span><i>✦</i><span>Pain au chocolat</span><i>✦</i><span>Sandwichs du midi</span><i>✦</i><span>Soupes maison</span><i>✦</i><span>Café au comptoir</span><i>✦</i>
-      <span>Croissant pur beurre</span><i>✦</i><span>Baguette tradition</span><i>✦</i><span>Pain au chocolat</span><i>✦</i><span>Sandwichs du midi</span><i>✦</i><span>Soupes maison</span><i>✦</i><span>Café au comptoir</span><i>✦</i>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="cadre trio">
-    <article class="atout rev" style="--c:var(--terre)">
-      <span class="pastille"><svg class="ico"><use href="#four"></use></svg></span>
-      <h3>Cuit sur place</h3>
-      <p>Les pains et les viennoiseries sortent du four tout au long de la matinée, dès l'ouverture.</p>
-    </article>
-    <article class="atout rev" style="--c:var(--miel)">
-      <span class="pastille"><svg class="ico"><use href="#comptoir"></use></svg></span>
-      <h3>Servi au comptoir</h3>
-      <p>On commande, on est servi, on repart. Sur place pour le café, à emporter pour le reste.</p>
-    </article>
-    <article class="atout rev" style="--c:var(--olive)">
-      <span class="pastille"><svg class="ico"><use href="#sac"></use></svg></span>
-      <h3>De 1 à 10 €</h3>
-      <p>Du café du matin au déjeuner complet, sans jamais dépasser le budget d'un repas rapide.</p>
-    </article>
-  </div>
+  <p class="defilez"><i></i> Défilez · le four chauffe</p>
+  ''' + BLOC_FOUR + '''
 </section>
 
 <section class="section">
   <div class="cadre">
-    <div class="chapeau rev">
-      <p class="sur-titre">Nos spécialités</p>
-      <h2>Quatre bonnes raisons<br>de pousser la porte</h2>
-    </div>
-    <div class="quatuor">
-      <article class="famille rev" style="--c:var(--terre)">
-        <span class="numero">01</span>''' + photo('pains.jpg', 'Photo — pains', 'ratio-4x3') + '''
-        <div class="famille-txt"><h3>Pains du jour</h3><p>Baguettes tradition, pains de campagne et pains spéciaux, à la fournée.</p><a href="carte.html#pains">Voir la carte</a></div>
-      </article>
-      <article class="famille rev" style="--c:var(--miel)">
-        <span class="numero">02</span>''' + photo('viennoiseries.jpg', 'Photo — viennoiseries', 'ratio-4x3') + '''
-        <div class="famille-txt"><h3>Viennoiseries</h3><p>Croissants pur beurre, pains au chocolat et brioches, cuits sur place.</p><a href="carte.html#viennoiseries">Voir la carte</a></div>
-      </article>
-      <article class="famille rev" style="--c:var(--olive)">
-        <span class="numero">03</span>''' + photo('sandwichs.jpg', 'Photo — sandwichs', 'ratio-4x3') + '''
-        <div class="famille-txt"><h3>Le midi</h3><p>Sandwichs préparés le matin, salades composées et soupes maison.</p><a href="carte.html#midi">Voir la carte</a></div>
-      </article>
-      <article class="famille rev" style="--c:var(--prune)">
-        <span class="numero">04</span>''' + photo('cafe.jpg', 'Photo — café', 'ratio-4x3') + '''
-        <div class="famille-txt"><h3>Café &amp; douceurs</h3><p>Le café pris debout au comptoir, et la pâtisserie du jour qui va avec.</p><a href="carte.html#cafe">Voir la carte</a></div>
-      </article>
-    </div>
-  </div>
-</section>
-
-<section class="section maison feston">
-  <div class="cadre maison-grille">
-    <div class="maison-txt rev">
-      <p class="sur-titre clair">La maison</p>
-      <h2>Ouverte avant<br>tout le monde</h2>
-      <p>Au Bon Pain, c'est le café pris debout au comptoir avant le travail, la baguette récupérée en rentrant, et la pause du midi entre deux rendez-vous.</p>
-      <div class="compteurs">
-        <div><b class="nb" data-vers="4.3" data-dec="1">4,3</b><span>sur 5 · Google</span></div>
-        <div><b class="nb" data-vers="79">79</b><span>avis publiés</span></div>
-        <div><b>06:30</b><span>première fournée</span></div>
+    <div class="section-tete rev">
+      <div>
+        <p class="lib or numero-sec">01 / Collection</p>
+        <h2>Les pièces<br>du four</h2>
       </div>
-      <a class="bouton clair" href="maison.html">Notre histoire</a>
-    </div>
-    <div class="collage rev">
-      ''' + photo('boutique.jpg', 'Photo — la boutique', 'grand para', 'data-para="14"') + '''
-      ''' + photo('vitrine.jpg', 'Photo — vitrine', 'para', 'data-para="-10"') + '''
-      ''' + photo('fournee.jpg', 'Photo — fournée', 'para', 'data-para="8"') + '''
+      <a class="btn btn-ligne" href="collection.html">Voir toute la collection <span class="fl">→</span></a>
     </div>
   </div>
-</section>
-''' + BANDE_CONTACT
-
-# ---------------------------------------------------------------- CARTE
-PRODUITS = [
-  ('pains', 'Pains', 'terre', 'Cuits à la fournée, du matin jusqu’en fin de journée.', [
-    ('Baguette tradition', 'Croûte croustillante, mie alvéolée', '1,20 €', 'baguette.jpg'),
-    ('Pain de campagne', 'À la coupe, se garde plusieurs jours', '2,20 €', 'campagne.jpg'),
-    ('Pains spéciaux', 'Céréales, complet, selon la fournée', '2,40 €', 'pains.jpg'),
-  ]),
-  ('viennoiseries', 'Viennoiseries', 'miel', 'Feuilletage cuit sur place, sorti du four toute la matinée.', [
-    ('Croissant pur beurre', 'Le préféré des habitués', '1,30 €', 'croissant.jpg'),
-    ('Pain au chocolat', 'Deux barres de chocolat, feuilletage doré', '1,50 €', 'pain-chocolat.jpg'),
-    ('Brioche du jour', 'Selon la fournée', '1,80 €', 'brioche.jpg'),
-  ]),
-  ('midi', 'Le midi', 'olive', 'Préparé le matin même, à emporter ou à manger sur place.', [
-    ('Sandwich du jour', 'Dans notre pain, garni le matin', '5,50 €', 'sandwich.jpg'),
-    ('Salade composée', 'Fraîche, prête à emporter', '6,90 €', 'salade.jpg'),
-    ('Soupe maison', 'Servie chaude, avec le pain qui va avec', '4,50 €', 'soupe.jpg'),
-  ]),
-  ('cafe', 'Café & douceurs', 'prune', 'Le comptoir, pour trois minutes ou pour la pause.', [
-    ('Café au comptoir', 'Debout, en trois gorgées', '1,50 €', 'cafe.jpg'),
-    ('Formule matin', 'Café et une viennoiserie', '2,60 €', 'cafe-formule.jpg'),
-    ('Pâtisserie du jour', 'Selon l’inspiration', '3,20 €', 'patisserie.jpg'),
-  ]),
-]
-
-def bloc_carte(ancre, titre, couleur, intro, articles):
-    cartes = '\n      '.join(
-        '<article class="produit rev" style="--c:var(--%s)">%s<span class="cat">%s</span><h3>%s</h3><p class="det">%s</p><p class="tarif">%s</p></article>'
-        % (couleur, photo(img, 'Photo — ' + nom.lower(), 'ratio-1x1'), titre, nom, det, prix)
-        for nom, det, prix, img in articles)
-    return '''
-<section class="section rayon" id="%s">
   <div class="cadre">
-    <div class="chapeau-rayon rev" style="--c:var(--%s)">
-      <h2>%s</h2>
-      <p>%s</p>
-    </div>
-    <div class="grille-produits">
-      %s
-    </div>
-  </div>
-</section>''' % (ancre, couleur, titre, intro, cartes)
-
-CARTE = '''
-<section class="entete-page">
-  <div class="taches" aria-hidden="true"><i class="t1"></i><i class="t3"></i></div>
-  <div class="cadre">
-    <p class="fil"><a href="index.html">Accueil</a> <span>·</span> La carte</p>
-    <h1 class="rev">La carte</h1>
-    <p class="chapo rev">Prix indicatifs — la vitrine change chaque jour selon les fournées. Comptez 1 à 10 € par personne.</p>
-    <nav class="ancres rev" aria-label="Rayons">
-      <a href="#pains">Pains</a><a href="#viennoiseries">Viennoiseries</a><a href="#midi">Le midi</a><a href="#cafe">Café &amp; douceurs</a>
-    </nav>
-  </div>
-</section>
-''' + ''.join(bloc_carte(*p) for p in PRODUITS) + BANDE_CONTACT
-
-# ---------------------------------------------------------------- MAISON
-MAISON = '''
-<section class="entete-page">
-  <div class="taches" aria-hidden="true"><i class="t2"></i></div>
-  <div class="cadre">
-    <p class="fil"><a href="index.html">Accueil</a> <span>·</span> La maison</p>
-    <h1 class="rev">La maison</h1>
-    <p class="chapo rev">Une boulangerie de quartier à Sète, ouverte avant tout le monde.</p>
-  </div>
-</section>
-
-<section class="section">
-  <div class="cadre duo-large">
-    <div class="rev">''' + photo('boutique.jpg', 'Photo — la devanture', 'ratio-4x3') + '''</div>
-    <div class="texte-long rev">
-      <p class="grand">Au Bon Pain, c'est le café pris debout au comptoir avant le travail, la baguette récupérée en rentrant, et la pause du midi entre deux rendez-vous.</p>
-      <p>La boutique ouvre ses portes à 06h30, quand la première fournée sort du four. Les pains et les viennoiseries sont cuits sur place et réapprovisionnés tout au long de la matinée : à midi comme à sept heures, on trouve du chaud.</p>
-      <p>Le service se fait au comptoir, sans façon : on commande, on est servi, on repart. Pour ceux qui restent, il y a le café et de quoi s'asseoir.</p>
-    </div>
-  </div>
-</section>
-
-<section class="section maison feston">
-  <div class="cadre">
-    <div class="chapeau rev">
-      <p class="sur-titre clair">Ce qu'on y trouve</p>
-      <h2>Du petit-déjeuner au déjeuner</h2>
-    </div>
-    <div class="quatuor">
-      <article class="carte-sombre rev" style="--c:var(--terre)"><b>06h30</b><h3>La première fournée</h3><p>Pains et viennoiseries sortent du four à l'ouverture, et toute la matinée ensuite.</p></article>
-      <article class="carte-sombre rev" style="--c:var(--miel)"><b>Matin</b><h3>Le café du comptoir</h3><p>Un café serré, une viennoiserie, cinq minutes debout avant d'aller travailler.</p></article>
-      <article class="carte-sombre rev" style="--c:var(--olive)"><b>Midi</b><h3>La formule rapide</h3><p>Sandwichs garnis le matin, salades composées et soupes maison, à emporter ou sur place.</p></article>
-      <article class="carte-sombre rev" style="--c:var(--prune)"><b>Soir</b><h3>Le pain du retour</h3><p>La baguette ou le pain de campagne récupérés en rentrant chez soi.</p></article>
+    <div class="collection">
+      ''' + '\n      '.join(piece(*p) for p in PIECES[:4]) + '''
     </div>
   </div>
 </section>
 
 <section class="section">
   <div class="cadre">
-    <div class="chapeau rev"><p class="sur-titre">En images</p><h2>La boutique</h2></div>
-    <div class="galerie">
-      <div class="rev">''' + photo('vitrine.jpg', 'Photo — la vitrine', 'ratio-4x3') + '''</div>
-      <div class="rev">''' + photo('fournee.jpg', 'Photo — la fournée', 'ratio-4x3') + '''</div>
-      <div class="rev">''' + photo('comptoir.jpg', 'Photo — le comptoir', 'ratio-4x3') + '''</div>
+    <div class="plaque rev" data-photo="fournee">
+      <div class="plaque-txt">
+        <p class="lib or">Fournil</p>
+        <h2>Le feu, la nuit</h2>
+        <a class="btn btn-ligne" href="fournil.html" style="margin-top:1.6rem">Entrer dans le fournil <span class="fl">→</span></a>
+      </div>
     </div>
-  </div>
-</section>
-''' + BANDE_CONTACT
-
-# ---------------------------------------------------------------- AVIS
-AVIS_LISTE = [
-  ('Sandrine Preaud', '5', 'il y a 2 mois', 'terre',
-   "Sans aucun doute ma boulangerie préférée de Sète. Les viennoiseries sont absolument divines."),
-  ('Mattéo Vandenberghe', '5', 'il y a 3 mois', 'olive',
-   "Très bonne variété de produits. En séjour avec ma conjointe, nous avons pu profiter chaque jour de cette boulangerie, avec des produits délicieux et changeants."),
-  ('Jérémy Vatuone', '5', 'il y a un mois', 'prune',
-   "Visité en juillet."),
-]
-
-def carte_avis(nom, note, date, couleur, texte):
-    etoiles = ''.join('<svg class="ico xs"><use href="#etoile"></use></svg>' for _ in range(int(note)))
-    return '''<figure class="avis rev" style="--c:var(--%s)">
-        <div class="etoiles" aria-label="%s sur 5">%s</div>
-        <blockquote>%s</blockquote>
-        <figcaption><span class="jeton-init">%s</span><span><b>%s</b><small>Google · %s</small></span></figcaption>
-      </figure>''' % (couleur, note, etoiles, texte, nom[0], nom, date)
-
-AVIS = '''
-<section class="entete-page">
-  <div class="taches" aria-hidden="true"><i class="t1"></i></div>
-  <div class="cadre">
-    <p class="fil"><a href="index.html">Accueil</a> <span>·</span> Avis</p>
-    <h1 class="rev">Vos avis</h1>
-    <p class="chapo rev">Extraits d'avis publiés sur Google. Les avis ne sont pas vérifiés par nos soins.</p>
   </div>
 </section>
 
 <section class="section">
-  <div class="cadre">
-    <div class="note-globale rev">
-      <div class="note-chiffre"><b class="nb" data-vers="4.3" data-dec="1">4,3</b><span>sur 5</span></div>
-      <div class="note-detail">
-        <div class="etoiles grandes" aria-hidden="true">
-          <svg class="ico"><use href="#etoile"></use></svg><svg class="ico"><use href="#etoile"></use></svg><svg class="ico"><use href="#etoile"></use></svg><svg class="ico"><use href="#etoile"></use></svg><svg class="ico demi"><use href="#etoile"></use></svg>
-        </div>
-        <p><b class="nb" data-vers="79">79</b> avis publiés sur Google</p>
-      </div>
-      <a class="bouton" href="https://www.google.com/maps/search/?api=1&amp;query=Au+Bon+Pain+36+rue+Paul+Bousquet+34200+S%C3%A8te" target="_blank" rel="noopener">Voir sur Google</a>
-    </div>
-
-    <div class="trio">
-      ''' + '\n      '.join(carte_avis(*a) for a in AVIS_LISTE) + '''
-    </div>
-  </div>
-</section>
-''' + BANDE_CONTACT
-
-# ---------------------------------------------------------------- CONTACT
-CONTACT = '''
-<section class="entete-page">
-  <div class="taches" aria-hidden="true"><i class="t2"></i><i class="t3"></i></div>
-  <div class="cadre">
-    <p class="fil"><a href="index.html">Accueil</a> <span>·</span> Contact</p>
-    <h1 class="rev">Nous trouver</h1>
-    <p class="chapo rev">36 rue Paul Bousquet, 34200 Sète. Le plus simple reste de passer : on est ouvert dès 06h30.</p>
-  </div>
-</section>
-
-<section class="section">
-  <div class="cadre contact-grille">
-    <div class="fiche rev">
-      <div class="fiche-ligne" style="--c:var(--terre)">
-        <span class="pastille"><svg class="ico"><use href="#epingle"></use></svg></span>
-        <div><b>Adresse</b><p>36 rue Paul Bousquet<br>34200 Sète, Hérault</p>
-        <a class="lien-fleche" href="https://www.google.com/maps/dir/?api=1&amp;destination=36+rue+Paul+Bousquet+34200+S%C3%A8te" target="_blank" rel="noopener">Lancer l'itinéraire</a></div>
-      </div>
-      <div class="fiche-ligne" style="--c:var(--miel)">
-        <span class="pastille"><svg class="ico"><use href="#tel"></use></svg></span>
-        <div><b>Téléphone</b><p><a class="gros-lien" href="tel:+33467535931">04 67 53 59 31</a></p>
-        <small>Pour confirmer les horaires ou commander une grande quantité.</small></div>
-      </div>
-      <div class="fiche-ligne" style="--c:var(--olive)">
-        <span class="pastille"><svg class="ico"><use href="#horloge"></use></svg></span>
-        <div><b>Horaires</b>
-          <p class="minuteur-plat"><span class="braise" aria-hidden="true"></span> Prochaine fournée dans <strong id="compte">06 h 30</strong></p>
-          <table class="horaires">
-            <tr><th scope="row">Ouverture</th><td>06h30</td></tr>
-            <tr><th scope="row">Fermeture</th><td class="a-confirmer">à confirmer par téléphone</td></tr>
-          </table>
-          <small>Seule l'heure d'ouverture nous est connue à ce jour.</small>
-        </div>
-      </div>
-      <div class="fiche-ligne" style="--c:var(--prune)">
-        <span class="pastille"><svg class="ico"><use href="#sac"></use></svg></span>
-        <div><b>Service</b><p>Au comptoir — sur place ou à emporter.<br>Budget : 1 à 10 € par personne.</p></div>
-      </div>
-    </div>
-
-    <div class="plan rev">
-      <div class="plan-cadre">
-        <div class="plan-secours" aria-hidden="true">
-          <span class="plan-quadrillage"></span>
-          <span class="plan-point"></span>
-          <span class="plan-txt"><b>36 rue Paul Bousquet</b><small>34200 Sète</small></span>
-        </div>
-        <iframe
-          title="Plan — 36 rue Paul Bousquet, 34200 Sète"
-          src="https://www.openstreetmap.org/export/embed.html?bbox=3.6885%2C43.3985%2C3.7085%2C43.4105&amp;layer=mapnik&amp;marker=43.4045%2C3.6985"
-          loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-      </div>
-      <div class="plan-pied">
-        <a class="bouton" href="https://www.google.com/maps/dir/?api=1&amp;destination=36+rue+Paul+Bousquet+34200+S%C3%A8te" target="_blank" rel="noopener">Itinéraire Google Maps</a>
-        <a class="bouton clair" href="https://www.openstreetmap.org/?mlat=43.4045&amp;mlon=3.6985#map=17/43.4045/3.6985" target="_blank" rel="noopener">Ouvrir le plan</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section maison feston">
-  <div class="cadre acces-grille">
+  <div class="cadre duo">
     <div class="rev">
-      <p class="sur-titre clair">Venir</p>
-      <h2>Au cœur de Sète</h2>
-      <p>La boulangerie se trouve rue Paul Bousquet, dans le centre de Sète. Le quartier est desservi par le réseau de bus urbain, et la gare de Sète est à quelques minutes.</p>
+      <p class="lib or numero-sec">02 / La maison</p>
+      <h2 style="margin-top:1.4rem">Ouverte avant<br>tout le monde</h2>
     </div>
-    <ul class="acces rev">
-      <li><b>À pied</b><span>Depuis le centre-ville et les quais, quelques minutes de marche.</span></li>
-      <li><b>En voiture</b><span>Stationnement dans les rues alentour, selon l'affluence.</span></li>
-      <li><b>En train</b><span>Gare de Sète, puis bus ou marche jusqu'au quartier.</span></li>
-    </ul>
+    <div class="texte rev">
+      <p class="intro">Le café pris debout au comptoir avant le travail, la baguette récupérée en rentrant, la pause du midi entre deux rendez-vous.</p>
+      <p>Tout est cuit et préparé sur place, servi au comptoir, sur place ou à emporter. La première fournée sort à 06:30 ; les suivantes s'enchaînent toute la matinée.</p>
+      <div class="infos" style="margin-top:2.4rem">
+        <div class="info">
+          <svg class="ico lg"><use href="#horloge"></use></svg>
+          <p class="lib">Horaires</p>
+          <p class="num">Lundi – Samedi · 06:30 – 19:30</p>
+          <p class="num">Dimanche · 07:00 – 13:00</p>
+        </div>
+        <div class="info">
+          <svg class="ico lg"><use href="#epingle"></use></svg>
+          <p class="lib">Adresse</p>
+          <p>36 rue Paul Bousquet<br>34200 Sète</p>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 '''
 
-# =====================================================================
-CONTENUS = {'index': ACCUEIL, 'carte': CARTE, 'maison': MAISON, 'avis': AVIS, 'contact': CONTACT}
+COLLECTION = '''
+<section class="section" style="padding-top:11rem">
+  <div class="cadre">
+    <div class="section-tete rev">
+      <div>
+        <p class="lib or numero-sec">01 / Collection</p>
+        <h2>Les pièces<br>du four</h2>
+      </div>
+      <a class="btn btn-plein" href="reservation.html">Pré-commander <span class="fl">→</span></a>
+    </div>
+    <p class="lib" style="margin-bottom:3rem">Prix indicatifs · la vitrine change chaque jour selon les fournées</p>
+  </div>
+  <div class="cadre">
+    <div class="collection">
+      ''' + '\n      '.join(piece(*p) for p in PIECES) + '''
+    </div>
+  </div>
+</section>
+'''
 
-for nom, contenu in CONTENUS.items():
-    chemin = os.path.join(RACINE, nom + '.html')
-    with open(chemin, 'w') as f:
-        f.write(page(nom, contenu))
-    print('écrit', chemin)
+RESERVATION = '''
+<section class="section" style="padding-top:11rem">
+  <div class="cadre">
+    <div class="section-tete rev">
+      <div>
+        <p class="lib or numero-sec">02 / Réservation</p>
+        <h2>Pré-commande</h2>
+      </div>
+    </div>
+
+    <div class="reserve">
+      <form class="rev" id="form-reservation" novalidate>
+        <div class="encart">
+          <b>Pré-commande</b>
+          <span>À emporter · Retrait à la boulangerie</span>
+        </div>
+
+        <div class="champ">
+          <label for="nom">Nom complet *</label>
+          <input id="nom" name="nom" type="text" placeholder="Jean Dupont" required autocomplete="name">
+        </div>
+
+        <div class="duo-champ">
+          <div class="champ">
+            <label for="tel">Téléphone *</label>
+            <input id="tel" name="tel" type="tel" placeholder="06 12 34 56 78" required autocomplete="tel">
+          </div>
+          <div class="champ">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="jean@email.fr" autocomplete="email">
+          </div>
+        </div>
+
+        <div class="duo-champ">
+          <div class="champ">
+            <label for="date">Date *</label>
+            <input id="date" name="date" type="date" required>
+          </div>
+          <div class="champ">
+            <label for="panier">Panier</label>
+            <input id="panier" name="panier" type="number" min="1" max="50" value="1">
+          </div>
+        </div>
+
+        <div class="champ">
+          <label id="lib-heure">Heure *</label>
+          <div class="heures" id="heures" role="group" aria-labelledby="lib-heure"></div>
+        </div>
+
+        <div class="champ">
+          <label for="details">Détails de la commande</label>
+          <textarea id="details" name="details" rows="2" placeholder="4 croissants, 2 pains au chocolat, 1 baguette…"></textarea>
+        </div>
+
+        <div class="champ">
+          <label for="notes">Notes</label>
+          <textarea id="notes" name="notes" rows="2" placeholder="Allergies, préférences…"></textarea>
+        </div>
+
+        <button class="btn btn-plein" type="submit">Confirmer la réservation <span class="fl">→</span></button>
+        <p class="erreur" id="erreur" role="alert"></p>
+
+        <div class="recap" id="recap" role="status">
+          <b>Votre pré-commande</b>
+          <dl id="recap-liste"></dl>
+          <a class="btn btn-ligne" id="lien-mail" href="#">Envoyer par email <span class="fl">→</span></a>
+        </div>
+      </form>
+
+      <div class="rev">
+        <div class="plaque" data-photo="fournee" style="min-height:clamp(320px,38vw,460px)">
+          <div class="plaque-txt">
+            <p class="lib or">Fournil</p>
+            <h2 style="font-size:clamp(1.6rem,3vw,2.4rem)">Le feu, la nuit</h2>
+          </div>
+        </div>
+
+        <div class="infos" style="margin-top:2.4rem">
+          <div class="info">
+            <svg class="ico lg"><use href="#horloge"></use></svg>
+            <p class="lib">Horaires</p>
+            <p class="num">Lundi – Samedi · 06:30 – 19:30</p>
+            <p class="num">Dimanche · 07:00 – 13:00</p>
+          </div>
+          <div class="info">
+            <svg class="ico lg"><use href="#epingle"></use></svg>
+            <p class="lib">Adresse</p>
+            <p>36 rue Paul Bousquet<br>34200 Sète</p>
+          </div>
+          <div class="info">
+            <svg class="ico lg"><use href="#tel"></use></svg>
+            <p class="lib">Téléphone</p>
+            <p class="num"><a href="tel:+33467535931" style="text-decoration:none">04 67 53 59 31</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+'''
+
+FOURNIL = '''
+<section class="section" style="padding-top:11rem;padding-bottom:0">
+  <div class="cadre">
+    <p class="lib or numero-sec rev">03 / Fournil</p>
+    <h1 class="rev" style="font-size:clamp(2.6rem,7vw,5.5rem);margin-top:1.4rem">Le feu,<em style="display:block;font-style:italic;color:var(--or-clair)">la nuit</em></h1>
+  </div>
+</section>
+
+<section class="section">
+  <div class="cadre">
+    <div class="plaque rev" data-photo="fournee"></div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="cadre duo">
+    <div class="texte rev">
+      <p class="intro">Quand la ville dort, le four monte en température. C'est là que tout se joue.</p>
+      <p>La pâte est façonnée avant le jour, les pièces sont enfournées les unes après les autres, et la première fournée sort à 06:30 — à l'heure où la boutique ouvre ses portes.</p>
+      <p>Ensuite, les fournées s'enchaînent toute la matinée : il y a du chaud à sept heures comme à midi. Les sandwichs sont garnis le matin même, les soupes et les salades préparées sur place.</p>
+    </div>
+    <div class="infos rev">
+      <div class="info">
+        <svg class="ico lg"><use href="#feu"></use></svg>
+        <p class="lib">Le four</p>
+        <p>Chauffé la nuit, en service toute la journée.</p>
+      </div>
+      <div class="info">
+        <svg class="ico lg"><use href="#ble"></use></svg>
+        <p class="lib">Les pains</p>
+        <p>Baguettes tradition au levain naturel, pains de campagne à la farine de meule, pains spéciaux selon la fournée.</p>
+      </div>
+      <div class="info">
+        <svg class="ico lg"><use href="#horloge"></use></svg>
+        <p class="lib">Première fournée</p>
+        <p class="num">06:30</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="cadre">
+    <div class="collection">
+      ''' + '\n      '.join(piece(*p) for p in PIECES[:4]) + '''
+    </div>
+  </div>
+</section>
+'''
+
+CONTACT = '''
+<section class="section" style="padding-top:11rem;padding-bottom:3rem">
+  <div class="cadre">
+    <p class="lib or numero-sec rev">04 / Contact</p>
+    <h2 class="rev" style="margin-top:1.4rem">Nous trouver</h2>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="cadre">
+    <div class="fiche-contact rev">
+      <div class="fiche-bloc">
+        <svg class="ico lg"><use href="#epingle"></use></svg>
+        <p class="lib">Adresse</p>
+        <p class="gros">36 Rue Paul Bousquet</p>
+        <p class="sous">34200 Sète · France</p>
+        <a class="lien-or" href="https://www.google.com/maps/dir/?api=1&amp;destination=36+rue+Paul+Bousquet+34200+S%C3%A8te" target="_blank" rel="noopener">↗ Itinéraire</a>
+      </div>
+      <div class="fiche-bloc">
+        <svg class="ico lg"><use href="#tel"></use></svg>
+        <p class="lib">Téléphone</p>
+        <p class="gros num"><a href="tel:+33467535931" style="text-decoration:none">04 67 53 59 31</a></p>
+        <p class="sous">Appel direct</p>
+      </div>
+      <div class="fiche-bloc">
+        <svg class="ico lg"><use href="#horloge"></use></svg>
+        <p class="lib">Horaires</p>
+        ''' + table_horaires() + '''
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="cadre">
+    <div class="plan rev">
+      <div class="plan-secours"></div>
+      <div class="plan-etiq"><b>Au Bon Pain</b><span>36 Rue Paul Bousquet<br>34200 Sète</span></div>
+      <iframe title="Plan — 36 rue Paul Bousquet, 34200 Sète"
+        src="https://www.openstreetmap.org/export/embed.html?bbox=3.6845%2C43.3955%2C3.7185%2C43.4135&amp;layer=mapnik&amp;marker=43.4045%2C3.6985"
+        loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="cadre duo">
+    <div class="rev">
+      <p class="lib or numero-sec">Venir</p>
+      <h2 style="margin-top:1.4rem;font-size:clamp(1.8rem,3.4vw,2.8rem)">Au cœur de Sète</h2>
+    </div>
+    <div class="texte rev">
+      <p>La boulangerie se trouve rue Paul Bousquet, dans le centre de Sète, à quelques minutes des quais et du port de plaisance.</p>
+      <p>Service au comptoir, sur place ou à emporter. Comptez 1 à 10 € par personne.</p>
+      <a class="btn btn-plein" href="reservation.html" style="margin-top:1rem">Pré-commander <span class="fl">→</span></a>
+    </div>
+  </div>
+</section>
+'''
+
+CONTENUS = {'index': ACCUEIL, 'collection': COLLECTION, 'reservation': RESERVATION,
+            'fournil': FOURNIL, 'contact': CONTACT}
+
+if __name__ == '__main__':
+    for nom, contenu in CONTENUS.items():
+        chemin = os.path.join(RACINE, nom + '.html')
+        with open(chemin, 'w') as f:
+            f.write(page(nom, contenu))
+        print('écrit', chemin)
