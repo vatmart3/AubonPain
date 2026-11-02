@@ -39,8 +39,8 @@ export interface TodayView {
   deltaPct: number | null;
   countDeltaPct: number | null;
   basketDeltaPct: number | null;
-  /** Ventes par heure, de openHour à closeHour (today = null après l'heure courante) */
-  hours: { hour: number; today: number | null; lastWeek: number }[];
+  /** Ventes par heure, de openHour à closeHour : today = heures terminées, partial = heure en cours */
+  hours: { hour: number; today: number | null; partial: number | null; lastWeek: number }[];
   recent: { time: string; amount: number; kind: "sale" | "refund"; label: string }[];
 }
 

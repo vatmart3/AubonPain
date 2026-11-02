@@ -77,6 +77,12 @@ export function HourlyChart({ data, lastWeekLabel, currency }: { data: TodayView
           <span aria-hidden className="inline-block h-[2px] w-4 rounded" style={{ background: C.ghost }} />
           {lastWeekLabel}
         </span>
+        {rows.some((r) => r.partial !== null) ? (
+          <span className="flex items-center gap-2">
+            <span aria-hidden className="inline-block h-2.5 w-2.5 rounded-full border-2" style={{ borderColor: C.crust }} />
+            heure en cours
+          </span>
+        ) : null}
       </div>
       <div className="h-[220px] w-full sm:h-[260px]">
         <ResponsiveContainer width="100%" height="100%">
@@ -114,6 +120,7 @@ export function HourlyChart({ data, lastWeekLabel, currency }: { data: TodayView
                     title={`${row.hour}h – ${row.hour + 1}h`}
                     rows={[
                       ...(row.today !== null ? [{ label: "Aujourd'hui", value: money(row.today, currency), swatch: C.crust }] : []),
+                      ...(row.partial !== null ? [{ label: "Heure en cours", value: money(row.partial, currency), swatch: C.crust }] : []),
                       { label: lastWeekLabel, value: money(row.lastWeek, currency), swatch: C.ghost, line: true },
                     ]}
                   />
@@ -141,6 +148,14 @@ export function HourlyChart({ data, lastWeekLabel, currency }: { data: TodayView
               activeDot={{ r: 5, fill: C.crust, stroke: C.paper, strokeWidth: 2 }}
               isAnimationActive
               animationDuration={900}
+            />
+            <Line
+              dataKey="partial"
+              stroke="none"
+              legendType="none"
+              isAnimationActive={false}
+              dot={{ r: 4.5, fill: C.paper, stroke: C.crust, strokeWidth: 2 }}
+              activeDot={{ r: 5, fill: C.paper, stroke: C.crust, strokeWidth: 2 }}
             />
           </ComposedChart>
         </ResponsiveContainer>

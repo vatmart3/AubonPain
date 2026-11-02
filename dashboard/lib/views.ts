@@ -121,9 +121,12 @@ export async function todayView(): Promise<TodayView> {
     deltaPct: deltaPct(cur.net, prevSame.net),
     countDeltaPct: deltaPct(cur.count, prevSame.count),
     basketDeltaPct: deltaPct(cur.avgBasket, prevSame.avgBasket),
+    // L'heure en cours est à part : à 15h10, sa barre n'est qu'à peine
+    // commencée et ferait croire à une chute de la courbe.
     hours: todayHours.map((v, i) => ({
       hour: openHour + i,
-      today: i <= lastIdx ? v : null,
+      today: i < lastIdx || hourNow >= closeHour ? v : null,
+      partial: i === lastIdx && hourNow < closeHour ? v : null,
       lastWeek: lwHours[i],
     })),
     recent,
