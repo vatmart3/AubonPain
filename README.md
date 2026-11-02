@@ -90,3 +90,10 @@ Les illustrations sont dans `build_illustrations.py` (jeu clair et jeu sombre).
 4. **Envoi du formulaire** — voir « Réservation ».
 5. **Coordonnées du plan** — affiner le point exact (43.4045, 3.6985).
 6. **Mentions légales / RGPD** — obligatoires pour un site commercial.
+
+## Tableau de bord des ventes
+
+Le dossier [`dashboard/`](dashboard/) contient un projet Next.js distinct :
+le tableau de bord des ventes carte, branché sur l'API SumUp. Il se déploie
+sur Vercel comme projet séparé (Root Directory = `dashboard`). Voir
+[`dashboard/README.md`](dashboard/README.md).

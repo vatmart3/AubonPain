@@ -1,0 +1,164 @@
+@import "tailwindcss";
+
+/*
+ * Au Bon Pain — cahier de caisse.
+ * Crème de farine, croûte dorée, brun de four. Fraunces pour les chiffres,
+ * Instrument Sans pour le texte. Filets d'un pixel, pas d'ombres portées SaaS.
+ */
+
+@theme {
+  --color-flour: #fffcf6;
+  --color-paper: #fbf6ee;
+  --color-cream: #f4ecdf;
+  --color-wheat: #eadcc5;
+  --color-line: #e2d3bc;
+  --color-crust: #b8732e;
+  --color-crust-deep: #8a4f1d;
+  --color-honey: #d9a35b;
+  --color-oven: #2a1b12;
+  --color-bark: #5c4535;
+  --color-dust: #8c7663;
+  --color-ghost: #b4a28c;
+  --color-up: #2e7a3a;
+  --color-down: #b0402b;
+
+  --font-display: "Fraunces Variable", "Iowan Old Style", Georgia, serif;
+  --font-sans: "Instrument Sans Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root {
+  color-scheme: light;
+  --heat-0: #f4ead9;
+  --heat-1: #ecd6b1;
+  --heat-2: #e2bb82;
+  --heat-3: #d59c56;
+  --heat-4: #bf7a34;
+  --heat-5: #9a5a22;
+  --heat-6: #6e3c16;
+}
+
+html {
+  background: var(--color-cream);
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-oven);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100dvh;
+}
+
+/* Grain de farine très léger sur le fond, sans image externe. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+  background-image:
+    radial-gradient(rgba(138, 79, 29, 0.05) 1px, transparent 1px),
+    radial-gradient(rgba(138, 79, 29, 0.035) 1px, transparent 1px);
+  background-size: 22px 22px, 31px 31px;
+  background-position: 0 0, 11px 7px;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 50, "WONK" 0;
+}
+
+/* Grand chiffre éditorial : chiffres proportionnels, serrés. */
+.figure-hero {
+  font-family: var(--font-display);
+  font-variation-settings: "SOFT" 100, "WONK" 0, "opsz" 144;
+  font-weight: 560;
+  letter-spacing: -0.035em;
+  line-height: 0.9;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.eyebrow {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-dust);
+}
+
+/* Bord dentelé façon ticket de caisse. */
+.ticket-edge {
+  --tooth: 7px;
+  mask:
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / calc(2 * var(--tooth)) 100%;
+}
+
+/* Apparition douce des panneaux lors d'un changement d'onglet/période. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise {
+  animation: rise 520ms var(--ease-out-soft) both;
+}
+.rise-1 {
+  animation-delay: 60ms;
+}
+.rise-2 {
+  animation-delay: 120ms;
+}
+.rise-3 {
+  animation-delay: 180ms;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.live-dot {
+  animation: breathe 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise,
+  .live-dot {
+    animation: none;
+  }
+}
+
+/* Recharts : focus clavier visible, pas de contour noir au clic. */
+.recharts-wrapper:focus,
+.recharts-surface:focus {
+  outline: none;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
